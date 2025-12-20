@@ -8,6 +8,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { PrismaClient } from '@prisma/client'
 import { setupAdmin } from './admin.js'
+import { stripeRoutes } from './routes/stripe.js'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -26,6 +27,8 @@ async function start() {
     origin: true, // In production, set this to your SITE_URL
   })
 
+  // Register Stripe Routes
+  await fastify.register(stripeRoutes)
 
   // API Routes
   fastify.get('/api/articles', async (request, reply) => {

@@ -311,6 +311,99 @@ async function main() {
             </div>
         </div>
     </section>
+    <!-- AI Review Paywall -->
+    <section id="llm-review" class="mb-20 scroll-mt-24">
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Pass Review with AI</h2>
+        
+        <!-- Sales Copy & Social Proof -->
+        <div class="max-w-3xl mb-10">
+            <p class="text-lg text-gray-700 leading-relaxed mb-8">
+                Increase your approval chances tenfold while ensuring your code adheres to Apple's highest standards. By integrating Advanced AI into your workflow with our guide, you can simulate a senior reviewer's perspective before you ever hit "Submit".
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-4 mb-8">
+                <!-- Review 1 -->
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <div class="flex text-yellow-400 mb-2">★★★★★</div>
+                    <p class="text-sm text-gray-600 mb-3">"Saved me weeks of rejection ping-pong. The prompt caught a metadata issue I completely missed."</p>
+                    <p class="text-xs font-bold text-gray-900">— Alex R., iOS Dev</p>
+                </div>
+                <!-- Review 2 -->
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <div class="flex text-yellow-400 mb-2">★★★★★</div>
+                    <p class="text-sm text-gray-600 mb-3">"The PDF guide is gold. Worth every penny of the $9.99 just for the checklist alone."</p>
+                    <p class="text-xs font-bold text-gray-900">— Sarah K., Founder</p>
+                </div>
+                <!-- Review 3 -->
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <div class="flex text-yellow-400 mb-2">★★★★★</div>
+                    <p class="text-sm text-gray-600 mb-3">"Finally passed review after 3 rejections thanks to the code smell checker. Essential toolkit."</p>
+                    <p class="text-xs font-bold text-gray-900">— Mike T., Expo Dev</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Locker -->
+        <div class="relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm h-[600px]"> 
+            <!-- Blurred Background Content (The "Secret" Stuff) -->
+            <div class="p-8 h-full blur-[4px] opacity-50 select-none pointer-events-none overflow-hidden font-mono text-sm leading-relaxed" aria-hidden="true">
+                 <h3 class="text-xl font-bold font-sans mb-4 text-gray-900">System Prompt: The Apple Reviewer Persona</h3>
+                 <p class="mb-4">
+                    // Copy this into your AI context window<br>
+                    ROLE: You are a strict Apple App Store Reviewer acting under the 2025 Guidelines.<br>
+                    GOAL: Audit the user's provided code diffs and metadata for rejection triggers.<br>
+                    <br>
+                    RULES:<br>
+                    1. Check for any usage of Non-Public APIs (reject immediately with 2.5).<br>
+                    2. Verify specific Info.plist keys for camera/location usage.<br>
+                    3. Ensure UI meets Human Interface Guidelines (minimum hit areas 44x44pt).
+                 </p>
+                 <br>
+                 <h3 class="text-xl font-bold font-sans mb-4 text-gray-900">Swift/Obj-C Risk Scanners</h3>
+                 <p>
+                    func auditPermissions() {<br>
+                      // ... hidden content ...<br>
+                    }
+                 </p>
+            </div>
+            
+            <!-- Centered Paywall Popup -->
+            <div class="absolute inset-0 z-20 flex items-center justify-center p-4">
+                <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 max-w-[400px] w-full text-center relative animate-in fade-in zoom-in-95 duration-300">
+                    <div class="mb-6">
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                             <span class="text-6xl font-bold text-gray-900 tracking-tight">$9.99</span>
+                             <span class="text-xl text-gray-400 font-semibold line-through decoration-2">$49</span>
+                        </div>
+                    </div>
+
+                    <ul class="text-left space-y-4 mb-8 pl-2">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span class="text-gray-700 font-medium">Complete PDF Guide <span class="text-gray-400 text-sm font-normal">(Meticulous detail)</span></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span class="text-gray-700 font-medium">Code Smells Reference <span class="text-gray-400 text-sm font-normal">(iOS & Expo)</span></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span class="text-gray-700 font-medium">AI Audit Prompts <span class="text-gray-400 text-sm font-normal">(Copy & Paste)</span></span>
+                        </li>
+                    </ul>
+
+                    <button id="paywall-btn" onclick="handlePurchase()" class="w-full bg-[#0071e3] hover:bg-[#0077ED] text-white font-semibold text-lg py-3.5 rounded-lg transition-all shadow-md active:scale-[0.98]">
+                        Unlock Full Access
+                    </button>
+                    
+                    <div class="mt-4 flex items-center justify-center gap-1.5 text-xs text-gray-400">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        Secure payment via Stripe
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <!-- Deep Dive Guides (Hub & Spoke Strategy) -->
     <section id="deep-dives" class="mb-20 scroll-mt-24">

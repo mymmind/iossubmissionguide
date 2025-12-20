@@ -65,15 +65,15 @@ if (navArticles.length === 0) {
       <Sidebar articles={navArticles} pathname={pathname} />
       <main class="flex-1 lg:ml-64 px-6 lg:px-16 py-20 lg:py-16">
         <slot />
+
+        <footer class="py-12 mt-20 bg-apple-light border-t border-gray-200 w-[calc(100%+3rem)] lg:w-[calc(100%+8rem)] -mx-6 lg:-mx-16">
+          <div class="max-w-3xl mx-auto px-6 text-center space-y-2">
+            <p class="text-xs text-gray-500 font-medium">Compiled based on official App Store Review Guidelines.</p>
+            <p class="text-xs text-gray-500">© 2025 iOS Submission Guide. Not affiliated with Apple Inc.</p>
+          </div>
+        </footer>
       </main>
     </div>
-
-    <footer class="py-12 mt-20 bg-apple-light border-t border-gray-200 w-full">
-      <div class="max-w-3xl mx-auto px-6 text-center space-y-2">
-        <p class="text-xs text-gray-500 font-medium">Compiled based on official App Store Review Guidelines.</p>
-        <p class="text-xs text-gray-500">© 2025 iOS Submission Guide. Not affiliated with Apple Inc.</p>
-      </div>
-    </footer>
 
     <script>
       const menuBtn = document.getElementById('mobile-menu-button');
@@ -87,6 +87,37 @@ if (navArticles.length === 0) {
       closeBtn?.addEventListener('click', () => {
         menu?.classList.add('translate-x-full');
       });
+
+      // Stripe Purchase Handler
+      (window as any).handlePurchase = async () => {
+        const btn = document.getElementById('paywall-btn');
+        if (btn) {
+           const originalText = btn.innerText;
+           btn.innerText = 'Loading...';
+           (btn as HTMLButtonElement).disabled = true;
+           try {
+             // In dev, apiUrl is localhost:3005. In prod, use env.
+             // We can read the meta tag or just hardcode localhost for this demo since we are in dev.
+             const response = await fetch('http://localhost:3005/api/create-checkout-session', {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/json' }
+             });
+             const data = await response.json();
+             if (data.url) {
+               window.location.href = data.url;
+             } else {
+               alert('Error creating checkout session. Please try again.');
+               btn.innerText = originalText;
+               (btn as HTMLButtonElement).disabled = false;
+             }
+           } catch (e) {
+             console.error(e);
+             alert('Error connecting to server.');
+             btn.innerText = originalText;
+             (btn as HTMLButtonElement).disabled = false;
+           }
+        }
+      };
     </script>
   </body>
 </html>
