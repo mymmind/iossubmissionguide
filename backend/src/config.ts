@@ -19,7 +19,7 @@ const envSchema = z.object({
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
 
   // URLs
-  FRONTEND_URL: z.string().url().optional().default('http://localhost:3000'),
+  FRONTEND_URL: z.string().url().optional().default('http://localhost:4321'),
   BACKEND_URL: z.string().url().optional().default('http://localhost:3005'),
   SITE_URL: z.string().url().optional(),
 })

@@ -57,6 +57,12 @@ const mainGuideNav = [
     ],
   },
   {
+    section: 'PREMIUM TOOLS',
+    items: [
+      { href: '/ai-review', label: 'AI Review Toolkit' },
+    ],
+  },
+  {
     section: null,
     items: [
       { href: '/#deep-dives', label: 'Deep Dive Guides' },
@@ -130,6 +136,22 @@ const groupedArticles = groupByCategory(articles);
       )}
 
       <nav class="space-y-1">
+        <div class="mb-8">
+          <a
+            href="/ai-review"
+            class={`group block py-2 px-3 text-[13px] font-bold rounded-xl transition-all ${
+              pathname === "/ai-review"
+                ? "bg-apple-blue text-white shadow-lg shadow-apple-blue/20"
+                : "text-apple-blue bg-blue-50/50 hover:bg-blue-50"
+            }`}
+          >
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+              AI Review Toolkit
+            </span>
+          </a>
+        </div>
+
         {toc ? (
           toc.sections.map((group) => (
             <div class="mb-6 last:mb-0">
@@ -217,12 +239,10 @@ const groupedArticles = groupByCategory(articles);
         credentials: 'include',
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.sessionId) {
-          container.classList.remove('hidden');
-          link.href = `/success?session_id=${data.sessionId}`;
-        }
+      const data = await response.json();
+      if (data.sessionId) {
+        container.classList.remove('hidden');
+        link.href = `/success?session_id=${data.sessionId}`;
       }
     } catch (e) {
       // Silently fail - user just won't see the toolkit link

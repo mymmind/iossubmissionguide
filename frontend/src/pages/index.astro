@@ -21,7 +21,7 @@ if (!hubArticle) {
 // Sanitize HTML content to prevent XSS
 const sanitizedContent = DOMPurify.sanitize(hubArticle.content, {
   ADD_TAGS: ['section'],
-  ADD_ATTR: ['target', 'rel'],
+  ADD_ATTR: ['target', 'rel', 'onclick'],
 });
 ---
 

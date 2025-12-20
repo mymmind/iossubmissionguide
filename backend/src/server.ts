@@ -1,22 +1,25 @@
-import Fastify from 'fastify'
-import cors from '@fastify/cors'
-import helmet from '@fastify/helmet'
-import rateLimit from '@fastify/rate-limit'
+// Load dotenv BEFORE any other imports that might use process.env
+import dotenv from 'dotenv'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import Stripe from 'stripe'
-import { z } from 'zod'
-import { prisma } from './prisma.js'
-import { setupAdmin } from './admin.js'
-import { stripeRoutes } from './routes/stripe.js'
-import { validateCriticalConfig } from './config.js'
-import dotenv from 'dotenv'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 dotenv.config() // Load from backend/.env if it exists
 dotenv.config({ path: path.join(__dirname, '../../.env.local') }) // Load from root/.env.local
+
+// Now import everything else after env vars are loaded
+import Fastify from 'fastify'
+import cors from '@fastify/cors'
+import helmet from '@fastify/helmet'
+import rateLimit from '@fastify/rate-limit'
+import Stripe from 'stripe'
+import { z } from 'zod'
+import { prisma } from './prisma.js'
+import { setupAdmin } from './admin.js'
+import { stripeRoutes } from './routes/stripe.js'
+import { validateCriticalConfig } from './config.js'
 
 // Validate environment configuration at startup
 validateCriticalConfig()
@@ -143,14 +146,11 @@ async function start() {
   })
 
   // Get purchase session from cookie
-  fastify.get('/api/purchase-session', async (request, reply) => {
+  fastify.get('/api/purchase-session', async (request, _reply) => {
     const sessionId = request.cookies[PURCHASE_COOKIE_NAME]
 
-    if (!sessionId) {
-      return reply.status(404).send({ error: 'No purchase session found' })
-    }
-
-    return { sessionId }
+    // Return 200 with null sessionId if no session - avoids console errors
+    return { sessionId: sessionId || null }
   })
 
   // Clear purchase session cookie

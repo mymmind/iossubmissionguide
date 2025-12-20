@@ -331,7 +331,7 @@ async function main() {
                 <!-- Review 2 -->
                 <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
                     <div class="flex text-yellow-400 mb-2">★★★★★</div>
-                    <p class="text-sm text-gray-600 mb-3">"The PDF guide is gold. Worth every penny of the $9.99 just for the checklist alone."</p>
+                    <p class="text-sm text-gray-600 mb-3">"The PDF guide is gold. Worth every penny of the $29.99 just for the checklist alone."</p>
                     <p class="text-xs font-bold text-gray-900">— Sarah K., Founder</p>
                 </div>
                 <!-- Review 3 -->
@@ -372,7 +372,7 @@ async function main() {
                 <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 max-w-[400px] w-full text-center relative animate-in fade-in zoom-in-95 duration-300">
                     <div class="mb-6">
                         <div class="flex items-center justify-center gap-2 mb-2">
-                             <span class="text-6xl font-bold text-gray-900 tracking-tight">$9.99</span>
+                             <span class="text-6xl font-bold text-gray-900 tracking-tight">$29.99</span>
                              <span class="text-xl text-gray-400 font-semibold line-through decoration-2">$49</span>
                         </div>
                     </div>
@@ -380,15 +380,15 @@ async function main() {
                     <ul class="text-left space-y-4 mb-8 pl-2">
                         <li class="flex items-start gap-3">
                             <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                            <span class="text-gray-700 font-medium">Complete PDF Guide <span class="text-gray-400 text-sm font-normal">(Meticulous detail)</span></span>
+                            <span class="text-gray-700 font-medium">Store Review Strategy <span class="text-gray-400 text-sm font-normal">(2025 Edition)</span></span>
                         </li>
                         <li class="flex items-start gap-3">
                             <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                            <span class="text-gray-700 font-medium">Code Smells Reference <span class="text-gray-400 text-sm font-normal">(iOS & Expo)</span></span>
+                            <span class="text-gray-700 font-medium">Coding Best Practices <span class="text-gray-400 text-sm font-normal">(Native & Expo)</span></span>
                         </li>
                         <li class="flex items-start gap-3">
                             <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                            <span class="text-gray-700 font-medium">AI Audit Prompts <span class="text-gray-400 text-sm font-normal">(Copy & Paste)</span></span>
+                            <span class="text-gray-700 font-medium">Master AI Instructions <span class="text-gray-400 text-sm font-normal">(Immediate Access)</span></span>
                         </li>
                     </ul>
 

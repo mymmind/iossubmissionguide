@@ -38,16 +38,16 @@ export async function stripeRoutes(fastify: FastifyInstance): Promise<void> {
               currency: 'usd',
               product_data: {
                 name: 'iOS App Store Submission Toolkit',
-                description: 'Complete PDF Guide, Code Smells (iOS & Expo), Prompts for Swift/React Native',
+                description: 'Complete Master Instructions, Coding Best Practices, and Store Review Strategy',
               },
-              unit_amount: 999, // $9.99
+              unit_amount: 2999, // $29.99
             },
             quantity: 1,
           },
         ],
         mode: 'payment',
-        success_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/?canceled=true`,
+        success_url: `${process.env.FRONTEND_URL || 'http://localhost:4321'}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:4321'}/?canceled=true`,
       })
 
       return { url: session.url }
