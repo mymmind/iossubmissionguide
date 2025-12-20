@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id           Int      @id @default(autoincrement())
+  slug         String   @unique
+  title        String
+  description  String   @db.Text
+  content      String   @db.Text
+  category     String
+  publishedAt  DateTime @default(now()) @map("published_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  metaKeywords String[] @map("meta_keywords")
+  isHub        Boolean  @default(false) @map("is_hub")
+
+  // Self-referential relations for "Deep Dive" links
+  relatedFrom RelatedArticle[] @relation("SourceArticle")
+  relatedTo   RelatedArticle[] @relation("TargetArticle")
+
+  @@map("articles")
+}
+
+model RelatedArticle {
+  id              Int @id @default(autoincrement())
+  sourceArticleId Int @map("source_article_id")
+  targetArticleId Int @map("target_article_id")
+  displayOrder    Int @default(0) @map("display_order")
+
+  sourceArticle Article @relation("SourceArticle", fields: [sourceArticleId], references: [id], onDelete: Cascade)
+  targetArticle Article @relation("TargetArticle", fields: [targetArticleId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceArticleId, targetArticleId])
+  @@map("related_articles")
+}

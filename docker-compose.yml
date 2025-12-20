@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-appstore}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-appstore_guides}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appstore -d appstore_guides"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-appstore}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-appstore_guides}
+      PORT: 3005
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Iw+n1DBedNZ7gSc7BUggyduVUZ32wQdt}
+      SESSION_SECRET: ${SESSION_SECRET:-a-very-long-secret-that-is-at-least-32-characters-long}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3005:3005"
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: http://api:3005
+      SITE_URL: ${SITE_URL:-http://localhost:3000}
+    depends_on:
+      api:
+        condition: service_started
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:

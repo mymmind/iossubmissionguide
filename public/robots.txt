@@ -1,0 +1,9 @@
+# iOS Submission Guide - robots.txt
+
+User-agent: *
+Allow: /
+Disallow: /userlogin/
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://iossubmissionguide.com/api/sitemap

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO: Primary Meta Tags -->
+  <title>Mastering App Store Connect & TestFlight (2025) - Complete Guide</title>
+  <meta name="description" content="Step-by-step guide to App Store Connect. Learn how to upload binaries via Xcode, manage TestFlight beta testing, and configure Phased Releases for a safe launch.">
+  <meta name="keywords" content="App Store Connect, TestFlight Guide, iOS App Submission, Upload Binary to App Store, Phased Release, Beta App Review, Transporter App">
+  <meta name="author" content="iOS Developer Guide">
+  <meta name="robots" content="index, follow">
+
+  <!-- SEO: Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://yourwebsite.com/connect-guide">
+  <meta property="og:title" content="Mastering App Store Connect & TestFlight (2025)">
+  <meta property="og:description" content="The technical guide to shipping your iOS app. From Xcode archive to the 'Submit' button.">
+  <meta property="og:image" content="https://yourwebsite.com/assets/connect-guide-share.jpg">
+
+  <!-- SEO: Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://yourwebsite.com/connect-guide">
+  <meta name="twitter:title" content="Mastering App Store Connect & TestFlight (2025)">
+  <meta name="twitter:description" content="The technical guide to shipping your iOS app. From Xcode archive to the 'Submit' button.">
+  <meta name="twitter:image" content="https://yourwebsite.com/assets/connect-guide-share.jpg">
+
+  <!-- SEO: Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "Mastering App Store Connect & TestFlight",
+      "image": ["https://yourwebsite.com/assets/connect-guide-share.jpg"],
+      "datePublished": "2025-01-01T08:00:00+08:00",
+      "dateModified": "2025-10-05T09:20:00+08:00",
+      "author": [{
+          "@type": "Organization",
+          "name": "iOS Developer Guide",
+          "url": "https://yourwebsite.com"
+      }],
+      "description": "A technical guide for iOS developers on using App Store Connect and TestFlight.",
+      "articleSection": "iOS Development"
+    }
+    </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            apple: {
+              blue: '#0071e3',
+              dark: '#1d1d1f',
+              gray: '#86868b',
+              light: '#f5f5f7',
+              border: '#d2d2d7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background-color: white;
+        color: black;
+      }
+
+      nav,
+      .sidebar {
+        display: none !important;
+      }
+
+      main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 0 !important;
+      }
+
+      .no-print {
+        display: none;
+      }
+
+      a {
+        text-decoration: none;
+        color: black;
+      }
+    }
+
+    .glass-header {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .prose h3 {
+      color: #1d1d1f;
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .prose p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body class="bg-white text-apple-dark font-sans antialiased selection:bg-apple-blue selection:text-white">
+
+  <!-- Mobile Header -->
+  <header class="lg:hidden fixed top-0 w-full glass-header border-b border-apple-border/50 z-50 h-16 flex items-center justify-between px-6">
+    <h1 class="font-semibold text-sm tracking-tight text-apple-dark">Connect Guide</h1>
+    <button aria-label="Open Menu" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-apple-blue font-medium">
+      Menu
+    </button>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-white pt-20 px-6 pb-6 overflow-y-auto lg:hidden">
+    <nav class="space-y-4">
+      <a href="app_store_guide.html" class="block text-lg font-bold text-apple-blue">← Back to Main Guide</a>
+      <hr class="border-gray-100">
+      <a href="#intro" onclick="closeMenu()" class="block text-lg font-medium text-gray-800 hover:text-apple-blue">Introduction</a>
+      <a href="#setup" onclick="closeMenu()" class="block text-lg font-medium text-gray-800 hover:text-apple-blue">1. App Setup</a>
+      <a href="#upload" onclick="closeMenu()" class="block text-lg font-medium text-gray-800 hover:text-apple-blue">2. Uploading Binary</a>
+      <a href="#testflight" onclick="closeMenu()" class="block text-lg font-medium text-gray-800 hover:text-apple-blue">3. TestFlight</a>
+      <a href="#submission" onclick="closeMenu()" class="block text-lg font-medium text-gray-800 hover:text-apple-blue">4. Submission</a>
+      <a href="#release" onclick="closeMenu()" class="block text-lg font-medium text-gray-800 hover:text-apple-blue">5. Release Options</a>
+    </nav>
+  </div>
+
+  <div class="flex max-w-7xl mx-auto min-h-screen">
+    <!-- Desktop Sidebar -->
+    <aside class="hidden lg:block w-64 fixed h-screen overflow-y-auto pt-12 pb-12 pl-8 pr-4 border-r border-gray-100">
+      <div class="mb-6">
+        <a href="app_store_guide.html" class="flex items-center text-sm font-medium text-apple-gray hover:text-apple-blue mb-4 transition-colors">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Back to Main Guide
+        </a>
+        <span class="text-xs font-bold uppercase tracking-wider text-apple-gray">Deep Dive</span>
+        <h2 class="text-xl font-bold mt-1 text-apple-dark">Connect & TestFlight</h2>
+      </div>
+      <nav class="space-y-1">
+        <a href="#intro" class="block py-2 px-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-apple-light hover:text-apple-dark transition-colors">Introduction</a>
+
+        <div class="pt-4 pb-2">
+          <span class="px-3 text-xs font-semibold text-apple-gray uppercase tracking-wider">Workflow</span>
+        </div>
+        <a href="#setup" class="block py-2 px-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-apple-light hover:text-apple-dark transition-colors pl-6 border-l-2 border-transparent hover:border-apple-blue">1. App Setup</a>
+        <a href="#upload" class="block py-2 px-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-apple-light hover:text-apple-dark transition-colors pl-6 border-l-2 border-transparent hover:border-apple-blue">2. Uploading Binary</a>
+        <a href="#testflight" class="block py-2 px-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-apple-light hover:text-apple-dark transition-colors pl-6 border-l-2 border-transparent hover:border-apple-blue">3. TestFlight
+          Strategy</a>
+        <a href="#submission" class="block py-2 px-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-apple-light hover:text-apple-dark transition-colors pl-6 border-l-2 border-transparent hover:border-apple-blue">4. Submission
+          Prep</a>
+        <a href="#release" class="block py-2 px-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-apple-light hover:text-apple-dark transition-colors pl-6 border-l-2 border-transparent hover:border-apple-blue">5. Release Options</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-64 px-6 lg:px-16 py-20 lg:py-16">
+
+      <!-- Hero Section -->
+      <section id="intro" class="mb-16 max-w-3xl">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wide">Deep Dive Guide</span>
+        </div>
+        <h1 class="text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-apple-dark">Mastering App Store Connect & TestFlight</h1>
+        <p class="text-lg text-gray-600 leading-relaxed mb-6">
+          The technical submission process is often as tricky as the review itself. From configuring Bundle IDs to managing beta testers, this guide covers the essential technical steps to prepare your binary for a successful launch.
+        </p>
+      </section>
+
+      <hr class="border-gray-100 mb-16">
+
+      <!-- 1. Setup -->
+      <section id="setup" class="mb-20 scroll-mt-24">
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 text-xl">1</span>
+          Setting Up the App Record
+        </h2>
+        <div class="bg-gray-50 p-8 rounded-2xl border border-gray-200">
+          <p class="mb-6 text-gray-600">Before you can even open Xcode, you must create the "shell" for your app in App Store Connect. This reserves your app name.</p>
+          <div class="space-y-6">
+            <div>
+              <h4 class="font-bold text-gray-900 mb-2">Bundle ID Match</h4>
+              <p class="text-sm text-gray-600">The <strong>Bundle ID</strong> in Connect must match the "Bundle Identifier" in your Xcode project settings exactly (e.g., <code>com.yourcompany.appname</code>).</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-900 mb-2">SKU (Stock Keeping Unit)</h4>
+              <p class="text-sm text-gray-600">This is a unique ID for your internal tracking (like an inventory number). It is <strong>not visible</strong> to users on the App Store.</p>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-900 mb-2">Primary Language</h4>
+              <p class="text-sm text-gray-600">Choose carefully. If you set this to English, you can add Spanish later, but changing the "Primary" language (which is the default for unlocalized regions) is a complex process.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Uploading -->
+      <section id="upload" class="mb-20 scroll-mt-24">
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 text-xl">2</span>
+          Uploading the Binary
+        </h2>
+        <div class="prose prose-gray max-w-3xl">
+          <p class="text-gray-600 mb-6">You cannot upload your app code through the web browser. You must use Apple's developer tools.</p>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="border border-gray-200 p-6 rounded-xl bg-white">
+              <h3 class="font-bold text-gray-900 mb-2">Method A: Xcode (Standard)</h3>
+              <p class="text-sm text-gray-600 mb-3">1. Select "Generic iOS Device" as target.<br>2. Go to Product > Archive.<br>3. When the Organizer opens, click "Distribute App".</p>
+              <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded font-bold">Recommended</span>
+            </div>
+            <div class="border border-gray-200 p-6 rounded-xl bg-white">
+              <h3 class="font-bold text-gray-900 mb-2">Method B: Transporter</h3>
+              <p class="text-sm text-gray-600 mb-3">A standalone macOS app. Good if your internet is unstable or if you are uploading a <code>.ipa</code> file generated by a CI/CD pipeline.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. TestFlight -->
+      <section id="testflight" class="mb-20 scroll-mt-24">
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 text-xl">3</span>
+          TestFlight Strategy
+        </h2>
+        <p class="mb-6 text-gray-600">TestFlight is your beta testing environment. It helps you catch bugs before the reviewer does.</p>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="font-bold text-gray-900 mb-2">Internal Testing</h4>
+            <ul class="list-disc pl-5 space-y-2 text-sm text-gray-600">
+              <li><strong>Audience:</strong> Your team (Admins, Developers).</li>
+              <li><strong>Speed:</strong> Builds are available almost immediately after processing.</li>
+              <li><strong>Limit:</strong> Up to 100 users.</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-gray-900 mb-2">External Testing</h4>
+            <ul class="list-disc pl-5 space-y-2 text-sm text-gray-600">
+              <li><strong>Audience:</strong> Public beta testers via email or public link.</li>
+              <li><strong>Review:</strong> Requires <strong>Beta App Review</strong>. This is a "mini-review" (usually 24 hours).</li>
+              <li><strong>Pro Tip:</strong> Passing Beta Review often makes the final App Store review faster.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Submission -->
+      <section id="submission" class="mb-20 scroll-mt-24">
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 text-xl">4</span>
+          Submission Prep
+        </h2>
+        <div class="bg-blue-50 border-l-4 border-apple-blue p-6 rounded-r-lg mb-8">
+          <h4 class="font-bold text-blue-900 text-sm mb-2">The "Export Compliance" Question</h4>
+          <p class="text-sm text-blue-800">
+            When you submit, Apple will ask: "Does your app use encryption?"
+            <br><br>
+            <strong>Yes:</strong> If you use HTTPS calls (which almost everyone does). You usually qualify for the "Standard Encryption" exemption.
+            <br>
+            <strong>No:</strong> Only if your app is completely local and uses no networking.
+            <br><br>
+            <em>Tip: Add the key <code>ITSAppUsesNonExemptEncryption</code> set to <code>NO</code> in your Info.plist to skip this dialog if you qualify.</em>
+          </p>
+        </div>
+      </section>
+
+      <!-- 5. Release Options -->
+      <section id="release" class="mb-20 scroll-mt-24">
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 text-xl">5</span>
+          Release Options
+        </h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="p-6 border border-gray-200 rounded-xl hover:border-apple-blue transition-colors">
+            <div class="text-2xl mb-3">🛠️</div>
+            <h4 class="font-bold text-gray-900 mb-2">Manual Release</h4>
+            <p class="text-sm text-gray-600"><strong>Best for Marketing.</strong> You get approved, but the app waits. You click "Release" when your press release goes live.</p>
+          </div>
+          <div class="p-6 border border-gray-200 rounded-xl hover:border-apple-blue transition-colors">
+            <div class="text-2xl mb-3">⚡</div>
+            <h4 class="font-bold text-gray-900 mb-2">Automatic Release</h4>
+            <p class="text-sm text-gray-600"><strong>Best for Bug Fixes.</strong> The app goes live the moment Apple approves it. Risky if you aren't monitoring.</p>
+          </div>
+          <div class="p-6 border border-gray-200 rounded-xl hover:border-apple-blue transition-colors">
+            <div class="text-2xl mb-3">📈</div>
+            <h4 class="font-bold text-gray-900 mb-2">Phased Release</h4>
+            <p class="text-sm text-gray-600"><strong>Pro Move.</strong> Releases the update to 1% of users on Day 1, 2% on Day 2, etc. If a crash is found, you can pause it before everyone updates.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="border-t border-gray-200 py-12 bg-gray-50 mt-auto no-print">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center text-sm text-gray-500">
+      <p class="mb-2">Compiled based on official App Store Connect documentation.</p>
+      <p>© 2025 Guide. Not affiliated with Apple Inc.</p>
+    </div>
+  </footer>
+
+  <script>
+    function closeMenu () {
+      document.getElementById('mobile-menu').classList.add('hidden');
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker --version:*)",
+      "Bash(docker compose:*)",
+      "Bash(docker run:*)",
+      "Bash(postgres:15-alpine)",
+      "Bash(brew install:*)",
+      "Bash(brew services start:*)",
+      "Bash(/opt/homebrew/opt/postgresql@15/bin/createdb:*)",
+      "Bash(npm install:*)",
+      "Bash(npx prisma generate:*)",
+      "Bash(npx prisma migrate:*)",
+      "Bash(DATABASE_URL=\"postgresql://localhost:5432/appstore_guides\" npx prisma migrate:*)",
+      "Bash(DATABASE_URL=\"postgresql://$USER@localhost:5432/appstore_guides\" npx prisma migrate:*)",
+      "Bash(npm run db:seed:*)",
+      "Bash(DATABASE_URL=\"postgresql://asgrimbeek@localhost:5432/appstore_guides\" npx tsx:*)",
+      "Bash(lsof:*)",
+      "Bash(sips:*)",
+      "Bash(openssl rand:*)",
+      "Bash(ssh:*)",
+      "Bash(rsync:*)",
+      "Bash(scp:*)",
+      "Bash(curl:*)",
+      "Bash(ping:*)",
+      "Bash(npm run dev:*)",
+      "Bash(DATABASE_URL=\"postgresql://asgrimbeek@localhost:5432/appstore_guides\" npx tsx -e:*)"
+    ]
+  }
+}

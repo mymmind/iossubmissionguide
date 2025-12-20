@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
+let hubArticle = null;
+
+try {
+  const res = await fetch(`${apiUrl}/api/articles/app-store-guide`);
+  if (res.ok) {
+    hubArticle = await res.json();
+  }
+} catch (e) {
+  console.error('Failed to fetch hub article:', e);
+}
+
+if (!hubArticle) {
+  return Astro.redirect('/404');
+}
+---
+
+<Layout title={hubArticle.title} description={hubArticle.description}>
+  <article>
+    <div set:html={hubArticle.content} />
+  </article>
+</Layout>

@@ -1,0 +1,92 @@
+---
+import '../styles/globals.css';
+import Sidebar from '../components/Sidebar.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  articles?: any[];
+}
+
+const { title, description = 'Comprehensive guide for passing the Apple App Store review process', articles = [] } = Astro.props;
+const { pathname } = Astro.url;
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
+let navArticles = articles;
+
+if (navArticles.length === 0) {
+  try {
+    const res = await fetch(`${apiUrl}/api/articles`);
+    if (res.ok) {
+      const all = await res.json();
+      navArticles = all.filter((a: any) => !a.isHub);
+    }
+  } catch (e) {
+    console.error('Failed to fetch nav articles:', e);
+  }
+}
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script is:inline defer src="https://cloud.umami.is/script.js" data-website-id="91345023-264f-4a98-b6d7-492ddf3217ff"></script>
+  </head>
+  <body class="bg-white text-apple-dark font-sans antialiased selection:bg-apple-blue selection:text-white">
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 w-full glass-header border-b border-gray-200 z-50 h-16 flex items-center justify-between px-6 bg-white/80 backdrop-blur-md">
+      <h1 class="font-semibold text-sm tracking-tight text-apple-dark">iOS Submission Guide</h1>
+      <button id="mobile-menu-button" class="text-apple-blue font-medium">Menu</button>
+    </header>
+
+    <!-- Mobile Menu Overlay (Hidden by default) -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-white transform translate-x-full transition-transform duration-300 lg:hidden">
+      <div class="h-16 flex items-center justify-between px-6 border-b border-gray-100">
+         <span class="font-bold text-apple-dark">Menu</span>
+         <button id="close-menu-button" class="text-apple-blue font-medium">Close</button>
+      </div>
+      <nav class="p-8 overflow-y-auto h-[calc(100vh-64px)]">
+         {navArticles.map(article => (
+           <a href={`/${article.slug}`} class="block py-4 text-lg font-semibold text-apple-dark border-b border-gray-50">{article.title}</a>
+         ))}
+      </nav>
+    </div>
+
+    <div class="flex max-w-7xl mx-auto min-h-screen">
+      <Sidebar articles={navArticles} pathname={pathname} />
+      <main class="flex-1 lg:ml-64 px-6 lg:px-16 py-20 lg:py-16">
+        <slot />
+      </main>
+    </div>
+
+    <footer class="py-12 mt-20 bg-apple-light border-t border-gray-200 w-full">
+      <div class="max-w-3xl mx-auto px-6 text-center space-y-2">
+        <p class="text-xs text-gray-500 font-medium">Compiled based on official App Store Review Guidelines.</p>
+        <p class="text-xs text-gray-500">© 2025 iOS Submission Guide. Not affiliated with Apple Inc.</p>
+      </div>
+    </footer>
+
+    <script>
+      const menuBtn = document.getElementById('mobile-menu-button');
+      const closeBtn = document.getElementById('close-menu-button');
+      const menu = document.getElementById('mobile-menu');
+
+      menuBtn?.addEventListener('click', () => {
+        menu?.classList.remove('translate-x-full');
+      });
+
+      closeBtn?.addEventListener('click', () => {
+        menu?.classList.add('translate-x-full');
+      });
+    </script>
+  </body>
+</html>

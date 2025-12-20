@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
+  try {
+    const res = await fetch(`${apiUrl}/api/articles`);
+    if (res.ok) {
+      const articles = await res.json();
+      return articles
+        .filter((a: any) => !a.isHub)
+        .map((a: any) => ({
+          params: { slug: a.slug },
+        }));
+    }
+  } catch (e) {
+    console.error('Failed to get static paths:', e);
+  }
+  return [];
+}
+
+const { slug } = Astro.params;
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
+let article = null;
+
+try {
+  const res = await fetch(`${apiUrl}/api/articles/${slug}`);
+  if (res.ok) {
+    article = await res.json();
+  }
+} catch (e) {
+  console.error('Failed to fetch article:', e);
+}
+
+if (!article) {
+  return Astro.redirect('/404');
+}
+---
+
+<Layout title={article.title} description={article.description}>
+  <article>
+    <div set:html={article.content} />
+  </article>
+
+  {article.relatedFrom && article.relatedFrom.length > 0 && (
+    <div class="mt-20 pt-10 border-t border-gray-100">
+      <h3 class="text-xl font-bold text-apple-dark mb-6">Deep Dive Guides</h3>
+      <div class="feature-grid">
+        {article.relatedFrom.map((rel: any) => (
+          <a href={`/${rel.targetArticle.slug}`} class="feature-card group">
+            <h4 class="text-lg font-bold text-apple-dark group-hover:text-apple-blue transition-colors">{rel.targetArticle.title}</h4>
+            <p class="text-sm text-apple-gray mt-2">{rel.targetArticle.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+</Layout>

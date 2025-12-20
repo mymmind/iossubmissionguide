@@ -1,0 +1,140 @@
+---
+interface NavArticle {
+  slug: string;
+  title: string;
+  category: string;
+}
+
+interface Props {
+  articles: NavArticle[];
+  pathname: string;
+}
+
+const { articles, pathname } = Astro.props;
+const isHomePage = pathname === '/' || pathname === '';
+
+const mainGuideNav = [
+  {
+    section: null,
+    items: [
+      { href: '/', label: 'Introduction' },
+      { href: '/#pre-submission', label: 'Pre-Submission Checklist' },
+    ],
+  },
+  {
+    section: 'KEY FOCUS AREAS',
+    items: [
+      { href: '/#safety', label: '1. Safety' },
+      { href: '/#performance', label: '2. Performance' },
+      { href: '/#business', label: '3. Business' },
+      { href: '/#design', label: '4. Design' },
+      { href: '/#legal', label: '5. Legal' },
+    ],
+  },
+  {
+    section: 'SUBMISSION',
+    items: [
+      { href: '/#listing', label: 'Store Listing' },
+      { href: '/#process', label: 'Review Process' },
+      { href: '/#rejection', label: 'Common Rejections' },
+    ],
+  },
+  {
+    section: null,
+    items: [
+      { href: '/#deep-dives', label: 'Deep Dive Guides' },
+      { href: '/#references', label: 'References' },
+    ],
+  },
+];
+
+function groupByCategory(articles: NavArticle[]): Record<string, NavArticle[]> {
+  return articles.reduce((acc, article) => {
+    if (!acc[article.category]) {
+      acc[article.category] = [];
+    }
+    acc[article.category].push(article);
+    return acc;
+  }, {} as Record<string, NavArticle[]>);
+}
+
+const groupedArticles = groupByCategory(articles);
+---
+
+<aside class="hidden lg:block w-72 fixed h-screen overflow-y-auto pt-16 pb-12 pl-10 pr-6 border-r border-apple-border sidebar bg-white shadow-[1px_0_0_0_rgba(0,0,0,0.02)]">
+  <div class="mb-12">
+    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-apple-blue mb-2 block">Edition 2025</span>
+    <h2 class="text-2xl font-sans font-bold tracking-tight text-apple-dark">iOS Submission</h2>
+  </div>
+
+  {isHomePage ? (
+    <nav class="space-y-1">
+      {mainGuideNav.map((group) => (
+        <div class="mb-6 last:mb-0">
+          {group.section && (
+            <div class="py-2 mb-1">
+              <span class="text-[10px] font-bold text-apple-gray uppercase tracking-[0.15em]">
+                {group.section}
+              </span>
+            </div>
+          )}
+          <div class="space-y-0.5">
+            {group.items.map((item) => (
+              <a
+                href={item.href}
+                class="group block py-2 px-3 text-[13px] font-medium rounded-xl transition-all hover:bg-apple-light text-gray-500 hover:text-apple-dark"
+              >
+                <span class="inline-block transition-transform group-hover:translate-x-0.5">
+                  {item.label}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </nav>
+  ) : (
+    <>
+      <a
+        href="/"
+        class="flex items-center text-[13px] font-bold text-apple-blue hover:opacity-70 mb-10 transition-all uppercase tracking-wider"
+      >
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+        </svg>
+        Main Guide
+      </a>
+
+      <nav class="space-y-1">
+        {Object.entries(groupedArticles).map(([category, categoryArticles]) => (
+          <div class="mb-6 last:mb-0">
+            <div class="py-2 mb-1">
+              <span class="text-[10px] font-bold text-apple-gray uppercase tracking-[0.15em]">
+                {category}
+              </span>
+            </div>
+            <div class="space-y-0.5">
+              {categoryArticles.map((article) => {
+                const isActive = pathname === `/${article.slug}` || pathname === article.slug;
+                return (
+                  <a
+                    href={`/${article.slug}`}
+                    class={`group block py-2 px-3 text-[13px] font-medium rounded-xl transition-all ${
+                      isActive
+                        ? 'bg-apple-blue text-white shadow-lg shadow-apple-blue/20'
+                        : 'text-gray-500 hover:bg-apple-light hover:text-apple-dark'
+                    }`}
+                  >
+                    <span class={`inline-block transition-transform ${!isActive ? 'group-hover:translate-x-0.5' : ''}`}>
+                      {article.title}
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </nav>
+    </>
+  )}
+</aside>
