@@ -45,12 +45,14 @@ export default async function RootLayout({
       <body
         className={`${inter.className} bg-white text-apple-dark font-sans antialiased selection:bg-apple-blue selection:text-white`}
       >
-        <Script
-          defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="91345023-264f-4a98-b6d7-492ddf3217ff"
-          strategy="afterInteractive"
-        />
+        {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+          <Script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+            strategy="afterInteractive"
+          />
+        )}
         <MobileMenuProvider>
           <MobileHeader />
           <MobileMenu articles={articles} />

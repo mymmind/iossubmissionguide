@@ -24,7 +24,18 @@
       "Bash(curl:*)",
       "Bash(ping:*)",
       "Bash(npm run dev:*)",
-      "Bash(DATABASE_URL=\"postgresql://asgrimbeek@localhost:5432/appstore_guides\" npx tsx -e:*)"
+      "Bash(DATABASE_URL=\"postgresql://asgrimbeek@localhost:5432/appstore_guides\" npx tsx -e:*)",
+      "Bash(cat:*)",
+      "Bash(npm run build:*)",
+      "Bash(chmod:*)",
+      "Bash(DATABASE_URL=\"postgresql://asgrimbeek@localhost:5432/appstore_guides\" npx prisma migrate dev:*)",
+      "Bash(DATABASE_URL=\"postgresql://asgrimbeek@localhost:5432/appstore_guides\" npx prisma db push:*)",
+      "Bash(DATABASE_URL=\"postgresql://asgrimbeek@localhost:5432/appstore_guides\" npx prisma generate:*)",
+      "Bash(psql:*)",
+      "Bash(/opt/homebrew/opt/postgresql@15/bin/psql:*)",
+      "Bash(DATABASE_URL=\"postgresql://asgrimbeek@localhost:5432/appstore_guides\" node:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

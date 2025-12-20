@@ -18,7 +18,7 @@ export function HtmlRenderer({ content, className = '' }: HtmlRendererProps) {
 
   return (
     <div
-      className={`prose-content ${className}`}
+      className={className || undefined}
       dangerouslySetInnerHTML={{ __html: sanitizedContent }}
     />
   )

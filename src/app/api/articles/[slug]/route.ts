@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { isAuthenticated } from '@/lib/auth'
 
 interface RouteParams {
   params: Promise<{ slug: string }>
@@ -49,6 +50,11 @@ export async function GET(request: Request, { params }: RouteParams) {
 
 // PUT /api/articles/[slug] - Update article (admin only)
 export async function PUT(request: Request, { params }: RouteParams) {
+  // Require authentication
+  if (!await isAuthenticated()) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   try {
     const { slug } = await params
     const body = await request.json()
@@ -96,6 +102,11 @@ export async function PUT(request: Request, { params }: RouteParams) {
 
 // DELETE /api/articles/[slug] - Delete article (admin only)
 export async function DELETE(request: Request, { params }: RouteParams) {
+  // Require authentication
+  if (!await isAuthenticated()) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   try {
     const { slug } = await params
 

@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "Restore Toolkit Access - iOS Submission Guide";
+const description = "Find your previous purchase and regain access to the iOS Submission Toolkit.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-xl mx-auto py-24 px-6 md:px-0">
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-50 rounded-2xl mb-6 text-apple-blue font-bold shadow-sm">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </div>
+      <h1 class="text-4xl font-bold text-apple-dark mb-4 font-sans tracking-tight">Restore Your Access</h1>
+      <p class="text-gray-500 text-lg leading-relaxed">Enter the email address you used during purchase to regain access to your toolkit.</p>
+    </div>
+
+    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-100/50">
+      <form id="restore-form" class="space-y-6">
+        <div>
+          <label for="email" class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-widest">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            required 
+            placeholder="name@example.com"
+            class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-apple-blue focus:bg-white outline-none transition-all text-lg"
+          />
+        </div>
+        
+        <button 
+          type="submit" 
+          id="submit-btn"
+          class="w-full bg-apple-dark text-white font-bold py-4 rounded-2xl hover:bg-black transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-3"
+        >
+          <span id="btn-text">Find My Purchase</span>
+          <div id="btn-loader" class="hidden w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+        </button>
+      </form>
+      
+      <div id="result-msg" class="mt-6 text-center text-sm font-medium hidden"></div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <a href="/" class="text-gray-400 hover:text-apple-blue font-bold text-sm transition-colors">
+        Back to the main guide
+      </a>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const form = document.getElementById('restore-form') as HTMLFormElement;
+  const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const btnText = document.getElementById('btn-text');
+  const btnLoader = document.getElementById('btn-loader');
+  const resultMsg = document.getElementById('result-msg');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!btn || !btnText || !btnLoader || !resultMsg) return;
+
+    // Reset UI
+    btn.disabled = true;
+    btnText.classList.add('hidden');
+    btnLoader.classList.remove('hidden');
+    resultMsg.classList.add('hidden');
+
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+
+    try {
+      const apiBase = window.location.hostname === 'localhost'
+        ? 'http://localhost:3005'
+        : window.location.origin;
+      const response = await fetch(apiBase + '/api/lookup-purchase', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.sessionId) {
+        resultMsg.innerText = "Purchase found! Redirecting...";
+        resultMsg.className = "mt-6 text-center text-sm font-bold text-green-600";
+        resultMsg.classList.remove('hidden');
+
+        // Store session in httpOnly cookie via API (more secure than localStorage)
+        try {
+          const cookieResponse = await fetch(`${apiBase}/api/purchase-session`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId: data.sessionId }),
+            credentials: 'include',
+          });
+          if (!cookieResponse.ok) {
+            console.warn('Failed to store session cookie - user may need to restore access later');
+          }
+        } catch (cookieError) {
+          console.warn('Failed to store session cookie:', cookieError);
+        }
+
+        // Redirect
+        setTimeout(() => {
+          window.location.href = `/success?session_id=${data.sessionId}`;
+        }, 1500);
+      } else {
+        resultMsg.innerText = data.error || "No purchase found for this email.";
+        resultMsg.className = "mt-6 text-center text-sm font-bold text-red-500";
+        resultMsg.classList.remove('hidden');
+        btn.disabled = false;
+        btnText.classList.remove('hidden');
+        btnLoader.classList.add('hidden');
+      }
+    } catch (err) {
+      resultMsg.innerText = "Network error. Please try again.";
+      resultMsg.className = "mt-6 text-center text-sm font-bold text-red-500";
+      resultMsg.classList.remove('hidden');
+      btn.disabled = false;
+      btnText.classList.remove('hidden');
+      btnLoader.classList.add('hidden');
+    }
+  });
+</script>

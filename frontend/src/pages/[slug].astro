@@ -1,16 +1,35 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import DOMPurify from 'isomorphic-dompurify';
+
+interface Article {
+  slug: string;
+  title: string;
+  description: string;
+  content: string;
+  isHub: boolean;
+  toc?: unknown;
+  relatedFrom?: Array<{
+    targetArticle: {
+      slug: string;
+      title: string;
+      description: string;
+    };
+  }>;
+}
 
 export async function getStaticPaths() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
   try {
-    const res = await fetch(`${apiUrl}/api/articles`);
+    // Fetch all articles with full content in a single query to avoid N+1
+    const res = await fetch(`${apiUrl}/api/articles?full=true`);
     if (res.ok) {
-      const articles = await res.json();
+      const articles: Article[] = await res.json();
       return articles
-        .filter((a: any) => !a.isHub)
-        .map((a: any) => ({
+        .filter((a) => !a.isHub)
+        .map((a) => ({
           params: { slug: a.slug },
+          props: { article: a },
         }));
     }
   } catch (e) {
@@ -19,34 +38,29 @@ export async function getStaticPaths() {
   return [];
 }
 
-const { slug } = Astro.params;
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
-let article = null;
-
-try {
-  const res = await fetch(`${apiUrl}/api/articles/${slug}`);
-  if (res.ok) {
-    article = await res.json();
-  }
-} catch (e) {
-  console.error('Failed to fetch article:', e);
-}
+const { article } = Astro.props as { article: Article };
 
 if (!article) {
   return Astro.redirect('/404');
 }
+
+// Sanitize HTML content to prevent XSS
+const sanitizedContent = DOMPurify.sanitize(article.content, {
+  ADD_TAGS: ['section'],
+  ADD_ATTR: ['target', 'rel'],
+});
 ---
 
-<Layout title={article.title} description={article.description}>
+<Layout title={article.title} description={article.description} toc={article.toc}>
   <article>
-    <div set:html={article.content} />
+    <div set:html={sanitizedContent} />
   </article>
 
   {article.relatedFrom && article.relatedFrom.length > 0 && (
     <div class="mt-20 pt-10 border-t border-gray-100">
       <h3 class="text-xl font-bold text-apple-dark mb-6">Deep Dive Guides</h3>
       <div class="feature-grid">
-        {article.relatedFrom.map((rel: any) => (
+        {article.relatedFrom.map((rel) => (
           <a href={`/${rel.targetArticle.slug}`} class="feature-card group">
             <h4 class="text-lg font-bold text-apple-dark group-hover:text-apple-blue transition-colors">{rel.targetArticle.title}</h4>
             <p class="text-sm text-apple-gray mt-2">{rel.targetArticle.description}</p>

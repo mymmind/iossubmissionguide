@@ -3,13 +3,38 @@
 import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
+// Validate redirect URL to prevent open redirect attacks
+function getSafeRedirect(redirectParam: string | null): string {
+  const defaultRedirect = '/userlogin'
+
+  if (!redirectParam) return defaultRedirect
+
+  // Only allow relative paths starting with /
+  // Reject absolute URLs, protocol-relative URLs, and javascript: URLs
+  if (
+    !redirectParam.startsWith('/') ||
+    redirectParam.startsWith('//') ||
+    redirectParam.toLowerCase().startsWith('/\\') ||
+    redirectParam.includes(':')
+  ) {
+    return defaultRedirect
+  }
+
+  // Only allow paths within /userlogin
+  if (!redirectParam.startsWith('/userlogin')) {
+    return defaultRedirect
+  }
+
+  return redirectParam
+}
+
 function LoginForm() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirect = searchParams.get('redirect') || '/userlogin'
+  const redirect = getSafeRedirect(searchParams.get('redirect'))
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()

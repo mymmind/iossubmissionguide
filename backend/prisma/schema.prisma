@@ -18,6 +18,7 @@ model Article {
   updatedAt    DateTime @updatedAt @map("updated_at")
   metaKeywords String[] @map("meta_keywords")
   isHub        Boolean  @default(false) @map("is_hub")
+  toc          Json?    @map("toc")
 
   // Self-referential relations for "Deep Dive" links
   relatedFrom RelatedArticle[] @relation("SourceArticle")

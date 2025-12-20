@@ -1,0 +1,170 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "Purchase Successful - iOS Submission Guide";
+const description = "Thank you for your purchase. You now have full access to the iOS Submission Toolkit.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-3xl mx-auto py-12 px-6" id="success-container">
+    <!-- Initial Loading State -->
+    <div id="loading-state" class="text-center py-20">
+      <div class="inline-block w-8 h-8 border-4 border-apple-blue border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p class="text-gray-500 font-medium">Verifying your purchase...</p>
+    </div>
+
+    <!-- Error State (Hidden) -->
+    <div id="error-state" class="hidden text-center py-20">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-6">
+        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Verification Failed</h2>
+      <p class="text-gray-600 mb-8" id="error-message">We couldn't verify your purchase. If you think this is an error, please contact support.</p>
+      <a href="/" class="text-apple-blue font-bold hover:underline">Return to Home</a>
+    </div>
+
+    <!-- Success Content (Hidden until verified) -->
+    <div id="protected-content" class="hidden animate-in fade-in duration-700">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
+          <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h1 class="text-4xl font-bold text-apple-dark mb-4 font-sans">Thank you for your purchase!</h1>
+        <p class="text-xl text-gray-600 tracking-tight">Your toolkit is ready. You now have everything you need to pass your App Store review.</p>
+      </div>
+
+      <div class="space-y-12">
+        <div class="grid md:grid-cols-2 gap-8" id="toolkit-sections">
+            <!-- Native Section -->
+            <div id="native-section" class="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm">
+                <span class="inline-block px-3 py-1 bg-blue-50 text-apple-blue text-[10px] font-bold uppercase tracking-widest rounded-full mb-4">Native</span>
+                <h2 class="text-2xl font-bold text-apple-dark mb-6 font-sans">Swift & iOS</h2>
+                
+                <div class="space-y-4 mb-8" id="native-downloads">
+                    <!-- Dynamic Native Downloads -->
+                </div>
+
+                <div class="bg-gray-900 rounded-2xl overflow-hidden shadow-sm">
+                    <div class="flex items-center justify-between px-5 py-2.5 border-b border-gray-800">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">AI Prompt</span>
+                        <button class="text-[10px] text-apple-blue font-bold hover:text-white transition-colors" id="copy-native-prompt">Copy</button>
+                    </div>
+                    <div class="p-5 text-[12px] font-mono text-gray-400 leading-relaxed overflow-x-auto whitespace-pre-wrap h-40" id="native-prompt-text"></div>
+                </div>
+            </div>
+
+            <!-- Expo Section -->
+            <div id="expo-section" class="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm">
+                <span class="inline-block px-3 py-1 bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest rounded-full mb-4">Cross-Platform</span>
+                <h2 class="text-2xl font-bold text-apple-dark mb-6 font-sans">React Native & Expo</h2>
+                
+                <div class="space-y-4 mb-8" id="expo-downloads">
+                    <!-- Dynamic Expo Downloads -->
+                </div>
+
+                <div class="bg-gray-900 rounded-2xl overflow-hidden shadow-sm">
+                    <div class="flex items-center justify-between px-5 py-2.5 border-b border-gray-800">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">AI Prompt</span>
+                        <button class="text-[10px] text-apple-blue font-bold hover:text-white transition-colors" id="copy-expo-prompt">Copy</button>
+                    </div>
+                    <div class="p-5 text-[12px] font-mono text-gray-400 leading-relaxed overflow-x-auto whitespace-pre-wrap h-40" id="expo-prompt-text"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pt-8 border-t border-gray-100 flex justify-center">
+          <a href="/" class="text-apple-blue font-bold hover:underline flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
+            Back to Main Guide
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  async function verifyPurchase() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+
+    const loadingEl = document.getElementById('loading-state');
+    const contentEl = document.getElementById('protected-content');
+    const errorEl = document.getElementById('error-state');
+    const errorMsgEl = document.getElementById('error-message');
+
+    if (!sessionId) {
+      window.location.href = '/';
+      return;
+    }
+
+    try {
+      const apiBase = window.location.hostname === 'localhost'
+        ? 'http://localhost:3005'
+        : window.location.origin;
+      const response = await fetch(`${apiBase}/api/verify-session/${sessionId}`);
+      const data = await response.json();
+
+      if (response.ok && data.status === 'paid') {
+        // Store session in httpOnly cookie via API (more secure than localStorage)
+        try {
+          const cookieResponse = await fetch(`${apiBase}/api/purchase-session`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId }),
+            credentials: 'include',
+          });
+          if (!cookieResponse.ok) {
+            console.warn('Failed to store session cookie - user may need to restore access later');
+          }
+        } catch (cookieError) {
+          console.warn('Failed to store session cookie:', cookieError);
+        }
+
+        const renderTrack = (trackKey: 'native' | 'expo', downloadsId: string, promptId: string, copyId: string) => {
+            const track = data.content[trackKey];
+            const downloadsContainer = document.getElementById(downloadsId);
+            const promptContainer = document.getElementById(promptId);
+            const copyBtn = document.getElementById(copyId);
+
+            if (downloadsContainer) {
+                downloadsContainer.innerHTML = track.downloads.map((d: { url: string; name: string; description: string }) => `
+                    <a href="${d.url}" class="flex items-center justify-between p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-apple-blue hover:shadow-sm transition-all group">
+                        <div>
+                            <h3 class="font-bold text-gray-900 text-sm">${d.name}</h3>
+                            <p class="text-[11px] text-gray-500">${d.description}</p>
+                        </div>
+                        <svg class="w-4 h-4 text-gray-300 group-hover:text-apple-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    </a>
+                `).join('');
+            }
+
+            if (promptContainer) promptContainer.innerText = track.prompt;
+            
+            copyBtn?.addEventListener('click', () => {
+                navigator.clipboard.writeText(track.prompt);
+                const original = copyBtn.innerText;
+                copyBtn.innerText = 'Copied!';
+                setTimeout(() => copyBtn.innerText = original, 2000);
+            });
+        };
+
+        renderTrack('native', 'native-downloads', 'native-prompt-text', 'copy-native-prompt');
+        renderTrack('expo', 'expo-downloads', 'expo-prompt-text', 'copy-expo-prompt');
+
+        loadingEl?.classList.add('hidden');
+        contentEl?.classList.remove('hidden');
+      } else {
+        throw new Error(data.message || 'Payment not verified.');
+      }
+    } catch (e) {
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (errorEl) errorEl.classList.remove('hidden');
+      if (errorMsgEl) errorMsgEl.innerText = e instanceof Error ? e.message : 'An error occurred';
+    }
+  }
+
+  verifyPurchase();
+</script>

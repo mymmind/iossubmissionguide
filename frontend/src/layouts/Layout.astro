@@ -2,24 +2,49 @@
 import '../styles/globals.css';
 import Sidebar from '../components/Sidebar.astro';
 
+interface NavArticle {
+  slug: string;
+  title: string;
+  category: string;
+  isHub?: boolean;
+}
+
+interface TocItem {
+  href: string;
+  label: string;
+}
+
+interface TocSection {
+  section: string | null;
+  items: TocItem[];
+}
+
+interface Toc {
+  title: string;
+  backLink?: string;
+  sections: TocSection[];
+}
+
 interface Props {
   title: string;
   description?: string;
-  articles?: any[];
+  articles?: NavArticle[];
+  toc?: Toc;
 }
 
-const { title, description = 'Comprehensive guide for passing the Apple App Store review process', articles = [] } = Astro.props;
+const { title, description = 'Comprehensive guide for passing the Apple App Store review process', articles = [], toc } = Astro.props;
 const { pathname } = Astro.url;
+const umamiWebsiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
-let navArticles = articles;
+let navArticles: NavArticle[] = articles;
 
 if (navArticles.length === 0) {
   try {
     const res = await fetch(`${apiUrl}/api/articles`);
     if (res.ok) {
-      const all = await res.json();
-      navArticles = all.filter((a: any) => !a.isHub);
+      const all: NavArticle[] = await res.json();
+      navArticles = all.filter((a) => !a.isHub);
     }
   } catch (e) {
     console.error('Failed to fetch nav articles:', e);
@@ -32,14 +57,16 @@ if (navArticles.length === 0) {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <script is:inline defer src="https://cloud.umami.is/script.js" data-website-id="91345023-264f-4a98-b6d7-492ddf3217ff"></script>
+    {umamiWebsiteId && (
+      <script is:inline defer src="https://cloud.umami.is/script.js" data-website-id={umamiWebsiteId}></script>
+    )}
   </head>
   <body class="bg-white text-apple-dark font-sans antialiased selection:bg-apple-blue selection:text-white">
     <!-- Mobile Header -->
@@ -62,7 +89,7 @@ if (navArticles.length === 0) {
     </div>
 
     <div class="flex max-w-7xl mx-auto min-h-screen">
-      <Sidebar articles={navArticles} pathname={pathname} />
+      <Sidebar articles={navArticles} pathname={pathname} toc={toc} />
       <main class="flex-1 lg:ml-64 px-6 lg:px-16 py-20 lg:py-16">
         <slot />
 
@@ -89,18 +116,21 @@ if (navArticles.length === 0) {
       });
 
       // Stripe Purchase Handler
-      (window as any).handlePurchase = async () => {
+      window.handlePurchase = async function() {
         const btn = document.getElementById('paywall-btn');
         if (btn) {
            const originalText = btn.innerText;
            btn.innerText = 'Loading...';
-           (btn as HTMLButtonElement).disabled = true;
+           btn.disabled = true;
            try {
-             // In dev, apiUrl is localhost:3005. In prod, use env.
-             // We can read the meta tag or just hardcode localhost for this demo since we are in dev.
-             const response = await fetch('http://localhost:3005/api/create-checkout-session', {
+             // Use current origin for API calls (works in both dev and prod)
+             const apiBase = window.location.hostname === 'localhost'
+               ? 'http://localhost:3005'
+               : window.location.origin;
+             const response = await fetch(apiBase + '/api/create-checkout-session', {
                method: 'POST',
-               headers: { 'Content-Type': 'application/json' }
+               headers: { 'Content-Type': 'application/json' },
+               body: JSON.stringify({})
              });
              const data = await response.json();
              if (data.url) {
@@ -108,13 +138,13 @@ if (navArticles.length === 0) {
              } else {
                alert('Error creating checkout session. Please try again.');
                btn.innerText = originalText;
-               (btn as HTMLButtonElement).disabled = false;
+               btn.disabled = false;
              }
            } catch (e) {
              console.error(e);
              alert('Error connecting to server.');
              btn.innerText = originalText;
-             (btn as HTMLButtonElement).disabled = false;
+             btn.disabled = false;
            }
         }
       };

@@ -39,3 +39,6 @@ next-env.d.ts
 # Prisma
 prisma/*.db
 prisma/*.db-journal
+
+# Deploy script (contains server credentials)
+deploy.sh

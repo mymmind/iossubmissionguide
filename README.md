@@ -6,8 +6,10 @@ A comprehensive web application helping iOS developers navigate the App Store re
 
 - **SEO-Optimized**: Server-side rendering, meta tags, JSON-LD structured data, and automatic sitemap
 - **Apple Design System**: Clean typography, micro-borders, glassmorphism, and Apple color palette
+- **Rich Component Library**: Dark cards, alert boxes, feature grids, checklists, timelines, and more
 - **Database-Driven Content**: Articles stored in PostgreSQL with HTML content
 - **Hub & Spoke Architecture**: One hub article (homepage) with related sub-articles
+- **API-First**: Frontend fetches content via REST API for flexibility
 - **Responsive Layout**: Mobile-first with collapsible sidebar and glass-effect header
 - **Docker Ready**: One-command deployment with Docker Compose
 
@@ -17,6 +19,7 @@ A comprehensive web application helping iOS developers navigate the App Store re
 |-------|------------|
 | Framework | Next.js 14 (App Router) |
 | Database | PostgreSQL + Prisma ORM |
+| Backend | Express.js API server |
 | Styling | Tailwind CSS + Apple Design Tokens |
 | Content | HTML (sanitized with DOMPurify) |
 | Deployment | Docker + Docker Compose |
@@ -39,7 +42,7 @@ docker compose up -d db
 
 # 3. Set up environment
 cp .env.example .env.local
-# Edit .env.local with your DATABASE_URL
+# Edit .env.local with your DATABASE_URL and NEXT_PUBLIC_API_URL
 
 # 4. Initialize database
 npx prisma generate
@@ -53,9 +56,21 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## Architecture
 
-### Content Model
+### Content Flow
 
-Articles are stored in PostgreSQL with this schema:
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│  PostgreSQL │ ──▶ │  Prisma ORM │ ──▶ │  Express    │ ──▶ │  Next.js    │
+│  Database   │     │             │     │  API Server │     │  Frontend   │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+```
+
+1. **PostgreSQL** stores articles with HTML content
+2. **Prisma** provides type-safe database access
+3. **Express API** serves content at `/api/articles/*`
+4. **Next.js** fetches via `NEXT_PUBLIC_API_URL` and renders with `HtmlRenderer`
+
+### Content Model
 
 ```prisma
 model Article {
@@ -75,28 +90,211 @@ model Article {
 **Key concepts:**
 - **Hub article** (`isHub: true`): Displays on homepage (`/`)
 - **Sub-articles** (`isHub: false`): Display at `/{slug}`
-- **Content format**: Raw HTML (not Markdown)
+- **Content format**: Raw HTML with component classes
 
-### Content Rendering
+## Content Format
 
-Content flows through:
-1. **Prisma** → fetches article from database
-2. **HtmlRenderer** → sanitizes HTML with DOMPurify
-3. **CSS** → `.prose-content` styles apply typography
+Articles use semantic HTML with custom component classes for rich layouts.
 
-```tsx
-// src/lib/html-renderer.tsx
-<div
-  className="prose-content"
-  dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-/>
+### Basic Structure
+
+```html
+<!-- Pre-header label (optional) -->
+<span class="pre-header">Complete Guide</span>
+
+<!-- H1 must match article.title for SEO -->
+<h1>Article Title (2025 Guide)</h1>
+
+<!-- Lead paragraph - automatically styled -->
+<p class="lead">Brief introduction that appears larger and muted.</p>
+
+<!-- Sections with IDs for anchor links -->
+<section id="section-name">
+  <h2>Section Title</h2>
+  <p>Content...</p>
+</section>
 ```
+
+### Component Classes
+
+The design system provides ready-to-use component classes:
+
+#### Alert Boxes
+
+```html
+<div class="alert-box info">
+  <div class="alert-title">Pro Tip</div>
+  <p>Informational content here.</p>
+</div>
+
+<div class="alert-box warning">
+  <div class="alert-title">Warning</div>
+  <p>Critical information here.</p>
+</div>
+
+<div class="alert-box neutral">
+  <div class="alert-title">Note</div>
+  <p>Neutral information here.</p>
+</div>
+```
+
+#### Dark Cards
+
+```html
+<div class="dark-card">
+  <h3>Featured Section</h3>
+  <p>Content on dark background.</p>
+  <div class="dark-card-grid">
+    <div>Column 1</div>
+    <div>Column 2</div>
+  </div>
+</div>
+```
+
+#### Feature Grids
+
+```html
+<div class="feature-grid">
+  <div class="feature-card">
+    <h3>Feature Title</h3>
+    <p>Feature description.</p>
+  </div>
+  <!-- Repeat for more features -->
+</div>
+```
+
+#### Checklists
+
+```html
+<div class="checklist">
+  <div class="checklist-item">
+    <div class="checklist-number">1</div>
+    <div class="checklist-content">
+      <h4>Step Title</h4>
+      <p>Step description.</p>
+    </div>
+  </div>
+  <!-- Repeat for more items -->
+</div>
+```
+
+#### Timelines
+
+```html
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="timeline-dot blue"></div>
+    <h4>Timeline Event</h4>
+    <p>Event description.</p>
+  </div>
+  <!-- Repeat for more events -->
+</div>
+```
+
+#### Section Headers with Icons
+
+```html
+<div class="section-header">
+  <div class="section-header-icon blue">
+    <svg><!-- icon --></svg>
+  </div>
+  <h2>Section Title</h2>
+</div>
+```
+
+#### Deep Dive Cards
+
+```html
+<div class="deep-dive-grid">
+  <a href="/article-slug" class="deep-dive-card">
+    <div class="deep-dive-card-icon blue">
+      <svg><!-- icon --></svg>
+    </div>
+    <h3>Card Title</h3>
+    <p>Card description.</p>
+  </a>
+  <!-- Repeat for more cards -->
+</div>
+```
+
+#### Tables
+
+```html
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>Column 1</th><th>Column 2</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Data</td><td>Data</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+
+### All Component Classes Reference
+
+| Class | Purpose |
+|-------|---------|
+| `.prose-content` | Article content wrapper (auto-applied) |
+| `.pre-header` | Small label above H1 |
+| `.lead` | Large intro paragraph |
+| `.glass-header` | Frosted glass effect |
+| `.card` | Basic card with border |
+| `.card-interactive` | Card with hover effects |
+| `.dark-card` | Dark background card |
+| `.dark-card-grid` | 2-column grid inside dark card |
+| `.alert-box` | Alert container (add `.info`, `.warning`, `.neutral`) |
+| `.alert-title` | Bold title inside alert |
+| `.feature-grid` | 3-column feature grid |
+| `.feature-card` | Card inside feature grid |
+| `.checklist` | Numbered checklist container |
+| `.checklist-item` | Single checklist item |
+| `.checklist-number` | Numbered circle (add `.green` for green) |
+| `.checklist-content` | Text container in checklist |
+| `.timeline` | Timeline container |
+| `.timeline-item` | Single timeline event |
+| `.timeline-dot` | Dot indicator (add `.blue`, `.green`) |
+| `.section-header` | Header with icon |
+| `.section-header-icon` | Icon container (add `.blue`, `.green`, `.red`, `.yellow`) |
+| `.deep-dive-grid` | 3-column card grid |
+| `.deep-dive-card` | Linked card with icon |
+| `.deep-dive-card-icon` | Icon in deep dive card |
+| `.table-wrapper` | Styled table container |
+| `.references-list` | Reference links list |
+| `.reference-desc` | Description under reference |
+
+## Design System
+
+### Apple Color Palette
+
+```js
+// tailwind.config.ts
+colors: {
+  apple: {
+    blue: '#0071e3',    // Links, buttons, accents
+    dark: '#1d1d1f',    // Primary text (NOT black)
+    gray: '#86868b',    // Secondary text
+    light: '#f5f5f7',   // Light backgrounds
+    border: '#d2d2d7',  // Borders
+    green: '#34c759',   // Success states
+    red: '#ff3b30',     // Error/warning states
+    yellow: '#ffcc00',  // Caution states
+  }
+}
+```
+
+### Design Principles
+
+1. **High whitespace** - Generous padding (`p-8`, `p-10`) and margins (`my-12`, `mb-24`)
+2. **Micro-borders** - Subtle `border-gray-100`, no heavy shadows
+3. **Rounded corners** - Large radius (`rounded-2xl`, `rounded-3xl`)
+4. **Glassmorphism** - Frosted glass on sticky elements
+5. **Typography** - Inter font, tight tracking on headings, relaxed line height
 
 ## Updating Articles
 
 ### Option 1: Direct Database Update (Recommended)
-
-Use `npx tsx` to run inline scripts:
 
 ```bash
 DATABASE_URL="postgresql://user@localhost:5432/appstore_guides" npx tsx -e "
@@ -111,6 +309,11 @@ async function main() {
       content: \`
         <h1>New Title Here</h1>
         <p class=\"lead\">Introduction paragraph.</p>
+
+        <div class=\"alert-box info\">
+          <div class=\"alert-title\">Key Point</div>
+          <p>Important information here.</p>
+        </div>
 
         <section id=\"section-1\">
           <h2>Section Title</h2>
@@ -131,154 +334,64 @@ main()
 npx prisma studio
 ```
 
-Opens a visual database editor at http://localhost:5555
+Opens visual database editor at http://localhost:5555
 
 ### Option 3: API Endpoints
 
 ```bash
-# Update article
-curl -X PUT http://localhost:3000/api/articles/legal-compliance \
+curl -X PUT http://localhost:3005/api/articles/legal-compliance \
   -H "Content-Type: application/json" \
   -d '{"title": "New Title", "content": "<h1>...</h1>"}'
 ```
-
-## Content Format
-
-Articles use semantic HTML with these conventions:
-
-### Required Structure
-
-```html
-<!-- H1 must match article.title for SEO -->
-<h1>Article Title (2025 Guide)</h1>
-
-<!-- Lead paragraph - styled differently -->
-<p class="lead">Brief introduction that appears larger and muted.</p>
-
-<!-- Sections with IDs for anchor links -->
-<section id="section-name">
-  <h2>Section Title</h2>
-  <p>Content...</p>
-
-  <h3>Subsection</h3>
-  <ul>
-    <li><strong>Bold label:</strong> Description</li>
-  </ul>
-</section>
-```
-
-### Supported Elements
-
-| Element | Usage |
-|---------|-------|
-| `<h1>` | Page title (one per page) |
-| `<h2>` | Major sections |
-| `<h3>` | Subsections |
-| `<p>` | Paragraphs |
-| `<ul>`, `<ol>` | Lists |
-| `<strong>` | Bold/emphasis |
-| `<a>` | Links |
-| `<blockquote>` | Callouts/quotes |
-| `<code>` | Inline code |
-| `<pre>` | Code blocks |
-| `<table>` | Data tables |
-| `<section id="">` | Anchor sections |
-
-### Lead Paragraph
-
-The first `<p>` after `<h1>` (or any `<p class="lead">`) gets special styling:
-- Larger font size (xl)
-- Muted color (apple-gray)
-- Extra bottom margin
-
-## Design System
-
-### Apple Color Palette
-
-Defined in `tailwind.config.ts`:
-
-```js
-colors: {
-  apple: {
-    blue: '#0071e3',    // Links, buttons, accents
-    dark: '#1d1d1f',    // Primary text (NOT black)
-    gray: '#86868b',    // Secondary text
-    light: '#f5f5f7',   // Light backgrounds
-    border: '#d2d2d7',  // Borders
-    green: '#34c759',   // Success
-    red: '#ff3b30',     // Error
-  }
-}
-```
-
-### Design Principles
-
-1. **High whitespace** - Generous padding and margins
-2. **Micro-borders** - Subtle `border-gray-100/200`, no heavy shadows
-3. **Glassmorphism** - Frosted glass effect on sticky header
-4. **Typography** - Inter font, tight tracking on headings
-
-### Key CSS Classes
-
-| Class | Purpose |
-|-------|---------|
-| `.prose-content` | Article content wrapper |
-| `.glass-header` | Frosted glass effect |
-| `.card` | Basic card styling |
-| `.card-interactive` | Card with hover effects |
-| `.lead` | Large intro paragraph |
 
 ## Project Structure
 
 ```
 appstorepass/
+├── backend/
+│   └── src/
+│       ├── server.ts             # Express API server
+│       └── routes/               # API route handlers
 ├── prisma/
-│   └── schema.prisma          # Database schema
+│   └── schema.prisma             # Database schema
 ├── scripts/
-│   ├── seed-content.ts        # Initial content seeder
-│   └── *.ts                   # Other utility scripts
+│   ├── seed-content.ts           # Initial content seeder (HTML)
+│   └── *.ts                      # Utility scripts
 ├── src/
 │   ├── app/
-│   │   ├── [slug]/page.tsx    # Sub-article pages
-│   │   ├── page.tsx           # Homepage (hub article)
-│   │   ├── globals.css        # Tailwind + prose styles
-│   │   └── layout.tsx         # Root layout
+│   │   ├── [slug]/page.tsx       # Sub-article pages
+│   │   ├── page.tsx              # Homepage (fetches from API)
+│   │   ├── globals.css           # Tailwind + component classes
+│   │   └── layout.tsx            # Root layout
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── Sidebar.tsx    # Navigation sidebar
-│   │   │   ├── Footer.tsx     # Site footer
+│   │   │   ├── Sidebar.tsx       # Navigation sidebar
+│   │   │   ├── Footer.tsx        # Site footer
 │   │   │   └── MobileHeader.tsx
-│   │   ├── mdx/               # Content components
-│   │   └── seo/               # JSON-LD components
+│   │   ├── mdx/                  # Content components
+│   │   └── seo/                  # JSON-LD components
 │   └── lib/
-│       ├── html-renderer.tsx  # DOMPurify HTML renderer
-│       ├── metadata.ts        # SEO metadata helpers
-│       └── prisma.ts          # Prisma client singleton
-├── tailwind.config.ts         # Tailwind + Apple colors
+│       ├── html-renderer.tsx     # DOMPurify HTML renderer
+│       ├── metadata.ts           # SEO metadata helpers
+│       └── prisma.ts             # Prisma client singleton
+├── tailwind.config.ts            # Tailwind + Apple colors + safelist
 ├── docker-compose.yml
 └── package.json
 ```
 
-## Database Commands
+## Environment Variables
 
-```bash
-# Generate Prisma client after schema changes
-npx prisma generate
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `DATABASE_URL` | PostgreSQL connection string | Yes |
+| `NEXT_PUBLIC_API_URL` | Backend API URL | Yes |
+| `SITE_URL` | Public URL for SEO/meta | No |
 
-# Create migration from schema changes
-npx prisma migrate dev --name description
-
-# Apply migrations in production
-npx prisma migrate deploy
-
-# Push schema changes directly (dev only)
-npx prisma db push
-
-# Open visual database editor
-npx prisma studio
-
-# Seed initial content
-npm run db:seed
+Example `.env.local`:
+```env
+DATABASE_URL="postgresql://user@localhost:5432/appstore_guides"
+NEXT_PUBLIC_API_URL="http://localhost:3005"
+SITE_URL="https://yourdomain.com"
 ```
 
 ## API Reference
@@ -292,40 +405,27 @@ npm run db:seed
 | DELETE | `/api/articles/[slug]` | Delete article |
 | GET | `/sitemap.xml` | XML sitemap |
 
-## Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `SITE_URL` | Public URL for SEO/meta | No (defaults to localhost:3000) |
-
-Example `.env.local`:
-```
-DATABASE_URL="postgresql://user@localhost:5432/appstore_guides"
-SITE_URL="https://yourdomain.com"
-```
-
-## Deployment
-
-### Docker Compose (Production)
+## Database Commands
 
 ```bash
-# Set environment
-export DATABASE_URL="postgresql://..."
-export SITE_URL="https://yourdomain.com"
+# Generate Prisma client
+npx prisma generate
 
-# Build and run
-docker compose up -d
+# Create migration
+npx prisma migrate dev --name description
 
-# Apply migrations
-docker compose exec app npx prisma migrate deploy
+# Apply migrations (production)
+npx prisma migrate deploy
+
+# Push schema changes (dev only)
+npx prisma db push
+
+# Visual database editor
+npx prisma studio
+
+# Seed initial content
+npm run db:seed
 ```
-
-### Vercel
-
-1. Connect GitHub repository
-2. Set environment variables in Vercel dashboard
-3. Deploy (migrations run automatically via build script)
 
 ## Adding New Articles
 
@@ -347,6 +447,14 @@ await prisma.article.create({
     content: \`
       <h1>Article Title for SEO</h1>
       <p class=\"lead\">Introduction paragraph.</p>
+
+      <div class=\"feature-grid\">
+        <div class=\"feature-card\">
+          <h3>Feature 1</h3>
+          <p>Description.</p>
+        </div>
+      </div>
+
       <section id=\"first-section\">
         <h2>First Section</h2>
         <p>Content here...</p>
@@ -359,27 +467,39 @@ await prisma.\$disconnect()
 "
 ```
 
-2. **Add to sidebar navigation** (if needed) in `src/components/layout/Sidebar.tsx`
+2. **Add to sidebar** in `src/components/layout/Sidebar.tsx` (if needed)
 
-3. **Create related article links** (optional):
-
+3. **Link to hub** (optional):
 ```bash
-# Link articles together
 await prisma.relatedArticle.create({
   data: {
-    sourceArticleId: 1,  // Hub article ID
-    targetArticleId: 5,  // New article ID
+    sourceArticleId: 1,
+    targetArticleId: 5,
     displayOrder: 3
   }
 })
 ```
 
-## Common Tasks
+## Deployment
 
-### Update article content
+### Docker Compose
+
 ```bash
-DATABASE_URL="..." npx tsx -e "..." # See "Updating Articles" section
+export DATABASE_URL="postgresql://..."
+export NEXT_PUBLIC_API_URL="https://api.yourdomain.com"
+export SITE_URL="https://yourdomain.com"
+
+docker compose up -d
+docker compose exec app npx prisma migrate deploy
 ```
+
+### Vercel + Separate API
+
+1. Deploy backend API separately (Railway, Render, etc.)
+2. Set `NEXT_PUBLIC_API_URL` to your API URL
+3. Deploy Next.js frontend to Vercel
+
+## Common Tasks
 
 ### Check current articles
 ```bash
@@ -394,7 +514,7 @@ await prisma.\$disconnect()
 "
 ```
 
-### Reset database (development only)
+### Reset database (dev only)
 ```bash
 npx prisma migrate reset
 npm run db:seed

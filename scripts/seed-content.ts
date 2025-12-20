@@ -56,22 +56,60 @@ function extractMetadata(doc: Document) {
   return { title, description, keywords }
 }
 
-function extractContent(doc: Document): string {
-  // Find the main content area
-  const main = doc.querySelector('main')
-  if (!main) {
-    console.warn('No <main> element found')
-    return ''
+function extractToc(doc: Document) {
+  const aside = doc.querySelector('aside');
+  if (!aside) return null;
+
+  const title = aside.querySelector('h2')?.textContent?.trim() || '';
+  const backLink = '/';
+  
+  const sections: any[] = [];
+  let currentSection: any = { section: null, items: [] };
+
+  const navElements = aside.querySelectorAll('nav > *');
+  navElements.forEach(el => {
+    if (el.tagName === 'A') {
+      const href = el.getAttribute('href') || '';
+      const label = el.textContent?.trim() || '';
+      currentSection.items.push({ href, label });
+    } else if (el.querySelector('span')) {
+      // It's a header
+      if (currentSection.items.length > 0 || currentSection.section) {
+        sections.push(currentSection);
+      }
+      currentSection = {
+        section: el.querySelector('span')?.textContent?.trim() || null,
+        items: []
+      };
+    }
+  });
+
+  if (currentSection.items.length > 0 || currentSection.section) {
+    sections.push(currentSection);
   }
 
-  // Remove navigation, mobile menu, and other non-content elements
-  const elementsToRemove = main.querySelectorAll(
-    'nav, .no-print, .sidebar, script, style'
-  )
-  elementsToRemove.forEach((el) => el.remove())
+  return { title, backLink, sections };
+}
 
-  // Return the cleaned HTML content
-  return main.innerHTML.trim()
+function extractContent(doc: Document): string {
+  // Find the main content area
+  const main = doc.querySelector('main');
+  if (!main) {
+    console.warn('No <main> element found');
+    return '';
+  }
+
+  // Clone to avoid modifying the original doc
+  const clone = main.cloneNode(true) as HTMLElement;
+  
+  // Remove fixed positioning and margins that clash with our Layout.astro
+  clone.classList.remove('lg:ml-64', 'py-20', 'lg:py-16');
+
+  // Final cleanup of common clutter
+  const elementsToRemove = clone.querySelectorAll('nav, .no-print, script, style');
+  elementsToRemove.forEach(el => el.remove());
+
+  return clone.innerHTML.trim();
 }
 
 async function seed() {
@@ -95,6 +133,7 @@ async function seed() {
 
     const { title, description, keywords } = extractMetadata(doc)
     const content = extractContent(doc)
+    const toc = extractToc(doc)
 
     try {
       // Check if article already exists
@@ -110,6 +149,7 @@ async function seed() {
             title,
             description,
             content,
+            toc: toc as any,
             category: item.category,
             metaKeywords: keywords,
             isHub: item.isHub,
@@ -124,6 +164,7 @@ async function seed() {
             title,
             description,
             content,
+            toc: toc as any,
             category: item.category,
             metaKeywords: keywords,
             isHub: item.isHub,

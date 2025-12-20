@@ -2,16 +2,14 @@ import AdminJS from 'adminjs'
 import AdminJSFastify from '@adminjs/fastify'
 import * as AdminJSPrisma from '@adminjs/prisma'
 import { FastifyInstance } from 'fastify'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from './prisma.js'
 
 AdminJS.registerAdapter({
   Resource: AdminJSPrisma.Resource,
   Database: AdminJSPrisma.Database,
 })
 
-const prisma = new PrismaClient()
-
-export async function setupAdmin(fastify: FastifyInstance) {
+export async function setupAdmin(fastify: FastifyInstance): Promise<void> {
   const adminOptions = {
     resources: [
       {
@@ -47,27 +45,33 @@ export async function setupAdmin(fastify: FastifyInstance) {
 
   const admin = new AdminJS(adminOptions)
 
-  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'hi@sieggg.com'
-  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Iw+n1DBedNZ7gSc7BUggyduVUZ32wQdt'
+  // Require environment variables - no insecure defaults
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
+
+  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    throw new Error('ADMIN_EMAIL and ADMIN_PASSWORD environment variables are required')
+  }
 
   await AdminJSFastify.buildAuthenticatedRouter(
     admin,
     {
-      authenticate: async (email: any, password: any) => {
+      authenticate: async (email: string, password: string) => {
         if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
           return { email }
         }
         return null
       },
-      cookiePassword: process.env.SESSION_SECRET || 'a-very-long-secret-that-is-at-least-32-characters-long',
+      cookiePassword: process.env.SESSION_SECRET || (() => { throw new Error('SESSION_SECRET is required') })(),
     },
     fastify,
     {
       saveUninitialized: true,
-      secret: process.env.SESSION_SECRET || 'a-very-long-secret-that-is-at-least-32-characters-long',
+      secret: process.env.SESSION_SECRET || (() => { throw new Error('SESSION_SECRET is required') })(),
       cookie: {
         httpOnly: true,
-        secure: false, // Set to true in production if using HTTPS
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict' as const,
       },
     }
   )

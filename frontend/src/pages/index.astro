@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import DOMPurify from 'isomorphic-dompurify';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
 let hubArticle = null;
@@ -16,10 +17,16 @@ try {
 if (!hubArticle) {
   return Astro.redirect('/404');
 }
+
+// Sanitize HTML content to prevent XSS
+const sanitizedContent = DOMPurify.sanitize(hubArticle.content, {
+  ADD_TAGS: ['section'],
+  ADD_ATTR: ['target', 'rel'],
+});
 ---
 
 <Layout title={hubArticle.title} description={hubArticle.description}>
   <article>
-    <div set:html={hubArticle.content} />
+    <div set:html={sanitizedContent} />
   </article>
 </Layout>

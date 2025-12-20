@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { isAuthenticated } from '@/lib/auth'
 
 // GET /api/articles - List all articles
 export async function GET() {
@@ -29,6 +30,11 @@ export async function GET() {
 
 // POST /api/articles - Create new article (admin only)
 export async function POST(request: Request) {
+  // Require authentication
+  if (!await isAuthenticated()) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   try {
     const body = await request.json()
 
