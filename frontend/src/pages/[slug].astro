@@ -72,6 +72,65 @@ const breadcrumbSchema = {
   ]
 };
 
+// FAQ Schema for guideline pages (helps get rich snippets in search)
+const faqData: Record<string, Array<{question: string; answer: string}>> = {
+  "guideline-2-1-app-crashes": [
+    {
+      question: "What is Guideline 2.1 rejection?",
+      answer: "Guideline 2.1 rejection occurs when Apple's review team finds that your app crashes, has bugs, or doesn't perform as expected during testing. This includes crashes on launch, freezes, broken features, or performance issues."
+    },
+    {
+      question: "How do I fix a Guideline 2.1 rejection?",
+      answer: "To fix a 2.1 rejection: 1) Reproduce the crash using the exact device and iOS version mentioned by Apple, 2) Check crash logs in Xcode Organizer, 3) Test thoroughly on real devices, 4) Ensure all features work offline/online, 5) Fix memory leaks and optimize performance, then resubmit."
+    },
+    {
+      question: "How long does it take to get approved after fixing crashes?",
+      answer: "After fixing crashes and resubmitting, Apple typically reviews your app within 24-48 hours. Expedited reviews are available for critical bug fixes. Include detailed notes explaining what you fixed."
+    }
+  ],
+  "guideline-3-1-in-app-purchase": [
+    {
+      question: "What is Guideline 3.1 rejection?",
+      answer: "Guideline 3.1 rejection happens when your app offers digital goods or services that must be purchased through Apple's In-App Purchase system but uses external payment methods instead, or when IAP implementation is incorrect."
+    },
+    {
+      question: "What purchases require Apple's In-App Purchase?",
+      answer: "Digital content (ebooks, music, videos), subscriptions to digital services, premium features, virtual currency, and unlocking app functionality all require In-App Purchase. Physical goods, real-world services, and person-to-person services are exempt."
+    },
+    {
+      question: "How do I fix a Guideline 3.1 rejection?",
+      answer: "To fix 3.1: 1) Remove external payment links for digital goods, 2) Implement StoreKit for all digital purchases, 3) Use the correct IAP product types, 4) Restore purchases functionality must work, 5) Don't mention external payment options in the app."
+    }
+  ],
+  "guideline-4-2-minimum-functionality": [
+    {
+      question: "What is Guideline 4.2 rejection?",
+      answer: "Guideline 4.2 rejection occurs when Apple determines your app doesn't provide enough features, functionality, or content to be considered a standalone app. This often affects simple wrapper apps, basic utilities, or apps that could be websites."
+    },
+    {
+      question: "How do I fix a Guideline 4.2 minimum functionality rejection?",
+      answer: "To fix 4.2: 1) Add native iOS features (widgets, notifications, Siri shortcuts), 2) Implement offline functionality, 3) Add unique value beyond a website, 4) Include personalization features, 5) Use device capabilities (camera, sensors, haptics)."
+    },
+    {
+      question: "Can a simple app get approved on the App Store?",
+      answer: "Yes, simple apps can be approved if they provide genuine utility and use native iOS capabilities. Focus on doing one thing excellently rather than adding unnecessary features. Apps should offer value that justifies installation over using a website."
+    }
+  ]
+};
+
+const faqSchema = faqData[article.slug] ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqData[article.slug].map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+} : null;
+
 // Article schema for SEO
 const articleSchema = {
   "@context": "https://schema.org",
@@ -116,6 +175,23 @@ const articleSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <!-- Article Schema JSON-LD -->
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  <!-- FAQ Schema JSON-LD (for guideline pages) -->
+  {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+
+  <!-- Visible Breadcrumb Navigation -->
+  <nav class="mb-8" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 text-sm text-gray-500">
+      <li>
+        <a href="/" class="hover:text-apple-blue transition-colors">Home</a>
+      </li>
+      <li class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+        <span class="text-apple-dark font-medium">{article.title}</span>
+      </li>
+    </ol>
+  </nav>
 
   <article>
     <div set:html={sanitizedContent} />
