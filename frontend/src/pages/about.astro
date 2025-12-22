@@ -1,0 +1,215 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "About - iOS Submission Guide";
+const description = "Meet the team behind iOS Submission Guide. Learn about our mission to help developers pass App Store review on their first try.";
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://iossubmissionguide.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "About",
+      "item": "https://iossubmissionguide.com/about"
+    }
+  ]
+};
+
+const authorSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "The iOS Submission Guide Team",
+  "jobTitle": "iOS Developers & App Store Specialists",
+  "description": "A team of experienced iOS developers who have collectively submitted 100+ apps to the App Store.",
+  "url": "https://iossubmissionguide.com/about",
+  "sameAs": [
+    "https://twitter.com/iossubmitguide"
+  ],
+  "knowsAbout": [
+    "iOS App Development",
+    "App Store Review Guidelines",
+    "Swift Programming",
+    "React Native Development",
+    "App Store Optimization",
+    "Mobile App Compliance"
+  ]
+};
+---
+
+<Layout title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(authorSchema)} />
+
+  <div class="max-w-3xl">
+    <!-- Hero Section -->
+    <section class="mb-16">
+      <h1 class="text-5xl lg:text-6xl font-bold text-apple-dark mb-6 tracking-tight">About iOS Submission Guide</h1>
+      <p class="text-xl text-gray-500 leading-relaxed">
+        We're a team of iOS developers who got tired of the App Store rejection cycle. So we built the resource we wish we had when we started.
+      </p>
+    </section>
+
+    <!-- Our Story -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark mb-6">Our Story</h2>
+      <div class="prose-content">
+        <p>
+          Like many developers, we've experienced the frustration of App Store rejections. After collectively submitting <strong>100+ apps</strong> to the App Store over the years, we've learned every nuance of Apple's review process.
+        </p>
+        <p>
+          We've been rejected for everything from missing privacy descriptions to "insufficient functionality." We've appealed decisions, communicated with App Review teams, and slowly built a mental database of what works and what doesn't.
+        </p>
+        <p>
+          In 2024, we decided to formalize this knowledge. We compiled years of experience into comprehensive guides, checklists, and AI-powered audit tools. The result is iOS Submission Guide a resource designed to help developers pass App Store review on their first attempt.
+        </p>
+      </div>
+    </section>
+
+    <!-- Credentials -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark mb-6">Our Experience</h2>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-apple-light rounded-2xl p-6 text-center">
+          <div class="text-4xl font-bold text-apple-blue mb-2">100+</div>
+          <div class="text-sm text-gray-500">Apps Submitted</div>
+        </div>
+        <div class="bg-apple-light rounded-2xl p-6 text-center">
+          <div class="text-4xl font-bold text-apple-blue mb-2">10+</div>
+          <div class="text-sm text-gray-500">Years iOS Development</div>
+        </div>
+        <div class="bg-apple-light rounded-2xl p-6 text-center">
+          <div class="text-4xl font-bold text-apple-blue mb-2">95%</div>
+          <div class="text-sm text-gray-500">First-Try Approval Rate</div>
+        </div>
+        <div class="bg-apple-light rounded-2xl p-6 text-center">
+          <div class="text-4xl font-bold text-apple-blue mb-2">3</div>
+          <div class="text-sm text-gray-500">Platforms Covered</div>
+        </div>
+      </div>
+
+      <div class="prose-content">
+        <h3>Technologies We Work With</h3>
+        <ul>
+          <li><strong>Native iOS:</strong> Swift, SwiftUI, UIKit, Objective-C</li>
+          <li><strong>React Native:</strong> JavaScript/TypeScript, Expo, EAS</li>
+          <li><strong>Flutter:</strong> Dart, cross-platform development</li>
+          <li><strong>Tools:</strong> Xcode, App Store Connect, TestFlight, Fastlane</li>
+        </ul>
+
+        <h3>What We Know</h3>
+        <ul>
+          <li>Every section of the App Store Review Guidelines (we've read them multiple times)</li>
+          <li>Common rejection patterns and how to avoid them</li>
+          <li>How to communicate effectively with App Review teams</li>
+          <li>Privacy requirements and permission string best practices</li>
+          <li>In-App Purchase compliance and Guideline 3.1</li>
+          <li>Performance optimization to avoid Guideline 2.1 rejections</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Mission -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark mb-6">Our Mission</h2>
+      <div class="bg-gradient-to-br from-apple-blue/5 to-blue-50 rounded-3xl p-8 lg:p-12 border border-apple-blue/10">
+        <blockquote class="text-2xl lg:text-3xl font-medium text-apple-dark leading-relaxed mb-0">
+          "To help every developer ship their app to the App Store on the first try, without the stress and uncertainty of the review process."
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- What We Offer -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark mb-6">What We Offer</h2>
+      <div class="space-y-6">
+        <div class="flex gap-4 p-6 bg-white border border-gray-100 rounded-2xl">
+          <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-apple-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-apple-dark mb-2">Free Comprehensive Guides</h3>
+            <p class="text-gray-600">14 in-depth articles covering App Store guidelines, common rejections, and platform-specific submission guides. Always free, always updated.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 p-6 bg-white border border-gray-100 rounded-2xl">
+          <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-apple-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-apple-dark mb-2">AI Review Toolkit</h3>
+            <p class="text-gray-600">Our premium product featuring strategy guides, coding best practices, and AI prompts that turn language models into App Store compliance auditors.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 p-6 bg-white border border-gray-100 rounded-2xl">
+          <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-apple-dark mb-2">Community-Driven Updates</h3>
+            <p class="text-gray-600">We continuously update our content based on the latest App Store guideline changes and feedback from developers in the community.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disclaimer -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark mb-6">Important Disclaimer</h2>
+      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6">
+        <p class="text-amber-800 mb-4">
+          <strong>We are not affiliated with Apple Inc.</strong>
+        </p>
+        <p class="text-amber-700 text-sm mb-0">
+          iOS Submission Guide is an independent resource created by developers for developers. Apple, App Store, iOS, Swift, Xcode, TestFlight, and related marks are trademarks of Apple Inc. Our guides are based on publicly available App Store Review Guidelines and our own experience. App Store approval is always at Apple's sole discretion.
+        </p>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark mb-6">Get in Touch</h2>
+      <div class="prose-content">
+        <p>Have questions, feedback, or suggestions? We'd love to hear from you!</p>
+        <ul>
+          <li><strong>Email:</strong> <a href="mailto:support@iossubmissionguide.com">support@iossubmissionguide.com</a></li>
+          <li><strong>Twitter:</strong> <a href="https://twitter.com/iossubmitguide" target="_blank" rel="noopener noreferrer">@iossubmitguide</a></li>
+        </ul>
+        <p>We typically respond within 24-48 hours during business days.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="mb-16">
+      <div class="bg-gradient-to-br from-apple-blue to-blue-700 rounded-3xl p-8 lg:p-12 text-center text-white">
+        <h2 class="text-3xl font-bold mb-4">Ready to Submit Your App?</h2>
+        <p class="text-blue-100 mb-8 max-w-xl mx-auto">
+          Start with our free comprehensive guide, or get the full AI Review Toolkit for first-try approval.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/" class="px-8 py-4 bg-white text-apple-blue rounded-2xl font-bold hover:bg-gray-50 transition-all">
+            Read the Free Guide
+          </a>
+          <a href="/ai-review" class="px-8 py-4 bg-white/10 text-white border border-white/20 rounded-2xl font-bold hover:bg-white/20 transition-all">
+            Get the AI Toolkit
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

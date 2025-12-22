@@ -1,0 +1,13 @@
+# iOS Submission Guide - robots.txt
+
+User-agent: *
+Allow: /
+
+# Block utility pages (with wildcards for query params)
+Disallow: /success*
+Disallow: /restore*
+Disallow: /api/*
+Disallow: /404*
+
+# Sitemap (Astro-generated)
+Sitemap: https://iossubmissionguide.com/sitemap-index.xml
