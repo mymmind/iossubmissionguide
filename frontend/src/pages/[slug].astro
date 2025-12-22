@@ -261,6 +261,80 @@ const keyTakeaways: Record<string, string[]> = {
   ]
 };
 
+// Related articles for internal linking (manual cross-links)
+const relatedArticles: Record<string, Array<{slug: string; title: string; description: string}>> = {
+  "guideline-2-1-app-crashes": [
+    { slug: "guideline-3-1-in-app-purchase", title: "Guideline 3.1: In-App Purchase Issues", description: "Fix payment-related rejections and IAP implementation problems." },
+    { slug: "guideline-4-2-minimum-functionality", title: "Guideline 4.2: Minimum Functionality", description: "Add enough value to pass Apple's functionality requirements." },
+    { slug: "rejection-recovery", title: "How to Handle App Store Rejection", description: "Step-by-step guide to recovering from any rejection." }
+  ],
+  "guideline-3-1-in-app-purchase": [
+    { slug: "guideline-2-1-app-crashes", title: "Guideline 2.1: App Crashes & Bugs", description: "Fix crashes and performance issues that cause rejections." },
+    { slug: "guideline-4-2-minimum-functionality", title: "Guideline 4.2: Minimum Functionality", description: "Ensure your app provides enough value beyond IAP." },
+    { slug: "legal-compliance", title: "Legal & Privacy Compliance", description: "GDPR, privacy policies, and legal requirements for your app." }
+  ],
+  "guideline-4-2-minimum-functionality": [
+    { slug: "guideline-2-1-app-crashes", title: "Guideline 2.1: App Crashes & Bugs", description: "Fix crashes and performance issues." },
+    { slug: "guideline-3-1-in-app-purchase", title: "Guideline 3.1: In-App Purchase Issues", description: "Implement payments correctly." },
+    { slug: "rejection-guide", title: "Common Rejection Reasons", description: "All the common reasons apps get rejected." }
+  ],
+  "rejection-guide": [
+    { slug: "rejection-recovery", title: "How to Handle App Store Rejection", description: "What to do after your app is rejected." },
+    { slug: "guideline-2-1-app-crashes", title: "Guideline 2.1: Crashes & Bugs", description: "The #1 cause of rejections - crashes and bugs." },
+    { slug: "app-store-privacy-policy-requirements", title: "Privacy Policy Requirements", description: "Missing privacy policy is a top rejection reason." }
+  ],
+  "rejection-recovery": [
+    { slug: "rejection-guide", title: "Common Rejection Reasons", description: "Understand why apps get rejected in the first place." },
+    { slug: "app-store-review-time-2025", title: "App Store Review Times", description: "How long will your resubmission take?" },
+    { slug: "connect-guide", title: "App Store Connect Guide", description: "Navigate Resolution Center and resubmit effectively." }
+  ],
+  "app-store-review-time-2025": [
+    { slug: "rejection-recovery", title: "How to Handle Rejection", description: "What to do while waiting for review." },
+    { slug: "connect-guide", title: "App Store Connect Guide", description: "Upload builds and manage submissions." },
+    { slug: "rejection-guide", title: "Common Rejection Reasons", description: "Avoid rejections to speed up your approval." }
+  ],
+  "app-store-privacy-policy-requirements": [
+    { slug: "legal-compliance", title: "Legal & Privacy Compliance", description: "Full legal requirements guide including GDPR." },
+    { slug: "rejection-guide", title: "Common Rejection Reasons", description: "Missing privacy policy causes many rejections." },
+    { slug: "app-store-metadata-best-practices", title: "Metadata Best Practices", description: "Optimize your entire App Store listing." }
+  ],
+  "react-native-app-store-submission": [
+    { slug: "flutter-app-store-submission", title: "Flutter App Store Submission", description: "Compare with Flutter's submission process." },
+    { slug: "swift-swiftui-app-store-submission", title: "Swift & SwiftUI Submission", description: "Native iOS submission guide for comparison." },
+    { slug: "guideline-2-1-app-crashes", title: "Guideline 2.1: Crashes", description: "Common React Native crash issues to fix." }
+  ],
+  "flutter-app-store-submission": [
+    { slug: "react-native-app-store-submission", title: "React Native Submission", description: "Compare with React Native's submission process." },
+    { slug: "swift-swiftui-app-store-submission", title: "Swift & SwiftUI Submission", description: "Native iOS submission guide for comparison." },
+    { slug: "app-store-screenshot-sizes-2025", title: "Screenshot Requirements", description: "Required screenshot sizes for all devices." }
+  ],
+  "swift-swiftui-app-store-submission": [
+    { slug: "react-native-app-store-submission", title: "React Native Submission", description: "Cross-platform alternative approach." },
+    { slug: "flutter-app-store-submission", title: "Flutter Submission", description: "Another cross-platform option." },
+    { slug: "connect-guide", title: "App Store Connect Guide", description: "Upload and manage your native iOS builds." }
+  ],
+  "connect-guide": [
+    { slug: "app-store-review-time-2025", title: "App Store Review Times", description: "How long does Apple take to review?" },
+    { slug: "app-store-metadata-best-practices", title: "Metadata Best Practices", description: "Optimize your App Store listing." },
+    { slug: "rejection-recovery", title: "Handle Rejections", description: "Use Resolution Center to respond to rejections." }
+  ],
+  "legal-compliance": [
+    { slug: "app-store-privacy-policy-requirements", title: "Privacy Policy Requirements", description: "Detailed privacy policy guide." },
+    { slug: "guideline-3-1-in-app-purchase", title: "In-App Purchase Rules", description: "Payment compliance and IAP requirements." },
+    { slug: "rejection-guide", title: "Common Rejections", description: "Legal issues that cause rejections." }
+  ],
+  "app-store-metadata-best-practices": [
+    { slug: "app-store-screenshot-sizes-2025", title: "Screenshot Requirements", description: "Required sizes and best practices for screenshots." },
+    { slug: "connect-guide", title: "App Store Connect Guide", description: "Where to configure all your metadata." },
+    { slug: "app-store-privacy-policy-requirements", title: "Privacy Policy", description: "Required metadata for privacy compliance." }
+  ],
+  "app-store-screenshot-sizes-2025": [
+    { slug: "app-store-metadata-best-practices", title: "Metadata Best Practices", description: "Optimize your entire listing, not just screenshots." },
+    { slug: "connect-guide", title: "App Store Connect Guide", description: "Upload screenshots to App Store Connect." },
+    { slug: "rejection-guide", title: "Common Rejections", description: "Avoid screenshot-related rejections." }
+  ]
+};
+
 const faqSchema = faqData[article.slug] ? {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -373,4 +447,32 @@ const articleSchema = {
       </div>
     </div>
   )}
+
+  <!-- Related Articles Section (manual cross-links for SEO) -->
+  {relatedArticles[article.slug] && (
+    <div class="mt-16 pt-10 border-t border-gray-100">
+      <h3 class="text-xl font-bold text-apple-dark mb-6">Related Guides</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {relatedArticles[article.slug].map((related) => (
+          <a href={`/${related.slug}`} class="block p-5 bg-gray-50 hover:bg-apple-light rounded-xl border border-gray-100 hover:border-apple-blue/20 transition-all group">
+            <h4 class="font-bold text-apple-dark group-hover:text-apple-blue transition-colors mb-2">{related.title}</h4>
+            <p class="text-sm text-apple-gray">{related.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- CTA to AI Toolkit -->
+  <div class="mt-16 p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div>
+        <h3 class="text-xl font-bold text-apple-dark mb-2">Want AI to audit your app before submission?</h3>
+        <p class="text-apple-gray">Get our AI Review Toolkit with prompts that catch guideline violations automatically.</p>
+      </div>
+      <a href="/ai-review" class="flex-shrink-0 px-6 py-3 bg-apple-blue text-white font-bold rounded-xl hover:bg-blue-600 transition-colors text-center">
+        Get the AI Toolkit
+      </a>
+    </div>
+  </div>
 </Layout>

@@ -100,7 +100,8 @@
       "Bash(npx astro check:*)",
       "Bash(timeout 60 npm run build:*)",
       "Bash(npm audit fix:*)",
-      "Bash(npm audit:*)"
+      "Bash(npm audit:*)",
+      "Bash(ssh mmmadmin@46.224.21.200 \"cd /var/www/iossubmissionguide.com/frontend && npm run build 2>&1 | tail -25\")"
     ]
   }
 }
