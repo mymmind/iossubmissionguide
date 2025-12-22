@@ -9,7 +9,10 @@ const sessionIdSchema = z.object({
   sessionId: z.string().regex(/^cs_(test_|live_)[a-zA-Z0-9]+$/, { message: 'Invalid Stripe session ID format' }),
 })
 
-const validFileTypes = ['native_guide', 'native_smells', 'expo_guide', 'expo_smells'] as const
+const validFileTypes = [
+  'native_guide', 'native_practices', 'native_prompt',
+  'expo_guide', 'expo_practices', 'expo_prompt'
+] as const
 
 const downloadParamsSchema = z.object({
   sessionId: z.string().regex(/^cs_(test_|live_)[a-zA-Z0-9]+$/, { message: 'Invalid Stripe session ID format' }),
@@ -85,31 +88,19 @@ export async function stripeRoutes(fastify: FastifyInstance): Promise<void> {
             native: {
               title: 'Swift & iOS Native Toolkit',
               downloads: [
-                { name: 'Native Submission Guide', description: 'Meticulous detail for Swift devs', url: `${baseUrl}/api/download/${sessionId}/native_guide` },
-                { name: 'Swift Code Smells', description: 'Technical risk checklist', url: `${baseUrl}/api/download/${sessionId}/native_smells` }
-              ],
-              prompt: `You are a senior Apple App Store Reviewer specializing in NATIVE iOS (Swift/Obj-C).
-Audit the code for:
-- Usage of private APIs (dlopen, dlsym, etc.)
-- Info.plist Purpose Strings (Camera/Location/Tracking)
-- Human Interface Guidelines compliance
-- CoreData/SwiftData privacy handling
-- In-App Purchase logic (StoreKit 2)`
+                { name: 'Submission Guide', description: 'Complete App Store review walkthrough', url: `${baseUrl}/api/download/${sessionId}/native_guide` },
+                { name: 'Best Practices', description: 'iOS coding standards & patterns', url: `${baseUrl}/api/download/${sessionId}/native_practices` },
+                { name: 'AI Audit Prompt', description: 'LLM prompt for codebase review', url: `${baseUrl}/api/download/${sessionId}/native_prompt` }
+              ]
             },
             // Track 2: React Native / Expo
             expo: {
               title: 'React Native & Expo Toolkit',
               downloads: [
-                { name: 'Expo Submission Guide', description: 'Meticulous detail for JS/TS devs', url: `${baseUrl}/api/download/${sessionId}/expo_guide` },
-                { name: 'React Native Risk Checklist', description: 'Javascript/Native-bridge audit', url: `${baseUrl}/api/download/${sessionId}/expo_smells` }
-              ],
-              prompt: `You are a senior Apple App Store Reviewer specializing in CROSS-PLATFORM (React Native/Expo).
-Audit the code for:
-- Illegal JS execution or OTA updates (Guideline 2.5.2)
-- Expo Permissions handling (location-always/foreground)
-- Bridge implementation risks
-- Nutrition Label accuracy for JS dependencies
-- Tracking Transparency with Expo-Tracking`
+                { name: 'Submission Guide', description: 'Complete App Store review walkthrough', url: `${baseUrl}/api/download/${sessionId}/expo_guide` },
+                { name: 'Best Practices', description: 'React Native & Expo patterns', url: `${baseUrl}/api/download/${sessionId}/expo_practices` },
+                { name: 'AI Audit Prompt', description: 'LLM prompt for codebase review', url: `${baseUrl}/api/download/${sessionId}/expo_prompt` }
+              ]
             }
           }
         }
@@ -136,10 +127,14 @@ Audit the code for:
       }
 
       const fileMap: Record<typeof file, string> = {
-        native_guide: 'How to Pass the Apple App Store Review Process.pdf',
-        native_smells: 'Swift and iOS Development_ Best Practices and Common Code Smells.pdf',
-        expo_guide: 'How to Pass the Apple App Store Review Process.pdf', // Placeholder
-        expo_smells: 'Swift and iOS Development_ Best Practices and Common Code Smells.pdf', // Placeholder
+        // Native iOS
+        native_guide: 'Comprehensive Guide to Passing the Apple App Store Review (iOS & iPadOS).pdf',
+        native_practices: 'iOS Coding Best Practices (2025).pdf',
+        native_prompt: 'LLM Prompt - iOS Best Practices and App Store Review (2025).md',
+        // Expo / React Native
+        expo_guide: 'Comprehensive Guide to Passing Apple App Store Review (Expo React Native Apps).pdf',
+        expo_practices: 'Best Practices for React Native Development with Expo (2025).pdf',
+        expo_prompt: 'LLM Prompt: Expo + React Native Codebase Audit for App Store Submission (2025).md',
       }
       const fileName = fileMap[file]
       
@@ -156,7 +151,8 @@ Audit the code for:
       }
 
       const stream = fs.createReadStream(filePath)
-      reply.header('Content-Type', 'application/pdf')
+      const contentType = fileName.endsWith('.md') ? 'text/markdown' : 'application/pdf'
+      reply.header('Content-Type', contentType)
       reply.header('Content-Disposition', `attachment; filename="${fileName}"`)
       return reply.send(stream)
 

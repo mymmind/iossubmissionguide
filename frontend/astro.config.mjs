@@ -5,9 +5,11 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://appstorepass.com',
+  site: 'https://iossubmissionguide.com',
   vite: {
     plugins: [tailwindcss()]
   },
-  integrations: [sitemap()]
+  integrations: [sitemap({
+    filter: (page) => !page.includes('/success') && !page.includes('/restore')
+  })]
 });

@@ -23,9 +23,203 @@ const sanitizedContent = DOMPurify.sanitize(hubArticle.content, {
   ADD_TAGS: ['section'],
   ADD_ATTR: ['target', 'rel', 'onclick'],
 });
+
+// WebPage schema for homepage
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": hubArticle.title,
+  "description": hubArticle.description,
+  "url": "https://iossubmissionguide.com",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://iossubmissionguide.com/og-image.webp",
+    "width": 1200,
+    "height": 630
+  },
+  "inLanguage": "en-US",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "iOS Submission Guide",
+    "url": "https://iossubmissionguide.com"
+  },
+  "about": {
+    "@type": "Thing",
+    "name": "App Store Review Guidelines",
+    "description": "Apple's guidelines for iOS app submission and approval"
+  },
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": ["h1", "h2", ".description"]
+  },
+  ...(hubArticle.publishedAt && { "datePublished": hubArticle.publishedAt }),
+  ...(hubArticle.updatedAt && { "dateModified": hubArticle.updatedAt })
+};
+
+// WebSite schema with search action
+const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "iOS Submission Guide",
+  "url": "https://iossubmissionguide.com",
+  "description": "Comprehensive guide for passing the Apple App Store review process",
+  "inLanguage": "en-US",
+  "publisher": {
+    "@type": "Organization",
+    "name": "iOS Submission Guide",
+    "url": "https://iossubmissionguide.com"
+  }
+};
+
+// ItemList schema for article collection (helps Google understand site structure)
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "iOS App Store Submission Guides",
+  "description": "Complete collection of guides for passing App Store review",
+  "numberOfItems": 14,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Mastering App Store Connect & TestFlight",
+      "url": "https://iossubmissionguide.com/connect-guide"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Common App Store Rejection Reasons",
+      "url": "https://iossubmissionguide.com/rejection-guide"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "App Store Legal & Privacy Guide",
+      "url": "https://iossubmissionguide.com/legal-compliance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "How to Handle App Store Rejection",
+      "url": "https://iossubmissionguide.com/rejection-recovery"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Guideline 4.2: Minimum Functionality Fix",
+      "url": "https://iossubmissionguide.com/guideline-4-2-minimum-functionality"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "Guideline 2.1: App Crashes & Bugs Fix",
+      "url": "https://iossubmissionguide.com/guideline-2-1-app-crashes"
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "React Native App Store Submission Guide",
+      "url": "https://iossubmissionguide.com/react-native-app-store-submission"
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "name": "Flutter App Store Submission Guide",
+      "url": "https://iossubmissionguide.com/flutter-app-store-submission"
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "name": "App Store Screenshot Sizes 2025",
+      "url": "https://iossubmissionguide.com/app-store-screenshot-sizes-2025"
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "name": "App Store Review Time 2025",
+      "url": "https://iossubmissionguide.com/app-store-review-time-2025"
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "name": "App Store Privacy Policy Requirements 2025",
+      "url": "https://iossubmissionguide.com/app-store-privacy-policy-requirements"
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "name": "App Store Metadata Best Practices 2025",
+      "url": "https://iossubmissionguide.com/app-store-metadata-best-practices"
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "name": "Guideline 3.1: In-App Purchase Fix",
+      "url": "https://iossubmissionguide.com/guideline-3-1-in-app-purchase"
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
+      "name": "Swift & SwiftUI App Store Submission Guide",
+      "url": "https://iossubmissionguide.com/swift-swiftui-app-store-submission"
+    }
+  ]
+};
+
+// HowTo schema for step-by-step guide (rich snippets)
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Pass App Store Review",
+  "description": "Complete guide to getting your iOS app approved on the first submission",
+  "totalTime": "PT2H",
+  "estimatedCost": {
+    "@type": "MonetaryAmount",
+    "currency": "USD",
+    "value": "99"
+  },
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Review Apple's Guidelines",
+      "text": "Read and understand the App Store Review Guidelines, focusing on sections 1 (Safety), 2 (Performance), 3 (Business), 4 (Design), and 5 (Legal)."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Audit Your App for Compliance",
+      "text": "Check your app against common rejection reasons: crashes, broken links, placeholder content, missing privacy policy, and incomplete features."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Configure Privacy Permissions",
+      "text": "Add clear, user-benefit-focused purpose strings for all permissions (camera, location, contacts) in your Info.plist file."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Prepare App Store Connect",
+      "text": "Upload screenshots, write compelling descriptions, set up pricing, and configure in-app purchases correctly."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 5,
+      "name": "Submit with Review Notes",
+      "text": "Include detailed review notes explaining any features that may need clarification, demo accounts, or special instructions for reviewers."
+    }
+  ]
+};
 ---
 
 <Layout title={hubArticle.title} description={hubArticle.description}>
+  <!-- Schema JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(webSiteSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+
   <article>
     <div set:html={sanitizedContent} />
   </article>

@@ -9,6 +9,8 @@ interface Article {
   content: string;
   isHub: boolean;
   toc?: unknown;
+  publishedAt?: string;
+  updatedAt?: string;
   relatedFrom?: Array<{
     targetArticle: {
       slug: string;
@@ -49,9 +51,72 @@ const sanitizedContent = DOMPurify.sanitize(article.content, {
   ADD_TAGS: ['section'],
   ADD_ATTR: ['target', 'rel', 'onclick'],
 });
+
+// Breadcrumb schema for SEO
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://iossubmissionguide.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": article.title,
+      "item": `https://iossubmissionguide.com/${article.slug}`
+    }
+  ]
+};
+
+// Article schema for SEO
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": article.title,
+  "description": article.description,
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://iossubmissionguide.com/og-image.webp",
+    "width": 1200,
+    "height": 630
+  },
+  "inLanguage": "en-US",
+  "author": {
+    "@type": "Organization",
+    "name": "iOS Submission Guide",
+    "url": "https://iossubmissionguide.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "iOS Submission Guide",
+    "url": "https://iossubmissionguide.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://iossubmissionguide.com/favicon.svg",
+      "width": 512,
+      "height": 512
+    }
+  },
+  "url": `https://iossubmissionguide.com/${article.slug}`,
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `https://iossubmissionguide.com/${article.slug}`
+  },
+  ...(article.publishedAt && { "datePublished": article.publishedAt }),
+  ...(article.updatedAt && { "dateModified": article.updatedAt })
+};
 ---
 
 <Layout title={article.title} description={article.description} toc={article.toc}>
+  <!-- Breadcrumb Schema JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <!-- Article Schema JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
   <article>
     <div set:html={sanitizedContent} />
   </article>

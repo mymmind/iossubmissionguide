@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "Page Not Found - iOS Submission Guide";
+const description = "The page you're looking for doesn't exist. Browse our App Store submission guides to find what you need.";
+---
+
+<Layout title={title} description={description} noindex={true}>
+  <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
+    <!-- 404 Icon -->
+    <div class="w-24 h-24 rounded-3xl bg-red-50 flex items-center justify-center text-red-500 mb-8">
+      <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+      </svg>
+    </div>
+
+    <!-- Error Message -->
+    <h1 class="text-4xl lg:text-5xl font-bold text-apple-dark mb-4">404 - Page Not Found</h1>
+    <p class="text-lg text-gray-600 mb-8 max-w-md">
+      The page you're looking for doesn't exist or has been moved. Let's get you back on track.
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4">
+      <a href="/" class="inline-flex items-center justify-center px-8 py-4 bg-apple-blue text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors min-h-[44px]">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        </svg>
+        Back to Home
+      </a>
+      <a href="/ai-review" class="inline-flex items-center justify-center px-8 py-4 bg-gray-100 text-apple-dark font-semibold rounded-xl hover:bg-gray-200 transition-colors min-h-[44px]">
+        AI Review Toolkit
+      </a>
+    </div>
+
+    <!-- Popular Pages -->
+    <div class="mt-16 w-full max-w-2xl">
+      <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6">Popular Guides</h2>
+      <div class="grid sm:grid-cols-2 gap-4 text-left">
+        <a href="/guideline-2-1-app-crashes" class="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+          <h3 class="font-semibold text-apple-dark mb-1">Guideline 2.1: App Crashes</h3>
+          <p class="text-sm text-gray-600">Fix crash-related rejections</p>
+        </a>
+        <a href="/guideline-4-2-minimum-functionality" class="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+          <h3 class="font-semibold text-apple-dark mb-1">Guideline 4.2: Minimum Functionality</h3>
+          <p class="text-sm text-gray-600">Avoid web wrapper rejections</p>
+        </a>
+        <a href="/react-native-app-store-submission" class="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+          <h3 class="font-semibold text-apple-dark mb-1">React Native Submission</h3>
+          <p class="text-sm text-gray-600">Expo & RN deployment guide</p>
+        </a>
+        <a href="/rejection-recovery" class="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+          <h3 class="font-semibold text-apple-dark mb-1">Rejection Recovery</h3>
+          <p class="text-sm text-gray-600">How to handle App Store rejection</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

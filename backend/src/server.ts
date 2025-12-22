@@ -1,13 +1,11 @@
 // Load dotenv BEFORE any other imports that might use process.env
 import dotenv from 'dotenv'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-dotenv.config() // Load from backend/.env if it exists
-dotenv.config({ path: path.join(__dirname, '../../.env.local') }) // Load from root/.env.local
+// Load environment variables with explicit paths
+// Use process.cwd() since PM2 sets the working directory to backend/
+dotenv.config({ path: path.join(process.cwd(), '.env') }) // Load from backend/.env
+dotenv.config({ path: path.join(process.cwd(), '../.env.local') }) // Load from root/.env.local (dev only)
 
 // Now import everything else after env vars are loaded
 import Fastify from 'fastify'

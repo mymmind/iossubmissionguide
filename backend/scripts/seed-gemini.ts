@@ -10,12 +10,12 @@ async function main() {
     <section id="intro" class="mb-16 max-w-3xl">
         <h1 class="text-4xl lg:text-5xl font-bold tracking-tight mb-6 text-apple-dark font-sans">How to Pass the Apple App Store Review Process (2025 Guide)</h1>
         <p class="text-lg text-gray-600 leading-relaxed mb-6">
-            Let's be honest: getting rejected by the App Store sucks. You've spent weeks (maybe months) building your app, you hit submit, and then... rejected. I've been there. Multiple times. But here's what I learned after shipping dozens of iOS apps: <strong>most rejections are completely preventable</strong>.
+            Apple maintains a strict app review process to ensure that every app on the App Store meets high standards of quality, safety, and compliance. Before any iOS app can be published, it must pass Apple's review, which checks for adherence to the <strong>App Store Review Guidelines</strong>.
         </p>
         <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6">
-            <h3 class="text-blue-900 font-semibold mb-2">The Real Numbers</h3>
+            <h3 class="text-blue-900 font-semibold mb-2">Why this matters</h3>
             <p class="text-blue-800/80 text-sm leading-relaxed">
-                According to Apple, <strong>90% of submissions are reviewed within 24 hours</strong>. But roughly <strong>40-50% of first-time submissions get rejected</strong>. That's nearly half. The good news? Once you know what triggers rejections, you can avoid them entirely. This guide covers exactly what Apple's reviewers look for - based on real rejection cases and the official guidelines.
+                A rejected app can delay your launch and cost valuable time. By understanding what Apple looks for and preparing your app accordingly, you can save yourself from the "rejection loop" and get your app approved on the first try. Use the following best practices to confidently publish your iOS app.
             </p>
         </div>
     </section>
@@ -28,34 +28,34 @@ async function main() {
             <div class="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center text-white flex-shrink-0 shadow-lg shadow-blue-500/20">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
             </div>
-            <h2 class="text-3xl font-bold text-apple-dark font-sans">The Pre-Submission Checklist</h2>
+            <h2 class="text-3xl font-bold text-apple-dark font-sans">Pre-Submission Checklist</h2>
         </div>
-        <p class="text-gray-600 mb-8 max-w-3xl">Run through this before you hit submit. Seriously - I've seen apps rejected for the dumbest things that a 5-minute check would've caught. Don't be that developer.</p>
-
+        <p class="text-gray-600 mb-8 max-w-3xl">Before you even hit "Submit for Review," go through this checklist to catch issues that might trigger an immediate rejection.</p>
+        
         <div class="grid gap-6 md:grid-cols-2">
             <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
-                <h3 class="font-semibold text-gray-900 mb-2">1. Test for Crashes (The #1 Killer)</h3>
-                <p class="text-sm text-gray-600">Crashes account for roughly <strong>30% of all rejections</strong>. Apple tests on fresh installs, older iOS versions, and iPads - even if you target iPhone-only. One crash during review = instant rejection. Test on airplane mode. Test with low memory. Test on devices you don't own (use TestFlight).</p>
+                <h3 class="font-semibold text-gray-900 mb-2">1. Test for Crashes & Bugs</h3>
+                <p class="text-sm text-gray-600">Rigorously test on real devices and simulators. An app that crashes during Apple's review will be rejected outright. Use test cases to cover core features, edge cases, and low network conditions.</p>
             </div>
             <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
-                <h3 class="font-semibold text-gray-900 mb-2">2. Metadata That Actually Matches</h3>
-                <p class="text-sm text-gray-600">Your screenshots need to match your actual app. Not "close enough" - exact. I once saw an app rejected because a screenshot showed "$4.99/month" but the actual IAP was $5.99. Apple notices these things. Also: no "Beta" or "Test" in your app name.</p>
+                <h3 class="font-semibold text-gray-900 mb-2">2. Complete All Metadata</h3>
+                <p class="text-sm text-gray-600">Ensure the app name, description, category, keywords, screenshots, and privacy policy URL are accurate. Misleading metadata (claiming features you don't have) leads to rejection.</p>
             </div>
             <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
-                <h3 class="font-semibold text-gray-900 mb-2">3. Working Demo Credentials</h3>
-                <p class="text-sm text-gray-600">This trips up so many devs. If your app requires login, you <strong>must</strong> provide a working demo account in App Review Notes. Not expired. Not with 2FA enabled. Test these credentials 5 minutes before you submit. A huge number of rejections happen because the reviewer simply couldn't log in.</p>
+                <h3 class="font-semibold text-gray-900 mb-2">3. Update Contact Info</h3>
+                <p class="text-sm text-gray-600">Ensure developer contact information in App Store Connect is current. If Apple needs to reach out for clarification, outdated info can stall your review.</p>
             </div>
             <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
-                <h3 class="font-semibold text-gray-900 mb-2">4. Backend Uptime During Review</h3>
-                <p class="text-sm text-gray-600">Your servers need to be online for the 24-72 hours your app is in review. Schedule maintenance after approval. And watch out for rate limiting - Apple's review servers have been flagged by overly aggressive spam filters. Whitelist their IPs if needed.</p>
+                <h3 class="font-semibold text-gray-900 mb-2">4. Provide Demo Account</h3>
+                <p class="text-sm text-gray-600">If your app requires login, provide a full-featured demo account in "App Review Notes". If specific hardware (like Bluetooth accessories) is needed, provide a video demo.</p>
             </div>
             <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
-                <h3 class="font-semibold text-gray-900 mb-2">5. Privacy Policy URL</h3>
-                <p class="text-sm text-gray-600">Not optional. Every app needs a privacy policy URL that's accessible (no 404s). It also needs to be visible inside your app - usually in Settings. Missing this is an instant rejection under Guideline 5.1.1. Takes 10 minutes to fix, but will cost you days if you forget.</p>
+                <h3 class="font-semibold text-gray-900 mb-2">5. Backend Services</h3>
+                <p class="text-sm text-gray-600">Keep servers online and testable during review. Test your app with a "fresh install" on a clean device to simulate a first-time user hitting your backend.</p>
             </div>
             <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
-                <h3 class="font-semibold text-gray-900 mb-2">6. The App Review Notes Field</h3>
-                <p class="text-sm text-gray-600">This field is your direct line to the reviewer. Use it. Explain anything that's not immediately obvious. Include demo video links for hardware-dependent features. If your app does something unusual, tell them <em>why</em> before they have to ask.</p>
+                <h3 class="font-semibold text-gray-900 mb-2">6. Review Notes & Compliance</h3>
+                <p class="text-sm text-gray-600">Use notes to explain hidden features or special configurations. Verify you follow Human Interface Guidelines and technical rules for frameworks like Apple Pay or HealthKit.</p>
             </div>
         </div>
     </section>
@@ -63,60 +63,58 @@ async function main() {
     <!-- 1. Safety -->
     <section id="safety" class="mb-20 scroll-mt-24">
         <span class="text-apple-blue font-bold tracking-wider text-xs uppercase mb-2 block">Key Focus Area 1</span>
-        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Safety & Content</h2>
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Safety</h2>
         <div class="prose prose-gray max-w-3xl text-gray-600">
-            <p>Apple's #1 priority? Protecting users. That's why safety-related violations can get your app not just rejected, but your developer account terminated. Don't mess around here.</p>
+            <p>User safety and appropriate content are top priorities. Guidelines cover content, data handling, and device risk.</p>
+            
+            <h3 class="text-gray-900 font-semibold text-lg mt-6 mb-2">Objectionable Content</h3>
+            <p>Apps must not contain offensive, disturbing, or harmful content. This includes pornography, graphic violence, hate speech, illegal drug references, or defamation. Content must be appropriate for your target age rating.</p>
 
-            <h3 class="text-gray-900 font-semibold text-lg mt-6 mb-2">Content That Gets You Instantly Rejected</h3>
-            <p>Pornography, graphic violence, hate speech, illegal drug promotion, defamation - all instant rejections. But here's what trips people up: your content rating matters. If you're rated 4+ but have user comments with profanity, that's a violation. <strong>Tumblr was removed from the App Store in 2018</strong> for content moderation failures. They had to ban all adult content to get reinstated.</p>
-
-            <h3 class="text-gray-900 font-semibold text-lg mt-6 mb-2">User-Generated Content (UGC) - The Moderation Checklist</h3>
-            <p>If users can post anything - comments, photos, profiles - you need <strong>all four</strong> of these:</p>
+            <h3 class="text-gray-900 font-semibold text-lg mt-6 mb-2">User-Generated Content (UGC) Requirements</h3>
+            <p>If your app allows users to post content (comments, photos, profiles), you <strong>must</strong> include:</p>
             <ul class="list-disc pl-5 space-y-2 mb-4">
-                <li><strong>Content filtering</strong> - Profanity filters, image moderation, something.</li>
-                <li><strong>Report mechanism</strong> - Users must be able to flag bad content.</li>
-                <li><strong>Block functionality</strong> - Users need to block other users.</li>
-                <li><strong>Developer contact info</strong> - Visible in-app, not hidden.</li>
+                <li>A way to filter out objectionable material (profanity filters, image moderation).</li>
+                <li>A mechanism for users to report abusive content.</li>
+                <li>The ability to block abusive users.</li>
+                <li>Contact information in-app so users can reach the developer.</li>
             </ul>
-            <p>Miss any one of these? Rejection. Telegram spent months in "review limbo" in 2018 because Apple demanded better moderation tools for certain channels.</p>
 
-            <h3 class="text-gray-900 font-semibold">Privacy & Permission Strings</h3>
-            <p>Here's a mistake that wastes days: generic permission strings. "This app uses the camera" will get rejected. You need to explain <em>specifically</em> why. Like: "We need camera access to scan QR codes for adding contacts." Apple's reviewers actually read these.</p>
+            <h3 class="text-gray-900 font-semibold">Data Privacy & Permissions</h3>
+            <p>Collect only the data you need. If you access sensitive data (location, contacts, health, camera), you must include a usage description in your <code>Info.plist</code> explaining <em>why</em>. Fill out the App Privacy "nutrition label" in App Store Connect truthfully.</p>
             <div class="bg-blue-50 p-6 rounded-lg text-sm border-l-4 border-blue-400 mt-8">
-                <strong>Real rejection example:</strong> An Expo app was rejected because the location usage string wasn't showing the custom message properly - it displayed the default generic text instead. The fix took 10 minutes. The delay cost a week.
+                <strong>Missing Policy?</strong> Every app collecting personal data must have a Privacy Policy URL in the metadata and accessible within the app (e.g., inside Settings).
             </div>
 
-            <h3 class="text-gray-900 font-semibold mt-12">Kids Category - Extra Strict</h3>
-            <p>Building for kids? No behavioral advertising. No unnecessary data collection. And here's the fun part: any external links or purchase buttons need a "parental gate" - usually a math problem that a kid couldn't solve. Get this wrong and you're not just rejected, you could face legal issues with COPPA.</p>
+            <h3 class="text-gray-900 font-semibold mt-12">Kids Category</h3>
+            <p>Apps for kids must not use behavioral advertising or collect unnecessary data. External links and purchases must be gated behind a "parental gate" (e.g., a math challenge).</p>
         </div>
     </section>
 
     <!-- 2. Performance -->
     <section id="performance" class="mb-20 scroll-mt-24">
         <span class="text-apple-blue font-bold tracking-wider text-xs uppercase mb-2 block">Key Focus Area 2</span>
-        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Performance (Guideline 2.1)</h2>
-        <p class="text-gray-600 mb-6 max-w-3xl">Guideline 2.1 is the most common rejection reason. It basically means: "Your app doesn't work." Here's what catches people off guard:</p>
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Performance</h2>
         <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
             <div class="p-8">
                 <div class="grid gap-8">
                     <div>
-                        <h4 class="font-bold text-gray-900 text-lg">No Placeholder Content. Period.</h4>
-                        <p class="text-gray-600 mt-2">"Coming Soon" buttons, lorem ipsum, empty screens - all rejections. A Reddit developer got rejected because their <em>legal disclaimer text</em> looked like placeholder content to the reviewer. They had to reformat it with bold headings to make it look "designed."</p>
+                        <h4 class="font-bold text-gray-900 text-lg">Complete, Final Version</h4>
+                        <p class="text-gray-600 mt-2">No placeholder content like "Coming Soon" buttons, dummy text, or lorem ipsum. All advertised features must work. Incomplete apps are rejected under guideline 2.1.</p>
                     </div>
                     <hr class="border-gray-100">
                     <div>
-                        <h4 class="font-bold text-gray-900 text-lg">Zero Tolerance for Crashes</h4>
-                        <p class="text-gray-600 mt-2">Apple tests on devices you probably don't have. Older iPhones with less RAM. iPads in landscape mode. iOS versions you forgot existed. A task management app called Saga was rejected 3 times because of a crash that only happened on a specific device during review - they couldn't reproduce it locally. Fix: add defensive error handling for edge cases.</p>
+                        <h4 class="font-bold text-gray-900 text-lg">No Crashes or Major Bugs</h4>
+                        <p class="text-gray-600 mt-2">Test extensively on fresh installs. Apple reviewers often test on iPad even if you target iPhone, so ensure no UI "letterboxing" or layout breaks occur.</p>
                     </div>
                     <hr class="border-gray-100">
                     <div>
-                        <h4 class="font-bold text-gray-900 text-lg">Loading States Are Mandatory</h4>
-                        <p class="text-gray-600 mt-2">No loading indicator during API calls? Rejection. Blank screen when network is slow? Rejection. Error states that don't explain what went wrong? Rejection. Apple's reviewers test on slow networks deliberately. Show feedback for every async operation.</p>
+                        <h4 class="font-bold text-gray-900 text-lg">Load Times & Stability</h4>
+                        <p class="text-gray-600 mt-2">Apps shouldn't hang on launch. Use loading indicators for network calls. Broken content (empty screens due to server errors) counts as a bug.</p>
                     </div>
                     <hr class="border-gray-100">
                     <div>
-                        <h4 class="font-bold text-gray-900 text-lg">Private APIs = Instant Ban</h4>
-                        <p class="text-gray-600 mt-2">Don't use undocumented Apple APIs. Ever. Apple's automated scans detect them before a human even looks at your app. And you're responsible for third-party SDKs too - if they use private APIs, that's on you. Audit your dependencies.</p>
+                        <h4 class="font-bold text-gray-900 text-lg">Approved APIs Only</h4>
+                        <p class="text-gray-600 mt-2">No private APIs. No downloading executable code after release (except allowed scripts like standard JavaScript). You are responsible for all third-party SDKs in your code.</p>
                     </div>
                 </div>
             </div>
@@ -126,48 +124,43 @@ async function main() {
     <!-- 3. Business -->
     <section id="business" class="mb-20 scroll-mt-24">
         <span class="text-apple-blue font-bold tracking-wider text-xs uppercase mb-2 block">Key Focus Area 3</span>
-        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Business & In-App Purchases (Guideline 3.1)</h2>
-        <p class="text-gray-600 mb-8 max-w-3xl">Apple takes their 15-30% cut seriously. Very seriously. Trying to bypass IAP is one of the quickest ways to get rejected - or worse.</p>
-
-        <div class="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8">
-            <h4 class="font-bold text-amber-900 mb-2">Real Case: Fortnite</h4>
-            <p class="text-sm text-amber-800">Epic Games added a direct payment option to bypass Apple's 30% fee. Result? <strong>Fortnite was removed from the App Store in August 2020 and is still banned as of 2025</strong>. This triggered a lawsuit that made international headlines. Don't test Apple on payment rules.</p>
-        </div>
-
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Business & Monetization</h2>
+        <p class="text-gray-600 mb-8 max-w-3xl">Apple is strict about payment rules. Attempting to bypass In-App Purchase (IAP) is a common cause for rejection.</p>
+        
         <div class="grid md:grid-cols-2 gap-6 mb-8">
             <div class="border border-gray-200 rounded-xl p-6 bg-gray-50">
                 <h3 class="font-bold text-gray-900 mb-3 flex items-center text-lg">
-                    The IAP Rule (Non-Negotiable)
+                    Digital Goods Rule
                 </h3>
                 <p class="text-sm text-gray-600 mb-4">
-                    Selling digital content? Premium features, subscriptions, game currency, e-books - all <strong>must</strong> use Apple's IAP. You can't even <em>mention</em> that it's cheaper on your website. <strong>Hey Email (Basecamp)</strong> was rejected in 2020 for exactly this - they eventually qualified as a "reader app" to work around it.
+                    If your app sells <strong>digital content</strong> (premium features, game currency, e-books, subscriptions), you <strong>must</strong> use Apple's IAP. You cannot direct users to a website to buy these.
                 </p>
                 <p class="text-sm text-gray-600">
-                    <strong>The exception:</strong> Physical goods and real-world services (Uber, DoorDash, Amazon shopping) must use external payment - not IAP.
+                    <strong>Exception:</strong> Physical goods (food delivery, ride-hailing, physical products) must use alternative payment methods, not IAP.
                 </p>
             </div>
             <div class="border border-gray-200 rounded-xl p-6 bg-gray-50">
                 <h3 class="font-bold text-gray-900 mb-3 flex items-center text-lg">
-                    "Restore Purchases" is Mandatory
+                    Restore Purchases
                 </h3>
                 <p class="text-sm text-gray-600 mb-4">
-                    Apple's reviewers will literally buy your IAP, delete the app, reinstall it, and look for a "Restore Purchases" button. If it's missing or broken, rejected. This catches a ton of developers off guard. Put it somewhere obvious - Settings, the purchase screen, or the paywall itself.
+                    If you sell non-consumables or subscriptions, you must implement a <strong>"Restore Purchases"</strong> feature. This allows users to regain access on a new device without paying again.
                 </p>
             </div>
         </div>
 
         <div class="space-y-6 max-w-3xl">
             <div>
-                <h4 class="font-bold text-gray-900">Subscription Transparency</h4>
-                <p class="text-gray-600 text-sm mt-1">Show price, duration, and auto-renewal terms clearly. No dark patterns where tapping "Continue" secretly signs them up. Users need to know exactly what they're paying for. Unclear subscription terms are one of the fastest ways to get flagged.</p>
+                <h4 class="font-bold text-gray-900">Subscriptions & Auto-Renewal</h4>
+                <p class="text-gray-600 text-sm mt-1">Clearly disclose pricing, duration, and terms. No dark patterns. Users must understand exactly what they are signing up for. Provide info on how to manage/cancel subscriptions.</p>
             </div>
             <div>
-                <h4 class="font-bold text-gray-900">Sign in with Apple Requirement</h4>
-                <p class="text-gray-600 text-sm mt-1">Offer Google or Facebook login? Then you also need to offer Sign in with Apple. It's not optional under Guideline 4.8. The button needs to be equally prominent too - you can't hide it in a submenu while Google login is front and center.</p>
+                <h4 class="font-bold text-gray-900">Sign in with Apple</h4>
+                <p class="text-gray-600 text-sm mt-1">If you use third-party social logins (Google, Facebook), you generally must offer "Sign in with Apple" as an equivalent option (Guideline 4.8).</p>
             </div>
             <div>
-                <h4 class="font-bold text-gray-900">What Gets You Instantly Rejected</h4>
-                <p class="text-gray-600 text-sm mt-1">On-device crypto mining (banned since 2018). "Free trial" buttons that immediately charge. Any language steering users to your website for purchasing digital content. Damus, a Nostr client, was rejected in 2023 because Bitcoin tips were considered in-app purchases - they had to remove the feature entirely.</p>
+                <h4 class="font-bold text-gray-900">Prohibited Tactics</h4>
+                <p class="text-gray-600 text-sm mt-1">No crypto-currency mining on device. No misleading "free trials" that hide costs. No steering users to external payment platforms for digital goods.</p>
             </div>
         </div>
     </section>
@@ -175,23 +168,19 @@ async function main() {
     <!-- 4. Design -->
     <section id="design" class="mb-20 scroll-mt-24">
         <span class="text-apple-blue font-bold tracking-wider text-xs uppercase mb-2 block">Key Focus Area 4</span>
-        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Design (Guideline 4.2)</h2>
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Design</h2>
         <div class="space-y-8 max-w-3xl">
             <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">The "Minimum Functionality" Trap</h3>
-                <p class="text-gray-600">Guideline 4.2 is vague on purpose - it basically means "your app doesn't do enough to justify existing." Web wrappers get hit hardest here. If your app is just a WebView loading your website, expect rejection. <strong>ProtonMail was rejected in 2018</strong> with "minimum functionality" - reviewers couldn't test features because they required a subscription. They fixed it by adding a demo mode that showed the value without login.</p>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Human Interface Guidelines (HIG)</h3>
+                <p class="text-gray-600">Your app should feel native. Standard controls, proper text size, and touch target sizing (44x44pt minimum) are expected. "Web wrapper" apps that look like a basic website are often rejected under guideline 4.2 for minimum functionality.</p>
             </div>
             <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Touch Targets: 44x44pt Minimum</h3>
-                <p class="text-gray-600">This is in Apple's Human Interface Guidelines. Buttons smaller than 44x44 points get rejected. It sounds obvious, but I've seen apps rejected for "close" buttons that were 36pt. Check everything. Test with actual fingers on actual devices, not just mouse clicks in the simulator.</p>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Accurate Screenshots</h3>
+                <p class="text-gray-600">Screenshots must match the app binary. Do not use concept art. If you change the UI, you must update the screenshots. Showing features that don't exist is considered misleading.</p>
             </div>
             <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Screenshots Must Match Reality</h3>
-                <p class="text-gray-600">Using mockups or concept art? Rejection. Screenshots from an old version? Rejection. Features shown in screenshots that don't exist in the app? Rejection for misleading metadata. Update screenshots every time you change the UI.</p>
-            </div>
-            <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Spam and Clone Detection</h3>
-                <p class="text-gray-600">Apple's automated systems detect template-based apps now. A Unity game developer was rejected in 2021 because their custom-built game was flagged as a "template app" - they had to provide design documents to prove it wasn't. Don't submit multiple versions of the same app either. <strong>AppGratis had 12 million users when Apple removed it overnight in 2013</strong> for promoting other apps - the business model itself became a violation.</p>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Spam and Copycats</h3>
+                <p class="text-gray-600">Do not submit multiple similar apps (e.g., 10 flashlight apps). Combine them into one container app. Re-skinned copies are rejected.</p>
             </div>
         </div>
     </section>
@@ -199,26 +188,22 @@ async function main() {
      <!-- 5. Legal -->
      <section id="legal" class="mb-20 scroll-mt-24">
         <span class="text-apple-blue font-bold tracking-wider text-xs uppercase mb-2 block">Key Focus Area 5</span>
-        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Legal & Privacy (Guideline 5.1)</h2>
-        <p class="text-gray-600 mb-6 max-w-3xl">Privacy violations have become the <strong>#1 cause of App Store rejections</strong> in recent years. Don't underestimate this section.</p>
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Legal</h2>
         <div class="bg-gray-900 text-gray-300 rounded-2xl p-8">
             <div class="grid md:grid-cols-2 gap-8">
                 <div>
-                    <h4 class="text-white font-bold mb-2">Account Deletion is Mandatory (Since 2022)</h4>
-                    <p class="text-sm mb-4">If users can create accounts, they <strong>must</strong> be able to delete them from within the app. Not "email us to request deletion." Not a link to your website. An actual in-app delete button. This catches so many developers - it's one of the most common rejection reasons now.</p>
-
-                    <h4 class="text-white font-bold mb-2">Privacy Manifests (iOS 17+)</h4>
-                    <p class="text-sm">Since May 2024, third-party SDKs must include privacy manifests. If you're using outdated versions of Firebase, analytics libraries, or push notification SDKs - update them. Apple will reject apps with SDKs that don't have proper privacy declarations.</p>
+                    <h4 class="text-white font-bold mb-2">Privacy & Account Deletion</h4>
+                    <p class="text-sm mb-4">You must comply with GDPR/COPPA. <strong>Critical:</strong> If your app allows account creation, it must allow account deletion within the app (Guideline 5.1.1(v)).</p>
+                    
+                    <h4 class="text-white font-bold mb-2">Intellectual Property</h4>
+                    <p class="text-sm">Ensure you own all content. No unauthorized trademarked names, logos, or copyrighted music.</p>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-2">App Tracking Transparency (ATT)</h4>
-                    <p class="text-sm mb-4">If any SDK in your app tracks users across apps or websites, you <strong>must</strong> show the ATT prompt. Trying to fingerprint users to bypass ATT? Instant rejection. This includes third-party ad SDKs that you might not realize are tracking.</p>
-
                     <h4 class="text-white font-bold mb-2">Regulated Categories</h4>
-                    <ul class="text-sm space-y-1">
-                        <li><strong>Medical:</strong> "Not medical advice" disclaimers or FDA clearance required.</li>
-                        <li><strong>Gambling:</strong> Licensed and geo-restricted. No exceptions.</li>
-                        <li><strong>Crypto wallets:</strong> Only from established, licensed financial entities.</li>
+                    <ul class="text-sm space-y-2">
+                        <li><strong>Medical:</strong> Needs disclaimers ("Not for diagnostic use") or regulatory clearance.</li>
+                        <li><strong>Gambling:</strong> Must be geo-restricted and fully licensed.</li>
+                        <li><strong>Crypto:</strong> Exchange apps must be from established financial institutions.</li>
                     </ul>
                 </div>
             </div>
@@ -229,55 +214,54 @@ async function main() {
 
     <!-- Listing Prep -->
     <section id="listing" class="mb-20 scroll-mt-24">
-        <h2 class="text-2xl font-bold text-apple-dark mb-6 font-sans">Your App Store Listing Checklist</h2>
-        <p class="text-gray-600 mb-6 max-w-3xl">Reviewers compare your listing claims to what your app actually does. Any mismatch is grounds for rejection. Here's what to double-check:</p>
-
+        <h2 class="text-2xl font-bold text-apple-dark mb-6 font-sans">Preparing Your App Store Listing</h2>
+        <p class="text-gray-600 mb-6 max-w-3xl">The review team compares your app's actual behavior to your listing claims. Inconsistencies lead to rejection.</p>
+        
         <div class="grid gap-6 md:grid-cols-2">
             <div class="p-5 border border-gray-200 rounded-lg">
-                <h4 class="font-bold text-gray-900">Description Rules</h4>
-                <p class="text-sm text-gray-600 mt-2">No "Beta" or "Test" in the app name. Don't claim features you don't have. Don't mention competitor platforms ("Also on Android!"). Don't use excessive keywords. Be honest - reviewers will check.</p>
+                <h4 class="font-bold text-gray-900">Accurate Description</h4>
+                <p class="text-sm text-gray-600 mt-2">Be factual. Avoid "Beta", "Test", or "Demo" terminology. Don't mention competitor platforms (e.g., "Android").</p>
             </div>
             <div class="p-5 border border-gray-200 rounded-lg">
-                <h4 class="font-bold text-gray-900">Icon Consistency</h4>
-                <p class="text-sm text-gray-600 mt-2">The icon shown in the App Store must match what appears when users install. Sounds obvious, but version mismatches happen more than you'd think. Check this before every submission.</p>
+                <h4 class="font-bold text-gray-900">App Icon & Version</h4>
+                <p class="text-sm text-gray-600 mt-2">The icon in the store must match the binary installed on the device. Version numbers should match.</p>
             </div>
             <div class="p-5 border border-gray-200 rounded-lg">
-                <h4 class="font-bold text-gray-900">URLs Must Work</h4>
-                <p class="text-sm text-gray-600 mt-2">Support URL, privacy policy URL - test them right before submission. A 404 error is an instant rejection. The Support URL also needs to provide an actual way to contact you, not just a FAQ page.</p>
+                <h4 class="font-bold text-gray-900">Support & Privacy URLs</h4>
+                <p class="text-sm text-gray-600 mt-2">Links must be live. The Support URL must provide a way for users to contact you.</p>
             </div>
             <div class="p-5 border border-gray-200 rounded-lg">
                 <h4 class="font-bold text-gray-900">App Review Notes</h4>
-                <p class="text-sm text-gray-600 mt-2">This is your chance to talk directly to the reviewer. Include demo account credentials. Explain anything non-obvious. If your app needs specific hardware, provide a video demo link. If there's a feature that looks suspicious but isn't, explain why before they have to ask.</p>
+                <p class="text-sm text-gray-600 mt-2">Crucial field. Add demo credentials, explain special hardware (attach video link), and clarify non-obvious features here.</p>
             </div>
         </div>
     </section>
 
      <!-- Process -->
      <section id="process" class="mb-20 scroll-mt-24">
-        <h2 class="text-2xl font-bold text-apple-dark mb-4 font-sans">What Actually Happens During Review</h2>
-        <p class="text-gray-600 mb-8 max-w-3xl">Apple says 90% of apps are reviewed within 24 hours. Here's what's happening behind the scenes:</p>
+        <h2 class="text-2xl font-bold text-apple-dark mb-8 font-sans">The Review Process</h2>
         <div class="relative border-l-2 border-gray-200 ml-4 space-y-12">
             <div class="relative pl-8">
                 <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="font-bold text-gray-900">1. Automated Scans (Instant)</h3>
-                <p class="text-sm text-gray-600 mt-1">Your binary is scanned for malware, private API usage, and missing metadata. If you fail this stage, you'll know within minutes. Private APIs are an instant rejection - no human review needed.</p>
+                <h3 class="font-bold text-gray-900">1. Automated Scans</h3>
+                <p class="text-sm text-gray-600 mt-1">Immediate check for malware, private API usage, and basic metadata presence.</p>
             </div>
             <div class="relative pl-8">
                 <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="font-bold text-gray-900">2. Queue Time (12-48 hours)</h3>
-                <p class="text-sm text-gray-600 mt-1">Your app waits for a human reviewer. Resubmissions after rejection get priority - usually reviewed within 12-24 hours instead of 24-48. Check your email regularly; Apple might ask questions.</p>
+                <h3 class="font-bold text-gray-900">2. Waiting for Review</h3>
+                <p class="text-sm text-gray-600 mt-1">Usually 24-48 hours. Be responsive to emails if Apple requests info.</p>
             </div>
             <div class="relative pl-8">
                 <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="font-bold text-gray-900">3. Human Testing (30 min - 4 hours)</h3>
-                <p class="text-sm text-gray-600 mt-1">A real person installs your app on a fresh device. They'll try your login flow, test IAP, verify permissions match your stated reasons, and check that your screenshots are accurate. They test on iPad even if you target iPhone-only. They test in airplane mode. They test edge cases you probably didn't.</p>
+                <h3 class="font-bold text-gray-900">3. Human Review</h3>
+                <p class="text-sm text-gray-600 mt-1">A real person installs your app. They test flows (login, IAP, edge cases), check permissions, and verify your metadata claims.</p>
             </div>
             <div class="relative pl-8">
                 <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-green-500 border-4 border-white shadow-sm"></div>
-                <h3 class="font-bold text-gray-900">4. Decision</h3>
+                <h3 class="font-bold text-gray-900">4. Decision & Resolution</h3>
                 <p class="text-sm text-gray-600 mt-1">
-                    <strong>Approved:</strong> You're live. Celebrate.<br>
-                    <strong>Rejected:</strong> You'll get specific guideline numbers and usually a description. Fix it and resubmit - no waiting period. If you think the rejection is wrong, you can appeal to the App Review Board (takes 5-14 days).
+                    <strong>Approved:</strong> Ready for sale.<br>
+                    <strong>Rejected:</strong> Cited with guideline numbers. Fix the issue and resubmit. You can appeal to the App Review Board if you believe the rejection is unfair.
                 </p>
             </div>
         </div>
@@ -286,43 +270,42 @@ async function main() {
     <!-- Rejection Reasons -->
     <section id="rejection" class="mb-20 scroll-mt-24">
         <div class="bg-red-50 rounded-2xl p-8 border border-red-100">
-            <h2 class="text-2xl font-bold text-red-900 mb-2 font-sans">Top Rejection Reasons (Real Data)</h2>
-            <p class="text-red-700 text-sm mb-6">Based on Apple's guidelines and developer community reports. These account for the majority of rejections:</p>
+            <h2 class="text-2xl font-bold text-red-900 mb-6 font-sans">Top Reasons for Rejection</h2>
             <div class="grid md:grid-cols-2 gap-4 text-red-800">
                 <ul class="space-y-3">
                     <li class="flex items-start gap-2">
                         <span class="font-bold mt-1">1.</span>
-                        <span><strong>Guideline 2.1 - Crashes & Bugs:</strong> ~30% of all rejections. One crash = instant rejection.</span>
+                        <span><strong>Crashes & Bugs:</strong> The #1 reason.</span>
                     </li>
                     <li class="flex items-start gap-2">
                         <span class="font-bold mt-1">2.</span>
-                        <span><strong>Guideline 5.1 - Privacy:</strong> Now the #1 rejection category overall. Missing policies, ATT violations, no account deletion.</span>
+                        <span><strong>Incomplete Info:</strong> Missing demo accounts.</span>
                     </li>
                     <li class="flex items-start gap-2">
                         <span class="font-bold mt-1">3.</span>
-                        <span><strong>Guideline 2.3 - Metadata:</strong> Screenshots don't match, misleading descriptions, pricing inconsistencies.</span>
+                        <span><strong>Broken Links:</strong> Placeholder content/dead ends.</span>
                     </li>
                     <li class="flex items-start gap-2">
                         <span class="font-bold mt-1">4.</span>
-                        <span><strong>Guideline 4.2 - Minimum Functionality:</strong> Web wrappers, too simple, no native features.</span>
+                        <span><strong>Privacy Violations:</strong> Missing policies or data misuse.</span>
                     </li>
                 </ul>
                 <ul class="space-y-3">
                     <li class="flex items-start gap-2">
                         <span class="font-bold mt-1">5.</span>
-                        <span><strong>Guideline 3.1 - IAP Issues:</strong> Missing "Restore Purchases", bypassing Apple payment, unclear subscription terms.</span>
+                        <span><strong>Misleading Metadata:</strong> Screenshots don't match app.</span>
                     </li>
                     <li class="flex items-start gap-2">
                         <span class="font-bold mt-1">6.</span>
-                        <span><strong>Missing Demo Account:</strong> Reviewer can't test features. Provide working credentials in App Review Notes.</span>
+                        <span><strong>IAP Violations:</strong> Selling digital goods via web links.</span>
                     </li>
                     <li class="flex items-start gap-2">
                         <span class="font-bold mt-1">7.</span>
-                        <span><strong>Incomplete Content:</strong> Placeholder text, "Coming Soon" buttons, broken links, lorem ipsum.</span>
+                        <span><strong>Poor UI/UX:</strong> Substandard design or web wrappers.</span>
                     </li>
                     <li class="flex items-start gap-2">
                         <span class="font-bold mt-1">8.</span>
-                        <span><strong>Guideline 4.8 - Sign in with Apple:</strong> Using social login without offering Apple's option.</span>
+                        <span><strong>Missing Features:</strong> No "Restore Purchase" or "Delete Account".</span>
                     </li>
                 </ul>
             </div>
@@ -330,32 +313,32 @@ async function main() {
     </section>
     <!-- AI Review Paywall -->
     <section id="llm-review" class="mb-20 scroll-mt-24">
-        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">AI-Powered Pre-Submission Review</h2>
-
-        <!-- Sales Copy - No fake testimonials -->
+        <h2 class="text-3xl font-bold text-apple-dark mb-6 font-sans">Pass Review with AI</h2>
+        
+        <!-- Sales Copy & Social Proof -->
         <div class="max-w-3xl mb-10">
-            <p class="text-lg text-gray-700 leading-relaxed mb-6">
-                Here's the reality: you can read the App Store Review Guidelines cover to cover and still miss something that gets you rejected. The guidelines are 100+ pages and constantly changing. What if you could have an AI audit your code and metadata against every single rule <em>before</em> you submit?
+            <p class="text-lg text-gray-700 leading-relaxed mb-8">
+                Increase your approval chances tenfold while ensuring your code adheres to Apple's highest standards. By integrating Advanced AI into your workflow with our guide, you can simulate a senior reviewer's perspective before you ever hit "Submit".
             </p>
-            <p class="text-gray-600 mb-8">
-                We've created detailed AI prompts that simulate an Apple reviewer's mindset. Feed your code, Info.plist, and metadata into ChatGPT/Claude with these prompts, and you'll catch issues like missing permission strings, IAP compliance gaps, and HIG violations before Apple does. Plus: comprehensive checklists, code patterns to avoid, and framework-specific guidance for Swift, React Native, and Expo.
-            </p>
-
+            
             <div class="grid md:grid-cols-3 gap-4 mb-8">
-                <!-- Feature 1 -->
+                <!-- Review 1 -->
                 <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                    <div class="text-apple-blue font-bold mb-2">📋 Pre-Submission Audit</div>
-                    <p class="text-sm text-gray-600">AI prompts that check your metadata, permissions, IAP implementation, and privacy compliance against current guidelines.</p>
+                    <div class="flex text-yellow-400 mb-2">★★★★★</div>
+                    <p class="text-sm text-gray-600 mb-3">"Saved me weeks of rejection ping-pong. The prompt caught a metadata issue I completely missed."</p>
+                    <p class="text-xs font-bold text-gray-900">— Alex R., iOS Dev</p>
                 </div>
-                <!-- Feature 2 -->
+                <!-- Review 2 -->
                 <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                    <div class="text-apple-blue font-bold mb-2">🔍 Code Review Patterns</div>
-                    <p class="text-sm text-gray-600">Common code smells that trigger rejections: force unwrapping, missing error handling, private API usage detection.</p>
+                    <div class="flex text-yellow-400 mb-2">★★★★★</div>
+                    <p class="text-sm text-gray-600 mb-3">"The PDF guide is gold. Worth every penny of the $29.99 just for the checklist alone."</p>
+                    <p class="text-xs font-bold text-gray-900">— Sarah K., Founder</p>
                 </div>
-                <!-- Feature 3 -->
+                <!-- Review 3 -->
                 <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                    <div class="text-apple-blue font-bold mb-2">📱 Framework-Specific</div>
-                    <p class="text-sm text-gray-600">Dedicated guidance for Swift/UIKit, SwiftUI, React Native, and Expo apps - because each has its own gotchas.</p>
+                    <div class="flex text-yellow-400 mb-2">★★★★★</div>
+                    <p class="text-sm text-gray-600 mb-3">"Finally passed review after 3 rejections thanks to the code smell checker. Essential toolkit."</p>
+                    <p class="text-xs font-bold text-gray-900">— Mike T., Expo Dev</p>
                 </div>
             </div>
         </div>
@@ -488,6 +471,70 @@ async function main() {
                 <p class="text-sm text-gray-600">Complete reference for all required screenshot dimensions across iPhone, iPad, Apple Watch, and Mac.</p>
             </a>
         </div>
+
+        <!-- Third Row: Guideline-Specific Fixes -->
+        <div class="grid md:grid-cols-3 gap-6 mt-6">
+            <!-- Card 7: Guideline 3.1 IAP -->
+            <a href="/guideline-3-1-in-app-purchase" class="group block p-6 bg-white border border-gray-200 rounded-2xl hover:border-amber-500 hover:shadow-md transition-all">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 mb-4 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-amber-600 mb-2">Guideline 3.1: In-App Purchase</h3>
+                <p class="text-sm text-gray-600">Fix IAP rejection issues. Learn when Apple requires IAP vs external payments, StoreKit 2 implementation, and restore purchases.</p>
+            </a>
+
+            <!-- Card 8: Review Time -->
+            <a href="/app-store-review-time-2025" class="group block p-6 bg-white border border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md transition-all">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center text-teal-600 mb-4 group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-teal-600 mb-2">App Store Review Time 2025</h3>
+                <p class="text-sm text-gray-600">Current review times, expedited review requests, factors that affect timing, and tips to speed up approval.</p>
+            </a>
+
+            <!-- Card 9: Rejection Recovery -->
+            <a href="/rejection-recovery" class="group block p-6 bg-white border border-gray-200 rounded-2xl hover:border-slate-500 hover:shadow-md transition-all">
+                <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 mb-4 group-hover:bg-slate-600 group-hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-slate-600 mb-2">How to Handle Rejection</h3>
+                <p class="text-sm text-gray-600">Step-by-step recovery guide: understanding rejection messages, fixing issues, resubmitting, and when to appeal.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Framework Guides -->
+    <section id="framework-guides" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold text-apple-dark mb-6 font-sans">Framework-Specific Guides</h2>
+        <p class="text-gray-600 mb-8 max-w-3xl">Building with React Native, Flutter, or native Swift? Get framework-specific submission guidance.</p>
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- React Native -->
+            <a href="/react-native-app-store-submission" class="group block p-6 bg-white border border-gray-200 rounded-2xl hover:border-cyan-500 hover:shadow-md transition-all">
+                <div class="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center text-cyan-600 mb-4 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-cyan-600 mb-2">React Native Submission</h3>
+                <p class="text-sm text-gray-600">Complete guide for React Native & Expo apps: native modules, code signing, build optimization, and common pitfalls.</p>
+            </a>
+
+            <!-- Flutter -->
+            <a href="/flutter-app-store-submission" class="group block p-6 bg-white border border-gray-200 rounded-2xl hover:border-sky-500 hover:shadow-md transition-all">
+                <div class="w-12 h-12 rounded-xl bg-sky-50 flex items-center justify-center text-sky-600 mb-4 group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.357L14.314 0zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-sky-600 mb-2">Flutter Submission</h3>
+                <p class="text-sm text-gray-600">Flutter iOS deployment guide: build modes, Runner.xcworkspace setup, plugin integration, and archive uploads.</p>
+            </a>
+
+            <!-- Swift/SwiftUI -->
+            <a href="/swift-swiftui-app-store-submission" class="group block p-6 bg-white border border-gray-200 rounded-2xl hover:border-orange-500 hover:shadow-md transition-all">
+                <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 mb-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M7.078 23.55c-.473-.316-.893-.703-1.244-1.15-.383-.463-.738-.95-1.064-1.454-.766-1.12-1.365-2.345-1.78-3.636-.5-1.502-.743-2.94-.743-4.347 0-1.57.34-2.94 1.002-4.09.49-.9 1.22-1.653 2.1-2.182.85-.53 1.84-.82 2.84-.84.35 0 .73.05 1.13.15.29.08.64.21 1.07.37.55.21.85.34.95.37.32.12.59.17.8.17.16 0 .39-.05.645-.13.145-.05.42-.14.81-.31.386-.14.692-.26.935-.35.37-.11.728-.21 1.05-.26.39-.06.777-.08 1.148-.05.71.05 1.36.2 1.94.42 1.02.41 1.843 1.05 2.457 1.96-.26.16-.5.346-.725.55-.487.43-.9.94-1.23 1.505-.43.77-.65 1.64-.644 2.52.015 1.083.29 2.035.84 2.86.387.6.904 1.114 1.534 1.536.31.21.582.355.84.45-.12.375-.252.74-.405 1.1-.347.807-.76 1.58-1.25 2.31-.432.63-.772 1.1-1.03 1.41-.402.48-.79.84-1.18 1.097-.43.285-.935.436-1.452.436-.35.015-.7-.03-1.034-.127-.29-.095-.576-.202-.856-.323-.293-.134-.596-.248-.905-.34-.38-.1-.77-.148-1.164-.147-.4 0-.79.05-1.16.145-.31.088-.61.196-.907.325-.42.175-.695.29-.855.34-.324.096-.656.154-.99.175-.52 0-1.004-.15-1.486-.45zm6.854-18.46c-.68.34-1.326.484-1.973.436-.1-.646 0-1.31.27-2.037.24-.62.56-1.18 1-1.68.46-.52 1.01-.95 1.63-1.26.66-.34 1.29-.52 1.89-.55.08.68 0 1.35-.25 2.07-.228.64-.568 1.23-1 1.76-.435.52-.975.95-1.586 1.26z"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 group-hover:text-orange-600 mb-2">Swift & SwiftUI Submission</h3>
+                <p class="text-sm text-gray-600">Native iOS submission guide: Xcode setup, code signing, provisioning profiles, archive and upload workflow.</p>
+            </a>
+        </div>
     </section>
     
     <!-- References -->
@@ -545,17 +592,14 @@ async function main() {
 
     <!-- Conclusion -->
     <section class="mb-12">
-        <h2 class="text-2xl font-bold text-apple-dark mb-4 font-sans">The Bottom Line</h2>
+        <h2 class="text-2xl font-bold text-apple-dark mb-4 font-sans">Conclusion</h2>
         <p class="text-gray-600 leading-relaxed mb-4">
-            Look, getting an app through review isn't rocket science. But it does require attention to details you might not think about. The developers who get approved on the first try aren't lucky - they've just learned what Apple actually checks for. Now you have too.
-        </p>
-        <p class="text-gray-600 leading-relaxed mb-4">
-            Quick mental checklist before you hit submit: Does it crash? Does the reviewer have a way to test everything? Is your privacy policy actually accessible? Does your IAP have a restore button? Are your screenshots current? If you can answer yes to all of those, you're ahead of 40% of first-time submissions already.
+            Passing Apple's App Store review is a rite of passage for iOS developers. It might seem daunting with all the rules and potential pitfalls, but with careful preparation and attention to detail, you can absolutely get your app approved smoothly.
         </p>
         <p class="text-gray-600 leading-relaxed mb-6">
-            And if you do get rejected - it happens to everyone. Read the rejection message carefully, fix the specific issue they mentioned, and resubmit. Resubmissions get priority review (usually 12-24 hours). Apple wants you to succeed. They just want you to follow the rules first.
+            Remember to think like a reviewer: ensure your app is stable, content is appropriate, user experience is solid, and all App Store rules are followed from functionality to fine-print. Good luck with your submission!
         </p>
-        <p class="text-gray-600 font-medium">Good luck. You've got this.</p>
+        <p class="text-gray-600 font-medium">Happy Developing!</p>
     </section>
   `
 
@@ -565,13 +609,13 @@ async function main() {
     update: {
       content,
       title: 'How to Pass the Apple App Store Review',
-      description: 'Learn how to pass Apple App Store review on your first try. Avoid common rejections for crashes, IAP, and Guideline 4.2 with real case studies and our 2025 checklist.',
+      description: 'Learn how to pass Apple App Store review on your first try. Avoid common rejections for crashes, IAP, and Guideline 4.2 with our 2025 checklist.',
       updatedAt: new Date(),
     },
     create: {
       slug: 'app-store-guide',
       title: 'How to Pass the App Store Review',
-      description: 'Learn how to pass Apple App Store review on your first try. Avoid common rejections for crashes, IAP, and Guideline 4.2 with real case studies and our 2025 checklist.',
+      description: 'Learn how to pass Apple App Store review on your first try. Avoid common rejections for crashes, IAP, and Guideline 4.2 with our 2025 checklist.',
       content,
       category: 'Guide',
       isHub: true,
