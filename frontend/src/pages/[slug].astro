@@ -261,6 +261,29 @@ const keyTakeaways: Record<string, string[]> = {
   ]
 };
 
+// Article order for Previous/Next navigation
+const articleOrder = [
+  { slug: "connect-guide", title: "App Store Connect & TestFlight" },
+  { slug: "rejection-guide", title: "Common Rejection Reasons" },
+  { slug: "legal-compliance", title: "Legal & Privacy Compliance" },
+  { slug: "rejection-recovery", title: "How to Handle Rejection" },
+  { slug: "guideline-4-2-minimum-functionality", title: "Guideline 4.2: Minimum Functionality" },
+  { slug: "guideline-2-1-app-crashes", title: "Guideline 2.1: App Crashes" },
+  { slug: "guideline-3-1-in-app-purchase", title: "Guideline 3.1: In-App Purchase" },
+  { slug: "react-native-app-store-submission", title: "React Native Submission" },
+  { slug: "flutter-app-store-submission", title: "Flutter Submission" },
+  { slug: "swift-swiftui-app-store-submission", title: "Swift & SwiftUI Submission" },
+  { slug: "app-store-screenshot-sizes-2025", title: "Screenshot Sizes 2025" },
+  { slug: "app-store-review-time-2025", title: "Review Time 2025" },
+  { slug: "app-store-privacy-policy-requirements", title: "Privacy Policy Requirements" },
+  { slug: "app-store-metadata-best-practices", title: "Metadata Best Practices" }
+];
+
+// Find previous and next articles
+const currentIndex = articleOrder.findIndex(a => a.slug === article.slug);
+const prevArticle = currentIndex > 0 ? articleOrder[currentIndex - 1] : null;
+const nextArticle = currentIndex < articleOrder.length - 1 ? articleOrder[currentIndex + 1] : null;
+
 // Related articles for internal linking (manual cross-links)
 const relatedArticles: Record<string, Array<{slug: string; title: string; description: string}>> = {
   "guideline-2-1-app-crashes": [
@@ -475,4 +498,34 @@ const articleSchema = {
       </a>
     </div>
   </div>
+
+  <!-- Previous/Next Article Navigation -->
+  {(prevArticle || nextArticle) && (
+    <nav class="mt-12 pt-8 border-t border-gray-200" aria-label="Article navigation">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {prevArticle ? (
+          <a href={`/${prevArticle.slug}`} class="group flex items-center gap-3 p-4 bg-gray-50 hover:bg-apple-light rounded-xl border border-gray-100 hover:border-apple-blue/20 transition-all">
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-apple-blue transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            <div>
+              <span class="text-xs text-gray-500 block mb-1">Previous</span>
+              <span class="font-medium text-apple-dark group-hover:text-apple-blue transition-colors">{prevArticle.title}</span>
+            </div>
+          </a>
+        ) : <div />}
+        {nextArticle && (
+          <a href={`/${nextArticle.slug}`} class="group flex items-center justify-end gap-3 p-4 bg-gray-50 hover:bg-apple-light rounded-xl border border-gray-100 hover:border-apple-blue/20 transition-all text-right md:col-start-2">
+            <div>
+              <span class="text-xs text-gray-500 block mb-1">Next</span>
+              <span class="font-medium text-apple-dark group-hover:text-apple-blue transition-colors">{nextArticle.title}</span>
+            </div>
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-apple-blue transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        )}
+      </div>
+    </nav>
+  )}
 </Layout>

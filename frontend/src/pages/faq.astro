@@ -248,7 +248,7 @@ const breadcrumbSchema = {
     </p>
 
     <!-- Quick Navigation -->
-    <nav class="bg-apple-light rounded-2xl p-6 mb-12" aria-label="FAQ Categories">
+    <nav id="faq-categories" class="bg-apple-light rounded-2xl p-6 mb-12" aria-label="FAQ Categories">
       <h2 class="text-lg font-bold text-apple-dark mb-4">Jump to Category</h2>
       <div class="flex flex-wrap gap-2">
         {allFaqs.map((category, index) => (
@@ -273,15 +273,27 @@ const breadcrumbSchema = {
             <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
               <h3 class="text-lg font-bold text-apple-dark mb-3">{faq.question}</h3>
               <p class="text-apple-gray leading-relaxed mb-4">{faq.answer}</p>
-              <a
-                href={faq.link}
-                class="inline-flex items-center text-sm font-medium text-apple-blue hover:underline"
-              >
-                Read full guide
-                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </a>
+              <div class="flex flex-wrap items-center gap-4">
+                <a
+                  href={faq.link}
+                  class="inline-flex items-center text-sm font-medium text-apple-blue hover:underline"
+                >
+                  Read full guide
+                  <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+                <span class="text-gray-300">|</span>
+                <a
+                  href="#faq-categories"
+                  class="inline-flex items-center text-sm text-gray-500 hover:text-apple-blue transition-colors"
+                >
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                  </svg>
+                  See all FAQs
+                </a>
+              </div>
             </div>
           ))}
         </div>
