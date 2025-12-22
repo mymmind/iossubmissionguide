@@ -203,6 +203,64 @@ const faqData: Record<string, Array<{question: string; answer: string}>> = {
   ]
 };
 
+// Key Takeaways for LLM-friendly summaries (extracted from FAQ data)
+const keyTakeaways: Record<string, string[]> = {
+  "guideline-2-1-app-crashes": [
+    "Guideline 2.1 rejections occur when your app crashes, freezes, or has bugs during Apple's testing",
+    "Always test on the exact device and iOS version mentioned in Apple's rejection message",
+    "Use Xcode Organizer crash logs to identify and fix issues before resubmitting",
+    "Expedited reviews are available for critical bug fixes - typically 24-48 hours"
+  ],
+  "guideline-3-1-in-app-purchase": [
+    "All digital goods and services must use Apple's In-App Purchase system",
+    "Physical goods and real-world services are exempt from IAP requirements",
+    "Never mention external payment options anywhere in your app",
+    "Restore purchases functionality must work correctly for all IAP products"
+  ],
+  "guideline-4-2-minimum-functionality": [
+    "Your app must provide value beyond what a website could offer",
+    "Add native iOS features: widgets, notifications, Siri shortcuts, offline support",
+    "Simple apps can be approved if they provide genuine utility",
+    "Focus on doing one thing excellently rather than adding unnecessary features"
+  ],
+  "rejection-guide": [
+    "40-50% of first-time submissions get rejected - this is normal",
+    "Crashes and bugs cause 30% of all rejections",
+    "Always include a working privacy policy URL and demo login credentials",
+    "Test thoroughly on real devices before submission"
+  ],
+  "rejection-recovery": [
+    "Read the rejection message carefully - it contains specific information about what to fix",
+    "Use Resolution Center in App Store Connect to communicate with App Review",
+    "You can appeal rejections through the App Review Board if you believe they're incorrect",
+    "Include detailed reviewer notes explaining what you fixed when resubmitting"
+  ],
+  "app-store-review-time-2025": [
+    "90% of app submissions are reviewed within 24 hours",
+    "First-time submissions may take slightly longer than updates",
+    "Expedited reviews are available for critical bug fixes and time-sensitive events",
+    "Contact Apple through Resolution Center if review exceeds 5 business days"
+  ],
+  "app-store-privacy-policy-requirements": [
+    "All apps require a privacy policy - this is mandatory under Guideline 5.1.1",
+    "Your privacy policy must match your App Privacy nutrition labels",
+    "The privacy policy URL must be publicly accessible without login",
+    "Include: data collected, how it's used, third parties, retention, user rights"
+  ],
+  "react-native-app-store-submission": [
+    "React Native apps are not rejected more often when built correctly",
+    "Use EAS Build (Expo) for simplified signing and building process",
+    "Test on real devices - common issues include JS bundle loading and Hermes crashes",
+    "Configure app.json/app.config.js with correct bundle ID before building"
+  ],
+  "connect-guide": [
+    "Bundle ID in App Store Connect must match your Xcode project exactly",
+    "TestFlight allows up to 10,000 external testers with Beta App Review",
+    "Internal testers (up to 100) get instant access without review",
+    "Builds can be uploaded via Xcode, Transporter app, or altool CLI"
+  ]
+};
+
 const faqSchema = faqData[article.slug] ? {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -277,6 +335,26 @@ const articleSchema = {
       </li>
     </ol>
   </nav>
+
+  <!-- Key Takeaways Box (LLM-friendly summary) -->
+  {keyTakeaways[article.slug] && (
+    <aside class="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-6 mb-10">
+      <div class="flex items-center gap-2 mb-4">
+        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <h2 class="text-lg font-bold text-green-800">Key Takeaways</h2>
+      </div>
+      <ul class="space-y-2">
+        {keyTakeaways[article.slug].map((takeaway) => (
+          <li class="flex items-start gap-3 text-green-900">
+            <span class="text-green-500 mt-1.5 flex-shrink-0">•</span>
+            <span>{takeaway}</span>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )}
 
   <article>
     <div set:html={sanitizedContent} />

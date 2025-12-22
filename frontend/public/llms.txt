@@ -12,6 +12,10 @@ The definitive guide to passing Apple's App Store review process. Covers all fiv
 https://iossubmissionguide.com/ai-review
 AI-powered App Store review toolkit with strategy guides, coding best practices, and LLM prompts for automated codebase auditing before submission.
 
+> App Store FAQ - Frequently Asked Questions
+https://iossubmissionguide.com/faq
+Comprehensive FAQ covering all common questions about App Store submissions, rejections, review times, guidelines, privacy policies, and platform-specific guides.
+
 ## Core Guides
 
 > Mastering App Store Connect & TestFlight
