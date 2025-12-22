@@ -41,10 +41,6 @@
     padding: 32px;
   }
 
-  .card-interactive {
-    @apply bg-white border border-gray-100 rounded-3xl p-8 hover:border-apple-blue/50 hover:shadow-xl hover:shadow-apple-blue/5 transition-all duration-300;
-  }
-
   /* Dark Card Pattern */
   .dark-card {
     @apply bg-apple-dark text-white rounded-3xl p-10 my-12;
@@ -144,35 +140,6 @@
     @apply text-sm text-gray-600 mb-0 leading-relaxed;
   }
 
-  /* Timeline */
-  .timeline {
-    @apply space-y-0 relative border-l-2 border-gray-100 ml-4 my-10;
-  }
-
-  .timeline-item {
-    @apply relative pl-10 pb-10 last:pb-0;
-  }
-
-  .timeline-dot {
-    @apply absolute -left-[9px] top-0 w-4 h-4 rounded-full border-2 border-white bg-gray-200 ring-4 ring-white;
-  }
-
-  .timeline-dot.blue {
-    @apply bg-apple-blue;
-  }
-
-  .timeline-dot.green {
-    @apply bg-apple-green;
-  }
-
-  .timeline-item h4 {
-    @apply text-lg font-bold text-apple-dark mb-2 mt-0;
-  }
-
-  .timeline-item p {
-    @apply text-sm text-gray-600 mb-0 leading-relaxed;
-  }
-
   /* Section Header */
   .section-header {
     @apply flex items-center gap-4 mb-4 mt-16;
@@ -233,19 +200,6 @@
 
   .deep-dive-card p {
     @apply text-sm text-gray-600 mb-0 leading-relaxed;
-  }
-
-  /* References */
-  .references-list {
-    @apply space-y-4 my-8 list-none pl-0;
-  }
-
-  .references-list li {
-    @apply flex flex-col gap-1;
-  }
-
-  .reference-desc {
-    @apply text-sm text-apple-gray block;
   }
 }
 

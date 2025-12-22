@@ -47,9 +47,10 @@ if (!article) {
 }
 
 // Sanitize HTML content to prevent XSS
+// Note: onclick is intentionally NOT allowed to prevent XSS attacks
 const sanitizedContent = DOMPurify.sanitize(article.content, {
   ADD_TAGS: ['section'],
-  ADD_ATTR: ['target', 'rel', 'onclick'],
+  ADD_ATTR: ['target', 'rel'],
 });
 
 // Breadcrumb schema for SEO
@@ -72,7 +73,7 @@ const breadcrumbSchema = {
   ]
 };
 
-// FAQ Schema for guideline pages (helps get rich snippets in search)
+// FAQ Schema for pages (helps get rich snippets in search)
 const faqData: Record<string, Array<{question: string; answer: string}>> = {
   "guideline-2-1-app-crashes": [
     {
@@ -114,6 +115,90 @@ const faqData: Record<string, Array<{question: string; answer: string}>> = {
     {
       question: "Can a simple app get approved on the App Store?",
       answer: "Yes, simple apps can be approved if they provide genuine utility and use native iOS capabilities. Focus on doing one thing excellently rather than adding unnecessary features. Apps should offer value that justifies installation over using a website."
+    }
+  ],
+  "rejection-guide": [
+    {
+      question: "What are the most common App Store rejection reasons?",
+      answer: "The most common rejection reasons are: 1) Crashes and bugs (30%), 2) Broken links or placeholder content, 3) Missing privacy policy, 4) Guideline 4.2 minimum functionality, 5) Guideline 2.1 performance issues, 6) Missing demo account credentials, 7) Inaccurate metadata or screenshots."
+    },
+    {
+      question: "What percentage of apps get rejected on first submission?",
+      answer: "According to Apple, roughly 40-50% of first-time submissions get rejected. However, 90% of submissions are reviewed within 24 hours, and most rejections can be resolved and resubmitted quickly."
+    },
+    {
+      question: "How can I avoid App Store rejection?",
+      answer: "To avoid rejection: 1) Test thoroughly on real devices, 2) Include a working privacy policy URL, 3) Provide demo login credentials if needed, 4) Ensure all features work completely, 5) Follow Apple's Human Interface Guidelines, 6) Review the App Store Review Guidelines before submission."
+    }
+  ],
+  "rejection-recovery": [
+    {
+      question: "What should I do after my app is rejected?",
+      answer: "After rejection: 1) Read the rejection message carefully to understand the specific issue, 2) Check Resolution Center in App Store Connect for details, 3) Fix the identified issues, 4) Add detailed reviewer notes explaining your changes, 5) Resubmit through App Store Connect."
+    },
+    {
+      question: "Can I appeal an App Store rejection?",
+      answer: "Yes, you can appeal through the App Review Board if you believe the rejection was incorrect. Use the Appeal button in Resolution Center. Provide clear evidence and reasoning. Appeals are reviewed by a different team and typically take 1-2 business days."
+    },
+    {
+      question: "How do I communicate with App Review?",
+      answer: "Use the Resolution Center in App Store Connect to reply to rejections. Be professional and specific. You can ask clarifying questions, provide additional context, or explain why you believe the rejection was incorrect. Response times are usually within 24-48 hours."
+    }
+  ],
+  "app-store-review-time-2025": [
+    {
+      question: "How long does App Store review take in 2025?",
+      answer: "According to Apple, 90% of app submissions are reviewed within 24 hours. Most apps are reviewed within 24-48 hours. Complex apps or those requiring additional review may take longer. First-time submissions sometimes take slightly longer than updates."
+    },
+    {
+      question: "Can I request an expedited App Store review?",
+      answer: "Yes, you can request an expedited review through App Store Connect for critical bug fixes, security issues, or time-sensitive events. Apple reviews these requests case-by-case. Include a clear explanation of why the expedite is needed."
+    },
+    {
+      question: "Why is my App Store review taking so long?",
+      answer: "Extended review times can occur due to: 1) Complex app features requiring additional scrutiny, 2) Potential guideline violations needing manual review, 3) Holiday periods with higher submission volumes, 4) Apps in sensitive categories (health, finance, kids). Contact Apple through Resolution Center if review exceeds 5 business days."
+    }
+  ],
+  "app-store-privacy-policy-requirements": [
+    {
+      question: "Do I need a privacy policy for my iOS app?",
+      answer: "Yes, all apps on the App Store require a privacy policy. This is mandatory under Guideline 5.1.1 regardless of whether your app collects user data. The privacy policy must be accessible via a public URL and linked in App Store Connect."
+    },
+    {
+      question: "What must be included in an App Store privacy policy?",
+      answer: "Your privacy policy must include: 1) What data you collect, 2) How data is used, 3) Third-party services that receive data, 4) Data retention periods, 5) User rights regarding their data, 6) Contact information. It must match your App Privacy nutrition labels in App Store Connect."
+    },
+    {
+      question: "Where do I add my privacy policy URL in App Store Connect?",
+      answer: "Add your privacy policy URL in App Store Connect under App Information > Privacy Policy URL. The URL must be publicly accessible without login. You can also add it to your app's Settings screen for in-app access."
+    }
+  ],
+  "react-native-app-store-submission": [
+    {
+      question: "How do I submit a React Native app to the App Store?",
+      answer: "To submit a React Native app: 1) Build with EAS Build or locally using Xcode, 2) Configure app.json/app.config.js with correct bundle ID and version, 3) Generate iOS build with proper signing, 4) Upload via Xcode or Transporter, 5) Complete App Store Connect metadata, 6) Submit for review."
+    },
+    {
+      question: "Do React Native apps get rejected more often?",
+      answer: "React Native apps are not rejected more often if built correctly. Common issues specific to React Native include: JavaScript bundle not loading, missing native permissions in Info.plist, and Hermes-related crashes. Test thoroughly on real devices before submission."
+    },
+    {
+      question: "Should I use Expo or bare React Native for App Store submission?",
+      answer: "Both work well for App Store submission. Expo with EAS Build simplifies the process with managed signing and building. Bare React Native gives more control but requires manual Xcode configuration. Choose based on your app's native module requirements."
+    }
+  ],
+  "connect-guide": [
+    {
+      question: "How do I create an app in App Store Connect?",
+      answer: "To create an app: 1) Log into App Store Connect, 2) Click My Apps > + > New App, 3) Select iOS platform, 4) Enter app name and primary language, 5) Choose a Bundle ID (must match Xcode), 6) Create a unique SKU, 7) Select user access level."
+    },
+    {
+      question: "What is TestFlight and how do I use it?",
+      answer: "TestFlight is Apple's beta testing platform. Upload a build to App Store Connect, then: 1) Add internal testers (up to 100, instant access), 2) Create external testing groups (up to 10,000 testers, requires Beta App Review), 3) Share invite links or add testers by email. Builds expire after 90 days."
+    },
+    {
+      question: "How do I upload an app build to App Store Connect?",
+      answer: "You can upload builds via: 1) Xcode: Product > Archive > Distribute App > App Store Connect, 2) Transporter app: Upload .ipa files directly, 3) altool command line: xcrun altool --upload-app. All methods require valid App Store Connect credentials and signing certificates."
     }
   ]
 };
@@ -165,8 +250,8 @@ const articleSchema = {
     "@type": "WebPage",
     "@id": `https://iossubmissionguide.com/${article.slug}`
   },
-  ...(article.publishedAt && { "datePublished": article.publishedAt }),
-  ...(article.updatedAt && { "dateModified": article.updatedAt })
+  "datePublished": article.publishedAt || "2024-12-01",
+  "dateModified": article.updatedAt || new Date().toISOString().split('T')[0]
 };
 ---
 

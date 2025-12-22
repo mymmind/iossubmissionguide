@@ -15,14 +15,6 @@ export interface Article {
   updatedAt: Date
 }
 
-export interface ArticleListItem {
-  id: number
-  slug: string
-  title: string
-  category: string
-  isHub: boolean
-}
-
 export interface ArticleWithRelations extends Article {
   relatedFrom: RelatedArticle[]
 }
@@ -68,14 +60,4 @@ export interface ToolkitDownload {
 export interface ApiError {
   error: string
   type?: string
-}
-
-export interface ApiSuccess<T> {
-  data: T
-}
-
-// Sitemap types
-export interface SitemapEntry {
-  url: string
-  lastmod: string
 }

@@ -99,6 +99,56 @@ const description = "Thank you for your purchase. You now have full access to th
 </Layout>
 
 <script>
+  // Shared API base URL helper
+  function getApiBase(): string {
+    return window.location.hostname === 'localhost'
+      ? 'http://localhost:3005'
+      : window.location.origin;
+  }
+
+  // Safe text content setter (prevents XSS)
+  function setTextContent(element: Element, text: string): void {
+    element.textContent = text;
+  }
+
+  // Create download link element safely (no innerHTML)
+  function createDownloadLink(download: { url: string; name: string; description: string }): HTMLAnchorElement {
+    const link = document.createElement('a');
+    link.href = download.url;
+    link.className = 'flex items-center justify-between p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-apple-blue hover:shadow-sm transition-all group';
+
+    const textDiv = document.createElement('div');
+
+    const title = document.createElement('h3');
+    title.className = 'font-bold text-gray-900 text-sm';
+    setTextContent(title, download.name);
+
+    const desc = document.createElement('p');
+    desc.className = 'text-[11px] text-gray-500';
+    setTextContent(desc, download.description);
+
+    textDiv.appendChild(title);
+    textDiv.appendChild(desc);
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'w-4 h-4 text-gray-300 group-hover:text-apple-blue');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('viewBox', '0 0 24 24');
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    path.setAttribute('stroke-width', '2');
+    path.setAttribute('d', 'M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4');
+    svg.appendChild(path);
+
+    link.appendChild(textDiv);
+    link.appendChild(svg);
+
+    return link;
+  }
+
   async function verifyPurchase() {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session_id');
@@ -114,9 +164,7 @@ const description = "Thank you for your purchase. You now have full access to th
     }
 
     try {
-      const apiBase = window.location.hostname === 'localhost'
-        ? 'http://localhost:3005'
-        : window.location.origin;
+      const apiBase = getApiBase();
       const response = await fetch(`${apiBase}/api/verify-session/${sessionId}`);
       const data = await response.json();
 
@@ -137,20 +185,18 @@ const description = "Thank you for your purchase. You now have full access to th
         }
 
         const renderDownloads = (trackKey: 'native' | 'expo', containerId: string) => {
-            const track = data.content[trackKey];
-            const container = document.getElementById(containerId);
+          const track = data.content?.[trackKey];
+          const container = document.getElementById(containerId);
 
-            if (container) {
-                container.innerHTML = track.downloads.map((d: { url: string; name: string; description: string }) => `
-                    <a href="${d.url}" class="flex items-center justify-between p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-apple-blue hover:shadow-sm transition-all group">
-                        <div>
-                            <h3 class="font-bold text-gray-900 text-sm">${d.name}</h3>
-                            <p class="text-[11px] text-gray-500">${d.description}</p>
-                        </div>
-                        <svg class="w-4 h-4 text-gray-300 group-hover:text-apple-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    </a>
-                `).join('');
-            }
+          if (container && track?.downloads) {
+            // Clear existing content safely
+            container.replaceChildren();
+
+            // Create elements safely using DOM API
+            track.downloads.forEach((d: { url: string; name: string; description: string }) => {
+              container.appendChild(createDownloadLink(d));
+            });
+          }
         };
 
         renderDownloads('native', 'native-downloads');
@@ -164,7 +210,7 @@ const description = "Thank you for your purchase. You now have full access to th
     } catch (e) {
       if (loadingEl) loadingEl.classList.add('hidden');
       if (errorEl) errorEl.classList.remove('hidden');
-      if (errorMsgEl) errorMsgEl.innerText = e instanceof Error ? e.message : 'An error occurred';
+      if (errorMsgEl) errorMsgEl.textContent = e instanceof Error ? e.message : 'An error occurred';
     }
   }
 

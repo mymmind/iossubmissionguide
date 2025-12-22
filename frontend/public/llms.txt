@@ -1,0 +1,91 @@
+# iOS Submission Guide - LLMs.txt
+# https://iossubmissionguide.com
+# Comprehensive guide for passing the Apple App Store review process
+
+## Main Pages
+
+> Homepage - Complete App Store Review Guide
+https://iossubmissionguide.com/
+The definitive guide to passing Apple's App Store review process. Covers all five guideline sections (Safety, Performance, Business, Design, Legal), pre-submission checklist, and common rejection reasons.
+
+> AI Review Toolkit - Premium Product
+https://iossubmissionguide.com/ai-review
+AI-powered App Store review toolkit with strategy guides, coding best practices, and LLM prompts for automated codebase auditing before submission.
+
+## Core Guides
+
+> Mastering App Store Connect & TestFlight
+https://iossubmissionguide.com/connect-guide
+Step-by-step guide to using App Store Connect: creating app records, uploading builds via Xcode or Transporter, managing TestFlight beta testing, and configuring app metadata.
+
+> Common App Store Rejection Reasons
+https://iossubmissionguide.com/rejection-guide
+Analysis of the most frequent App Store rejection reasons with statistics: crashes (30%), guideline violations, missing privacy policies, incomplete features, and how to avoid each.
+
+> App Store Legal & Privacy Compliance
+https://iossubmissionguide.com/legal-compliance
+Complete guide to Apple's legal requirements: privacy policies, data collection disclosure, GDPR/CCPA compliance, and App Store Review Guidelines Section 5.
+
+> How to Handle App Store Rejection
+https://iossubmissionguide.com/rejection-recovery
+Recovery strategies after App Store rejection: understanding rejection messages, communicating with App Review, filing appeals, and resubmission best practices.
+
+## Guideline-Specific Fixes
+
+> Guideline 2.1: App Crashes & Bugs Fix
+https://iossubmissionguide.com/guideline-2-1-app-crashes
+How to fix Guideline 2.1 rejections for crashes and bugs. Debugging strategies, crash log analysis, device-specific testing, and performance optimization.
+
+> Guideline 3.1: In-App Purchase Fix
+https://iossubmissionguide.com/guideline-3-1-in-app-purchase
+How to fix Guideline 3.1 rejections for payment issues. StoreKit implementation, IAP product types, restore purchases, and what requires Apple's payment system.
+
+> Guideline 4.2: Minimum Functionality Fix
+https://iossubmissionguide.com/guideline-4-2-minimum-functionality
+How to fix Guideline 4.2 rejections for insufficient functionality. Adding native iOS features, offline support, and proving app value beyond a website.
+
+## Platform-Specific Guides
+
+> React Native App Store Submission Guide
+https://iossubmissionguide.com/react-native-app-store-submission
+Complete guide for submitting React Native and Expo apps to the App Store. Covers EAS Build, native module configuration, and cross-platform compliance.
+
+> Flutter App Store Submission Guide
+https://iossubmissionguide.com/flutter-app-store-submission
+Complete guide for submitting Flutter apps to the App Store. Covers Xcode configuration, platform channels, and iOS-specific requirements.
+
+> Swift & SwiftUI App Store Submission Guide
+https://iossubmissionguide.com/swift-swiftui-app-store-submission
+Complete guide for submitting native Swift and SwiftUI apps. Covers modern iOS APIs, SwiftUI lifecycle, and Apple's latest requirements.
+
+## Reference Guides
+
+> App Store Screenshot Sizes 2025
+https://iossubmissionguide.com/app-store-screenshot-sizes-2025
+Complete reference for App Store screenshot requirements: dimensions for all device sizes, format specifications, and screenshot best practices.
+
+> App Store Review Time 2025
+https://iossubmissionguide.com/app-store-review-time-2025
+Current App Store review times and statistics. 90% of submissions reviewed within 24 hours. Expedited review requests and factors affecting review speed.
+
+> App Store Privacy Policy Requirements 2025
+https://iossubmissionguide.com/app-store-privacy-policy-requirements
+Complete guide to privacy policy requirements under Guideline 5.1.1. What to include, where to host, and privacy nutrition label configuration.
+
+> App Store Metadata Best Practices 2025
+https://iossubmissionguide.com/app-store-metadata-best-practices
+Optimizing App Store metadata: titles, subtitles, keywords, descriptions, and promotional text for better discoverability and conversion.
+
+## Legal Pages
+
+> About Us
+https://iossubmissionguide.com/about
+About the iOS Submission Guide team - experienced iOS developers who have submitted 100+ apps to the App Store.
+
+> Privacy Policy
+https://iossubmissionguide.com/privacy
+Privacy policy for iossubmissionguide.com
+
+> Terms of Service
+https://iossubmissionguide.com/terms
+Terms of service for iossubmissionguide.com

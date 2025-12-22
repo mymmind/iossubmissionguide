@@ -3,6 +3,11 @@ import Stripe from 'stripe'
 import path from 'path'
 import fs from 'fs'
 import { z } from 'zod'
+import { stripe } from '../stripe-client.js'
+
+// Constants
+const TOOLKIT_PRICE_CENTS = 2999 // $29.99
+const STRIPE_SESSION_LIST_LIMIT = 100
 
 // Validation schemas
 const sessionIdSchema = z.object({
@@ -24,10 +29,6 @@ const lookupBodySchema = z.object({
 })
 
 export async function stripeRoutes(fastify: FastifyInstance): Promise<void> {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-    apiVersion: '2024-10-28.acacia' as Stripe.LatestApiVersion,
-  })
-
   fastify.post('/api/create-checkout-session', async (request, reply) => {
     try {
       if (!process.env.STRIPE_SECRET_KEY) {
@@ -43,7 +44,7 @@ export async function stripeRoutes(fastify: FastifyInstance): Promise<void> {
                 name: 'iOS App Store Submission Toolkit',
                 description: 'Complete Master Instructions, Coding Best Practices, and Store Review Strategy',
               },
-              unit_amount: 2999, // $29.99
+              unit_amount: TOOLKIT_PRICE_CENTS,
             },
             quantity: 1,
           },
@@ -216,10 +217,10 @@ export async function stripeRoutes(fastify: FastifyInstance): Promise<void> {
     const { email } = parseResult.data
 
     try {
-      // List the most recent 100 sessions and filter by email
+      // List recent sessions and filter by email
       // In a high-traffic app, you'd want to save these to your own DB instead!
       const sessions = await stripe.checkout.sessions.list({
-        limit: 100,
+        limit: STRIPE_SESSION_LIST_LIMIT,
         expand: ['data.customer_details']
       })
 

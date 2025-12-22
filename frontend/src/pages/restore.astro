@@ -51,15 +51,29 @@ const description = "Find your previous purchase and regain access to the iOS Su
 </Layout>
 
 <script>
-  const form = document.getElementById('restore-form') as HTMLFormElement;
-  const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+  // Shared API base URL helper
+  function getApiBase(): string {
+    return window.location.hostname === 'localhost'
+      ? 'http://localhost:3005'
+      : window.location.origin;
+  }
+
+  const form = document.getElementById('restore-form') as HTMLFormElement | null;
+  const btn = document.getElementById('submit-btn') as HTMLButtonElement | null;
   const btnText = document.getElementById('btn-text');
   const btnLoader = document.getElementById('btn-loader');
   const resultMsg = document.getElementById('result-msg');
 
+  // Debounce flag to prevent double submissions
+  let isSubmitting = false;
+
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!btn || !btnText || !btnLoader || !resultMsg) return;
+
+    // Prevent double submission
+    if (isSubmitting) return;
+    isSubmitting = true;
 
     // Reset UI
     btn.disabled = true;
@@ -67,12 +81,22 @@ const description = "Find your previous purchase and regain access to the iOS Su
     btnLoader.classList.remove('hidden');
     resultMsg.classList.add('hidden');
 
-    const email = (document.getElementById('email') as HTMLInputElement).value;
+    const emailInput = document.getElementById('email') as HTMLInputElement | null;
+    const email = emailInput?.value?.trim();
+
+    if (!email) {
+      resultMsg.textContent = "Please enter an email address.";
+      resultMsg.className = "mt-6 text-center text-sm font-bold text-red-500";
+      resultMsg.classList.remove('hidden');
+      btn.disabled = false;
+      btnText.classList.remove('hidden');
+      btnLoader.classList.add('hidden');
+      isSubmitting = false;
+      return;
+    }
 
     try {
-      const apiBase = window.location.hostname === 'localhost'
-        ? 'http://localhost:3005'
-        : window.location.origin;
+      const apiBase = getApiBase();
       const response = await fetch(apiBase + '/api/lookup-purchase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -82,7 +106,7 @@ const description = "Find your previous purchase and regain access to the iOS Su
       const data = await response.json();
 
       if (response.ok && data.sessionId) {
-        resultMsg.innerText = "Purchase found! Redirecting...";
+        resultMsg.textContent = "Purchase found! Redirecting...";
         resultMsg.className = "mt-6 text-center text-sm font-bold text-green-600";
         resultMsg.classList.remove('hidden');
 
@@ -106,20 +130,22 @@ const description = "Find your previous purchase and regain access to the iOS Su
           window.location.href = `/success?session_id=${data.sessionId}`;
         }, 1500);
       } else {
-        resultMsg.innerText = data.error || "No purchase found for this email.";
+        resultMsg.textContent = data.error || "No purchase found for this email.";
         resultMsg.className = "mt-6 text-center text-sm font-bold text-red-500";
         resultMsg.classList.remove('hidden');
         btn.disabled = false;
         btnText.classList.remove('hidden');
         btnLoader.classList.add('hidden');
+        isSubmitting = false;
       }
-    } catch (err) {
-      resultMsg.innerText = "Network error. Please try again.";
+    } catch {
+      resultMsg.textContent = "Network error. Please try again.";
       resultMsg.className = "mt-6 text-center text-sm font-bold text-red-500";
       resultMsg.classList.remove('hidden');
       btn.disabled = false;
       btnText.classList.remove('hidden');
       btnLoader.classList.add('hidden');
+      isSubmitting = false;
     }
   });
 </script>

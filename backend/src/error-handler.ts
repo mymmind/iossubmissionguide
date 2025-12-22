@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 
 // Standard error messages that don't leak implementation details
 const SAFE_ERROR_MESSAGES: Record<number, string> = {
@@ -10,37 +10,11 @@ const SAFE_ERROR_MESSAGES: Record<number, string> = {
   500: 'Internal server error',
 }
 
-interface SafeErrorOptions {
-  statusCode: number
-  message?: string
-  logError?: boolean
-}
-
-// Creates a safe error response that doesn't leak internal details
-export function createSafeError(
-  reply: FastifyReply,
-  request: FastifyRequest,
-  error: unknown,
-  options: SafeErrorOptions
-): FastifyReply {
-  const { statusCode, message, logError = true } = options
-
-  // Log the actual error for debugging
-  if (logError) {
-    request.log.error({ err: error, path: request.url }, 'Request error')
-  }
-
-  // Return a safe message to the client
-  const safeMessage = message || SAFE_ERROR_MESSAGES[statusCode] || 'An error occurred'
-
-  return reply.status(statusCode).send({ error: safeMessage })
-}
-
-// Error handler plugin for Fastify
-export function errorHandlerPlugin(fastify: ReturnType<typeof import('fastify').fastify>) {
+// Error handler plugin for Fastify - prevents leaking internal error details
+export function errorHandlerPlugin(fastify: FastifyInstance) {
   fastify.setErrorHandler((error, request, reply) => {
     // Don't leak stack traces or internal error details
-    const statusCode = error.statusCode || 500
+    const statusCode = (error as { statusCode?: number }).statusCode || 500
 
     request.log.error({
       err: error,
@@ -55,17 +29,4 @@ export function errorHandlerPlugin(fastify: ReturnType<typeof import('fastify').
       statusCode,
     })
   })
-}
-
-// Type guard for checking if something is an Error
-export function isError(error: unknown): error is Error {
-  return error instanceof Error
-}
-
-// Safely extract error message for logging (not for client response)
-export function getErrorMessage(error: unknown): string {
-  if (isError(error)) {
-    return error.message
-  }
-  return String(error)
 }

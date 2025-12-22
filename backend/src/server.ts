@@ -12,15 +12,24 @@ import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import rateLimit from '@fastify/rate-limit'
-import Stripe from 'stripe'
+import compress from '@fastify/compress'
 import { z } from 'zod'
 import { prisma } from './prisma.js'
 import { setupAdmin } from './admin.js'
 import { stripeRoutes } from './routes/stripe.js'
 import { validateCriticalConfig } from './config.js'
+import { errorHandlerPlugin } from './error-handler.js'
+import { stripe } from './stripe-client.js'
 
 // Validate environment configuration at startup
 validateCriticalConfig()
+
+// Constants - extracted magic numbers
+const RATE_LIMIT_MAX = 100
+const RATE_LIMIT_WINDOW = '1 minute'
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 1 year in seconds
+const CACHE_CONTROL_PUBLIC = 'public, max-age=300, stale-while-revalidate=600' // 5min cache, 10min stale
+const CACHE_CONTROL_PRIVATE = 'private, max-age=0, must-revalidate'
 
 async function start() {
   const fastify = Fastify({
@@ -50,10 +59,16 @@ async function start() {
     credentials: true,
   })
 
+  // Gzip/Brotli compression for responses
+  await fastify.register(compress, {
+    global: true,
+    encodings: ['gzip', 'deflate'],
+  })
+
   // Rate limiting - protect against abuse
   await fastify.register(rateLimit, {
-    max: 100, // Max 100 requests per window
-    timeWindow: '1 minute',
+    max: RATE_LIMIT_MAX,
+    timeWindow: RATE_LIMIT_WINDOW,
     errorResponseBuilder: () => ({
       statusCode: 429,
       error: 'Too Many Requests',
@@ -75,6 +90,9 @@ async function start() {
     },
     crossOriginEmbedderPolicy: false, // Required for AdminJS
   })
+
+  // Global error handler - prevents leaking internal error details
+  errorHandlerPlugin(fastify)
 
   // Register Stripe Routes
   await fastify.register(stripeRoutes)
@@ -102,14 +120,17 @@ async function start() {
   const PURCHASE_COOKIE_NAME = 'ios_guide_purchase'
   const isProduction = process.env.NODE_ENV === 'production'
 
-  // Stripe client for payment verification
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-    apiVersion: '2024-10-28.acacia' as Stripe.LatestApiVersion,
-  })
-
-  // Validation schema for session ID
+  // Validation schemas
   const purchaseSessionSchema = z.object({
     sessionId: z.string().regex(/^cs_(test_|live_)[a-zA-Z0-9]+$/, { message: 'Invalid session ID format' }),
+  })
+
+  const articlesQuerySchema = z.object({
+    full: z.enum(['true', 'false']).optional(),
+  })
+
+  const slugParamSchema = z.object({
+    slug: z.string().min(1).max(200).regex(/^[a-z0-9-]+$/, { message: 'Invalid slug format' }),
   })
 
   // Set purchase session in httpOnly cookie (with payment verification)
@@ -136,7 +157,7 @@ async function start() {
       httpOnly: true,
       secure: isProduction,
       sameSite: 'strict',
-      maxAge: 60 * 60 * 24 * 365, // 1 year
+      maxAge: COOKIE_MAX_AGE,
       path: '/',
     })
 
@@ -144,7 +165,10 @@ async function start() {
   })
 
   // Get purchase session from cookie
-  fastify.get('/api/purchase-session', async (request, _reply) => {
+  fastify.get('/api/purchase-session', async (request, reply) => {
+    // User-specific data - no caching
+    reply.header('Cache-Control', CACHE_CONTROL_PRIVATE)
+
     const sessionId = request.cookies[PURCHASE_COOKIE_NAME]
 
     // Return 200 with null sessionId if no session - avoids console errors
@@ -158,8 +182,13 @@ async function start() {
   })
 
   // API Routes
-  fastify.get('/api/articles', async (request, _reply) => {
-    const { full } = request.query as { full?: string }
+  fastify.get('/api/articles', async (request, reply) => {
+    // Validate query parameters
+    const parseResult = articlesQuerySchema.safeParse(request.query)
+    const full = parseResult.success ? parseResult.data.full : undefined
+
+    // Add cache headers for public content
+    reply.header('Cache-Control', CACHE_CONTROL_PUBLIC)
 
     // If full=true, return complete article data (for static site generation)
     if (full === 'true') {
@@ -199,7 +228,16 @@ async function start() {
   })
 
   fastify.get('/api/articles/:slug', async (request, reply) => {
-    const { slug } = request.params as { slug: string }
+    // Validate slug parameter
+    const parseResult = slugParamSchema.safeParse(request.params)
+    if (!parseResult.success) {
+      return reply.status(400).send({ error: 'Invalid slug format' })
+    }
+    const { slug } = parseResult.data
+
+    // Add cache headers for public content
+    reply.header('Cache-Control', CACHE_CONTROL_PUBLIC)
+
     const article = await prisma.article.findUnique({
       where: { slug },
       include: {
@@ -226,7 +264,10 @@ async function start() {
     return article
   })
 
-  fastify.get('/api/sitemap', async (_request, _reply) => {
+  fastify.get('/api/sitemap', async (_request, reply) => {
+    // Add cache headers for public content
+    reply.header('Cache-Control', CACHE_CONTROL_PUBLIC)
+
     const articles = await prisma.article.findMany({
       select: {
         slug: true,
