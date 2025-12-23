@@ -11,35 +11,36 @@ const description = "Find your previous purchase and regain access to the iOS Su
       <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-50 rounded-2xl mb-6 text-apple-blue font-bold shadow-sm">
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       </div>
-      <h1 class="text-4xl font-bold text-apple-dark mb-4 font-sans tracking-tight">Restore Your Access</h1>
-      <p class="text-gray-500 text-lg leading-relaxed">Enter the email address you used during purchase to regain access to your toolkit.</p>
+      <h1 class="text-4xl font-bold text-apple-dark dark:text-white mb-4 font-sans tracking-tight">Restore Your Access</h1>
+      <p class="text-gray-500 dark:text-gray-400 text-lg leading-relaxed" id="form-description">Enter the email address you used during purchase to regain access to your toolkit.</p>
     </div>
 
-    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-100/50">
-      <form id="restore-form" class="space-y-6">
+    <div class="bg-white dark:bg-gray-900 p-8 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-xl shadow-gray-100/50 dark:shadow-none">
+      <form id="restore-form" class="space-y-6" aria-describedby="form-description">
         <div>
-          <label for="email" class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-widest">Email Address</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            required 
+          <label for="email" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-widest">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
             placeholder="name@example.com"
-            class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-apple-blue focus:bg-white outline-none transition-all text-lg"
+            aria-describedby="result-msg"
+            class="w-full px-5 py-4 bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl focus:ring-2 focus:ring-apple-blue focus:bg-white dark:focus:bg-gray-900 outline-none transition-all text-lg dark:text-white dark:placeholder-gray-500"
           />
         </div>
-        
-        <button 
-          type="submit" 
+
+        <button
+          type="submit"
           id="submit-btn"
-          class="w-full bg-apple-dark text-white font-bold py-4 rounded-2xl hover:bg-black transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-3"
+          class="w-full bg-apple-dark dark:bg-white text-white dark:text-apple-dark font-bold py-4 rounded-2xl hover:bg-black dark:hover:bg-gray-100 transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-3"
         >
           <span id="btn-text">Find My Purchase</span>
-          <div id="btn-loader" class="hidden w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+          <div id="btn-loader" class="hidden w-5 h-5 border-3 border-white dark:border-apple-dark border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
         </button>
       </form>
-      
-      <div id="result-msg" class="mt-6 text-center text-sm font-medium hidden"></div>
+
+      <div id="result-msg" class="mt-6 text-center text-sm font-medium hidden" role="status" aria-live="polite"></div>
     </div>
 
     <div class="mt-12 text-center">

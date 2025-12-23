@@ -69,6 +69,16 @@ if (navArticles.length === 0) {
 <!doctype html>
 <html lang="en" class="scroll-smooth">
   <head>
+    <!-- Prevent dark mode flash - runs before anything else renders -->
+    <script is:inline>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
 
@@ -88,8 +98,9 @@ if (navArticles.length === 0) {
     <!-- Google Search Console -->
     <meta name="google-site-verification" content="7IcG4abT8iqx_yApNhuhXbL1tQ-QfEFp4HxeUslkxko" />
 
-    <!-- Mobile & PWA -->
-    <meta name="theme-color" content="#007AFF" />
+    <!-- Mobile & PWA - Dynamic theme color for dark/light mode -->
+    <meta name="theme-color" content="#F9F9F9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="iOS Guide" />
@@ -153,7 +164,7 @@ if (navArticles.length === 0) {
       <script is:inline defer src="https://cloud.umami.is/script.js" data-website-id={umamiWebsiteId}></script>
     )}
   </head>
-  <body class="bg-white text-apple-dark font-sans antialiased selection:bg-apple-blue selection:text-white">
+  <body class="font-sans antialiased">
     <!-- Skip Navigation Link for Accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -164,27 +175,43 @@ if (navArticles.length === 0) {
     </a>
 
     <!-- Mobile Header -->
-    <header class="lg:hidden fixed top-0 w-full glass-header border-b border-gray-200 z-50 h-16 flex items-center justify-between px-4 bg-white/80 backdrop-blur-md">
-      <h1 class="font-semibold text-sm tracking-tight text-apple-dark">iOS Submission Guide</h1>
-      <button
-        id="mobile-menu-button"
-        class="text-apple-blue font-medium py-3 px-4 -mr-4 min-h-[44px] min-w-[44px] touch-manipulation"
-        aria-label="Open navigation menu"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-      >Menu</button>
+    <header class="lg:hidden fixed top-0 w-full glass-header border-b z-50 h-16 flex items-center justify-between px-4" style="border-color: var(--border-color);">
+      <h1 class="font-semibold text-sm tracking-tight" style="color: var(--text-primary);">iOS Submission Guide</h1>
+      <div class="flex items-center gap-2">
+        <button
+          id="theme-toggle-mobile"
+          class="theme-toggle"
+          aria-label="Toggle dark mode"
+          type="button"
+        >
+          <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+        <button
+          id="mobile-menu-button"
+          class="text-apple-blue font-medium py-3 px-4 -mr-4 min-h-[44px] min-w-[44px] touch-manipulation"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >Menu</button>
+      </div>
     </header>
 
     <!-- Mobile Menu Overlay (Hidden by default) -->
     <div
       id="mobile-menu"
-      class="fixed inset-0 z-[60] bg-white transform translate-x-full transition-transform duration-300 lg:hidden"
+      class="fixed inset-0 z-[60] transform translate-x-full transition-transform duration-300 lg:hidden"
+      style="background-color: var(--bg-secondary);"
       role="dialog"
       aria-modal="true"
       aria-labelledby="mobile-menu-title"
     >
-      <div class="h-16 flex items-center justify-between px-4 border-b border-gray-100">
-         <span id="mobile-menu-title" class="font-bold text-apple-dark">Menu</span>
+      <div class="h-16 flex items-center justify-between px-4 border-b" style="border-color: var(--border-subtle);">
+         <span id="mobile-menu-title" class="font-bold" style="color: var(--text-primary);">Menu</span>
          <button
            id="close-menu-button"
            class="text-apple-blue font-medium py-3 px-4 -mr-4 min-h-[44px] min-w-[44px] touch-manipulation"
@@ -193,7 +220,7 @@ if (navArticles.length === 0) {
       </div>
       <nav class="p-8 overflow-y-auto h-[calc(100vh-64px)]" aria-label="Main navigation">
          {navArticles.map(article => (
-           <a href={`/${article.slug}`} class="block py-4 text-lg font-semibold text-apple-dark border-b border-gray-50">{article.title}</a>
+           <a href={`/${article.slug}`} class="block py-4 text-lg font-semibold border-b" style="color: var(--text-primary); border-color: var(--border-subtle);">{article.title}</a>
          ))}
       </nav>
     </div>
@@ -203,21 +230,21 @@ if (navArticles.length === 0) {
       <main id="main-content" class="flex-1 lg:ml-64 px-6 lg:px-16 py-20 lg:py-16">
         <slot />
 
-        <footer class="py-12 mt-20 bg-apple-light border-t border-gray-200 w-[calc(100%+3rem)] lg:w-[calc(100%+8rem)] -mx-6 lg:-mx-16">
+        <footer class="py-12 mt-20 border-t w-[calc(100%+3rem)] lg:w-[calc(100%+8rem)] -mx-6 lg:-mx-16" style="background-color: var(--bg-tertiary); border-color: var(--border-color);">
           <div class="max-w-3xl mx-auto px-6 text-center space-y-4">
-            <p class="text-xs text-gray-500 font-medium">Compiled based on official App Store Review Guidelines.</p>
+            <p class="text-xs font-medium" style="color: var(--text-tertiary);">Compiled based on official App Store Review Guidelines.</p>
             <nav class="flex flex-wrap justify-center gap-4 text-xs" aria-label="Footer navigation">
-              <a href="/about" class="text-gray-500 hover:text-apple-blue transition-colors">About</a>
-              <span class="text-gray-300">|</span>
-              <a href="/faq" class="text-gray-500 hover:text-apple-blue transition-colors">FAQ</a>
-              <span class="text-gray-300">|</span>
-              <a href="/privacy" class="text-gray-500 hover:text-apple-blue transition-colors">Privacy Policy</a>
-              <span class="text-gray-300">|</span>
-              <a href="/terms" class="text-gray-500 hover:text-apple-blue transition-colors">Terms of Service</a>
-              <span class="text-gray-300">|</span>
-              <a href="mailto:support@iossubmissionguide.com" class="text-gray-500 hover:text-apple-blue transition-colors">Contact</a>
+              <a href="/about" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">About</a>
+              <span style="color: var(--border-color);">|</span>
+              <a href="/faq" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">FAQ</a>
+              <span style="color: var(--border-color);">|</span>
+              <a href="/privacy" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">Privacy Policy</a>
+              <span style="color: var(--border-color);">|</span>
+              <a href="/terms" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">Terms of Service</a>
+              <span style="color: var(--border-color);">|</span>
+              <a href="mailto:support@iossubmissionguide.com" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">Contact</a>
             </nav>
-            <p class="text-xs text-gray-500">© 2025 iOS Submission Guide. Not affiliated with Apple Inc.</p>
+            <p class="text-xs" style="color: var(--text-tertiary);">© 2025 iOS Submission Guide. Not affiliated with Apple Inc.</p>
           </div>
         </footer>
       </main>
@@ -254,6 +281,37 @@ if (navArticles.length === 0) {
       // Close menu when clicking nav links
       menu?.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', closeMenu);
+      });
+
+      // Theme Toggle Handler
+      function toggleTheme() {
+        const html = document.documentElement;
+        const isDark = html.classList.contains('dark');
+
+        if (isDark) {
+          html.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+        } else {
+          html.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        }
+      }
+
+      // Attach to all theme toggle buttons (mobile + sidebar)
+      document.querySelectorAll('[id^="theme-toggle"]').forEach(btn => {
+        btn.addEventListener('click', toggleTheme);
+      });
+
+      // Listen for system preference changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        // Only auto-switch if user hasn't set a preference
+        if (!localStorage.getItem('theme')) {
+          if (e.matches) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        }
       });
 
       // Shared API base URL helper

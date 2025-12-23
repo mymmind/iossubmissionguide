@@ -84,10 +84,25 @@ function groupByCategory(articles: NavArticle[]): Record<string, NavArticle[]> {
 const groupedArticles = groupByCategory(articles);
 ---
 
-<aside class="hidden lg:block w-72 fixed h-screen overflow-y-auto pt-16 pb-12 pl-10 pr-6 border-r border-apple-border sidebar bg-white shadow-[1px_0_0_0_rgba(0,0,0,0.02)]">
-  <div class="mb-12">
-    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-apple-blue mb-2 block">Edition 2025</span>
-    <h2 class="text-2xl font-sans font-bold tracking-tight text-apple-dark">iOS Submission</h2>
+<aside class="hidden lg:block w-72 fixed h-screen overflow-y-auto pt-16 pb-12 pl-10 pr-6 border-r sidebar shadow-[1px_0_0_0_rgba(0,0,0,0.02)]" style="background-color: var(--bg-secondary); border-color: var(--border-color);">
+  <div class="mb-8 flex items-start justify-between">
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-apple-blue mb-2 block">Edition 2025</span>
+      <h2 class="text-2xl font-sans font-bold tracking-tight" style="color: var(--text-primary);">iOS Submission</h2>
+    </div>
+    <button
+      id="theme-toggle-sidebar"
+      class="theme-toggle mt-1"
+      aria-label="Toggle dark mode"
+      type="button"
+    >
+      <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+      </svg>
+      <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+    </button>
   </div>
 
   {isHomePage ? (
@@ -96,7 +111,7 @@ const groupedArticles = groupByCategory(articles);
         <div class="mb-6 last:mb-0">
           {group.section && (
             <div class="py-2 mb-1">
-              <span class="text-[10px] font-bold text-apple-gray uppercase tracking-[0.15em]">
+              <span class="text-[10px] font-bold uppercase tracking-[0.15em]" style="color: var(--text-tertiary);">
                 {group.section}
               </span>
             </div>
@@ -105,7 +120,7 @@ const groupedArticles = groupByCategory(articles);
             {group.items.map((item) => (
               <a
                 href={item.href}
-                class="group block py-2 px-3 text-[13px] font-medium rounded-xl transition-all hover:bg-apple-light text-gray-500 hover:text-apple-dark"
+                class="group block py-2 px-3 text-[13px] font-medium rounded-xl transition-all sidebar-link"
               >
                 <span class="inline-block transition-transform group-hover:translate-x-0.5">
                   {item.label}
@@ -122,7 +137,7 @@ const groupedArticles = groupByCategory(articles);
         href={toc?.backLink || "/"}
         class="flex items-center text-[13px] font-bold text-apple-blue hover:opacity-70 mb-10 transition-all uppercase tracking-wider"
       >
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
         </svg>
         {toc ? 'Back to Main Guide' : 'Main Guide'}
@@ -130,8 +145,8 @@ const groupedArticles = groupByCategory(articles);
 
       {toc && (
         <div class="mb-8">
-           <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-apple-gray mb-1 block">Deep Dive</span>
-           <h3 class="text-xl font-sans font-bold tracking-tight text-apple-dark">{toc.title}</h3>
+           <span class="text-[10px] font-bold uppercase tracking-[0.2em] mb-1 block" style="color: var(--text-tertiary);">Deep Dive</span>
+           <h3 class="text-xl font-sans font-bold tracking-tight" style="color: var(--text-primary);">{toc.title}</h3>
         </div>
       )}
 
@@ -146,7 +161,7 @@ const groupedArticles = groupByCategory(articles);
             }`}
           >
             <span class="flex items-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
               AI Review Toolkit
             </span>
           </a>
@@ -157,7 +172,7 @@ const groupedArticles = groupByCategory(articles);
             <div class="mb-6 last:mb-0">
               {group.section && (
                 <div class="py-2 mb-1">
-                  <span class="text-[10px] font-bold text-apple-gray uppercase tracking-[0.15em]">
+                  <span class="text-[10px] font-bold uppercase tracking-[0.15em]" style="color: var(--text-tertiary);">
                     {group.section}
                   </span>
                 </div>
@@ -166,7 +181,7 @@ const groupedArticles = groupByCategory(articles);
                 {group.items.map((item) => (
                   <a
                     href={item.href}
-                    class="group block py-2 px-3 text-[13px] font-medium rounded-xl transition-all hover:bg-apple-light text-gray-500 hover:text-apple-dark"
+                    class="group block py-2 px-3 text-[13px] font-medium rounded-xl transition-all sidebar-link"
                   >
                     <span class="inline-block transition-transform group-hover:translate-x-0.5">
                       {item.label}
@@ -180,7 +195,7 @@ const groupedArticles = groupByCategory(articles);
           Object.entries(groupedArticles).map(([category, categoryArticles]) => (
             <div class="mb-6 last:mb-0">
               <div class="py-2 mb-1">
-                <span class="text-[10px] font-bold text-apple-gray uppercase tracking-[0.15em]">
+                <span class="text-[10px] font-bold uppercase tracking-[0.15em]" style="color: var(--text-tertiary);">
                   {category}
                 </span>
               </div>
@@ -193,7 +208,7 @@ const groupedArticles = groupByCategory(articles);
                       class={`group block py-2 px-3 text-[13px] font-medium rounded-xl transition-all ${
                         isActive
                           ? 'bg-apple-blue text-white shadow-lg shadow-apple-blue/20'
-                          : 'text-gray-500 hover:bg-apple-light hover:text-apple-dark'
+                          : 'sidebar-link'
                       }`}
                     >
                       <span class={`inline-block transition-transform ${!isActive ? 'group-hover:translate-x-0.5' : ''}`}>
@@ -209,15 +224,15 @@ const groupedArticles = groupByCategory(articles);
       </nav>
     </>
   )}
-  <div class="mt-auto border-t border-gray-100 pt-8">
+  <div class="mt-auto border-t pt-8" style="border-color: var(--border-subtle);">
     <div id="toolkit-sidebar-link" class="hidden mb-4">
-      <a href="/success" id="sidebar-success-link" class="flex items-center gap-3 p-3 bg-blue-50 text-apple-blue rounded-xl font-bold text-sm hover:bg-blue-100 transition-all border border-blue-100">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      <a href="/success" id="sidebar-success-link" class="flex items-center gap-3 p-3 text-apple-blue rounded-xl font-bold text-sm transition-all border sidebar-toolkit-link">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
         Your Toolkit
       </a>
     </div>
-    <a href="/restore" class="text-xs font-semibold text-gray-400 hover:text-apple-blue transition-colors flex items-center gap-2 uppercase tracking-widest px-3">
-      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    <a href="/restore" class="text-xs font-semibold hover:text-apple-blue transition-colors flex items-center gap-2 uppercase tracking-widest px-3" style="color: var(--text-tertiary);">
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       Find Purchase
     </a>
   </div>
