@@ -351,6 +351,14 @@ if (navArticles.length === 0) {
           btn.disabled = false;
         }
       };
+
+      // Attach click handler to paywall button (since onclick is stripped by DOMPurify for security)
+      document.addEventListener('DOMContentLoaded', () => {
+        const paywallBtn = document.getElementById('paywall-btn');
+        if (paywallBtn) {
+          paywallBtn.addEventListener('click', window.handlePurchase);
+        }
+      });
     </script>
   </body>
 </html>

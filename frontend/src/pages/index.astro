@@ -19,9 +19,10 @@ if (!hubArticle) {
 }
 
 // Sanitize HTML content to prevent XSS
+// Note: onclick is intentionally NOT allowed - it would bypass XSS protection
 const sanitizedContent = DOMPurify.sanitize(hubArticle.content, {
   ADD_TAGS: ['section'],
-  ADD_ATTR: ['target', 'rel', 'onclick'],
+  ADD_ATTR: ['target', 'rel'],
 });
 
 // WebPage schema for homepage

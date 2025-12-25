@@ -101,7 +101,13 @@
       "Bash(timeout 60 npm run build:*)",
       "Bash(npm audit fix:*)",
       "Bash(npm audit:*)",
-      "Bash(ssh mmmadmin@46.224.21.200 \"cd /var/www/iossubmissionguide.com/frontend && npm run build 2>&1 | tail -25\")"
+      "Bash(ssh mmmadmin@46.224.21.200 \"cd /var/www/iossubmissionguide.com/frontend && npm run build 2>&1 | tail -25\")",
+      "Bash(ssh mmmadmin@46.224.21.200 \"cd /var/www/iossubmissionguide.com/frontend && npm run build 2>&1 | tail -20\")",
+      "Bash(timeout 120 npm run build:*)",
+      "Bash(/Users/asgrimbeek/Projects/appstorepass/backend/scripts/seed-att-implementation.ts )",
+      "Bash(/Users/asgrimbeek/Projects/appstorepass/backend/scripts/seed-expedited-review.ts )",
+      "Bash(/Users/asgrimbeek/Projects/appstorepass/backend/scripts/seed-appeal-process.ts )",
+      "Bash(mmmadmin@46.224.21.200:/var/www/iossubmissionguide.com/backend/scripts/)"
     ]
   }
 }
