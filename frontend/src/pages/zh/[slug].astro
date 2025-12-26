@@ -1,0 +1,388 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DOMPurify from 'isomorphic-dompurify';
+import { getUIStrings } from '../../i18n/translations';
+
+const ui = getUIStrings('zh');
+
+interface Article {
+  slug: string;
+  title: string;
+  description: string;
+  content: string;
+  isHub: boolean;
+  toc?: unknown;
+  publishedAt?: string;
+  updatedAt?: string;
+  relatedFrom?: Array<{
+    targetArticle: {
+      slug: string;
+      title: string;
+      description: string;
+    };
+  }>;
+}
+
+export async function getStaticPaths() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
+  try {
+    // Fetch all Chinese articles with full content
+    const res = await fetch(`${apiUrl}/api/articles?full=true&lang=zh`);
+    if (res.ok) {
+      const articles: Article[] = await res.json();
+      return articles
+        .filter((a) => !a.isHub)
+        .map((a) => ({
+          params: { slug: a.slug },
+          props: { article: a },
+        }));
+    }
+  } catch (e) {
+    console.error('Failed to get static paths:', e);
+  }
+  return [];
+}
+
+const { article } = Astro.props as { article: Article };
+
+if (!article) {
+  return Astro.redirect('/zh/404');
+}
+
+// Sanitize HTML content to prevent XSS
+const sanitizedContent = DOMPurify.sanitize(article.content, {
+  ADD_TAGS: ['section'],
+  ADD_ATTR: ['target', 'rel'],
+});
+
+// Breadcrumb schema for SEO (Chinese)
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": ui.nav.home,
+      "item": "https://iossubmissionguide.com/zh"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": article.title,
+      "item": `https://iossubmissionguide.com/zh/${article.slug}`
+    }
+  ]
+};
+
+// Key Takeaways translated for Chinese
+const keyTakeaways: Record<string, string[]> = {
+  "guideline-2-1-app-crashes": [
+    "准则 2.1 拒绝发生在 Apple 测试期间您的应用崩溃、冻结或存在错误时",
+    "始终在 Apple 拒绝消息中提到的确切设备和 iOS 版本上测试",
+    "使用 Xcode Organizer 崩溃日志在重新提交前识别并修复问题",
+    "关键错误修复可申请加急审核 - 通常 24-48 小时"
+  ],
+  "guideline-3-1-in-app-purchase": [
+    "所有数字商品和服务必须使用 Apple 的应用内购买系统",
+    "实体商品和现实世界服务不受 IAP 要求约束",
+    "永远不要在应用中任何地方提及外部支付选项",
+    "恢复购买功能必须对所有 IAP 产品正常工作"
+  ],
+  "guideline-4-2-minimum-functionality": [
+    "您的应用必须提供超越网站所能提供的价值",
+    "添加原生 iOS 功能：小组件、通知、Siri 快捷指令、离线支持",
+    "如果提供真正的实用性，简单的应用也可以获批",
+    "专注于把一件事做到极致，而不是添加不必要的功能"
+  ],
+  "rejection-guide": [
+    "40-50% 的首次提交被拒绝 - 这是正常的",
+    "崩溃和错误导致 30% 的所有拒绝",
+    "始终包含有效的隐私政策 URL 和演示登录凭据",
+    "提交前在真实设备上彻底测试"
+  ],
+  "rejection-recovery": [
+    "仔细阅读拒绝消息 - 它包含有关要修复内容的具体信息",
+    "使用 App Store Connect 中的解决中心与 App Review 沟通",
+    "如果您认为拒绝不正确，可以通过 App Review Board 申诉",
+    "重新提交时包含详细的审核备注，解释您修复了什么"
+  ],
+  "app-store-review-time-2025": [
+    "90% 的应用提交在 24 小时内审核完成",
+    "首次提交可能比更新稍长",
+    "关键错误修复和时间敏感事件可申请加急审核",
+    "如果审核超过 5 个工作日，请通过解决中心联系 Apple"
+  ],
+  "app-store-privacy-policy-requirements": [
+    "所有应用都需要隐私政策 - 这是准则 5.1.1 的强制要求",
+    "您的隐私政策必须与您的 App 隐私营养标签匹配",
+    "隐私政策 URL 必须无需登录即可公开访问",
+    "包含：收集的数据、如何使用、第三方、保留期限、用户权利"
+  ],
+  "react-native-app-store-submission": [
+    "正确构建时，React Native 应用不会更频繁地被拒绝",
+    "使用 EAS Build（Expo）简化签名和构建流程",
+    "在真实设备上测试 - 常见问题包括 JS 包加载和 Hermes 崩溃",
+    "构建前在 app.json/app.config.js 中配置正确的包 ID"
+  ],
+  "connect-guide": [
+    "App Store Connect 中的包 ID 必须与您的 Xcode 项目完全匹配",
+    "TestFlight 允许多达 10,000 名外部测试人员参与 Beta App Review",
+    "内部测试人员（最多 100 人）无需审核即可立即访问",
+    "可以通过 Xcode、Transporter 应用或 altool CLI 上传构建"
+  ]
+};
+
+// Article order for Previous/Next navigation (Chinese titles)
+const articleOrder = [
+  { slug: "connect-guide", title: "App Store Connect 和 TestFlight" },
+  { slug: "rejection-guide", title: "常见拒绝原因" },
+  { slug: "legal-compliance", title: "法律与隐私合规" },
+  { slug: "rejection-recovery", title: "如何处理拒绝" },
+  { slug: "guideline-4-2-minimum-functionality", title: "准则 4.2：最低功能要求" },
+  { slug: "guideline-2-1-app-crashes", title: "准则 2.1：应用崩溃" },
+  { slug: "guideline-3-1-in-app-purchase", title: "准则 3.1：应用内购买" },
+  { slug: "react-native-app-store-submission", title: "React Native 提交" },
+  { slug: "flutter-app-store-submission", title: "Flutter 提交" },
+  { slug: "swift-swiftui-app-store-submission", title: "Swift 和 SwiftUI 提交" },
+  { slug: "app-store-screenshot-sizes-2025", title: "截图尺寸 2025" },
+  { slug: "app-store-review-time-2025", title: "审核时间 2025" },
+  { slug: "app-store-privacy-policy-requirements", title: "隐私政策要求" },
+  { slug: "app-store-metadata-best-practices", title: "元数据最佳实践" }
+];
+
+// Find previous and next articles
+const currentIndex = articleOrder.findIndex(a => a.slug === article.slug);
+const prevArticle = currentIndex > 0 ? articleOrder[currentIndex - 1] : null;
+const nextArticle = currentIndex < articleOrder.length - 1 ? articleOrder[currentIndex + 1] : null;
+
+// Related articles for internal linking (Chinese descriptions)
+const relatedArticles: Record<string, Array<{slug: string; title: string; description: string}>> = {
+  "guideline-2-1-app-crashes": [
+    { slug: "guideline-3-1-in-app-purchase", title: "准则 3.1：应用内购买问题", description: "修复支付相关的拒绝和 IAP 实现问题。" },
+    { slug: "guideline-4-2-minimum-functionality", title: "准则 4.2：最低功能要求", description: "添加足够的价值以通过 Apple 的功能要求。" },
+    { slug: "rejection-recovery", title: "如何处理 App Store 拒绝", description: "从任何拒绝中恢复的分步指南。" }
+  ],
+  "guideline-3-1-in-app-purchase": [
+    { slug: "guideline-2-1-app-crashes", title: "准则 2.1：应用崩溃和错误", description: "修复导致拒绝的崩溃和性能问题。" },
+    { slug: "guideline-4-2-minimum-functionality", title: "准则 4.2：最低功能要求", description: "确保您的应用在 IAP 之外提供足够的价值。" },
+    { slug: "legal-compliance", title: "法律与隐私合规", description: "GDPR、隐私政策和应用的法律要求。" }
+  ],
+  "guideline-4-2-minimum-functionality": [
+    { slug: "guideline-2-1-app-crashes", title: "准则 2.1：应用崩溃和错误", description: "修复崩溃和性能问题。" },
+    { slug: "guideline-3-1-in-app-purchase", title: "准则 3.1：应用内购买问题", description: "正确实现支付。" },
+    { slug: "rejection-guide", title: "常见拒绝原因", description: "应用被拒绝的所有常见原因。" }
+  ],
+  "rejection-guide": [
+    { slug: "rejection-recovery", title: "如何处理 App Store 拒绝", description: "应用被拒绝后该怎么办。" },
+    { slug: "guideline-2-1-app-crashes", title: "准则 2.1：崩溃和错误", description: "拒绝的第一大原因 - 崩溃和错误。" },
+    { slug: "app-store-privacy-policy-requirements", title: "隐私政策要求", description: "缺少隐私政策是主要拒绝原因。" }
+  ],
+  "rejection-recovery": [
+    { slug: "rejection-guide", title: "常见拒绝原因", description: "了解应用首先被拒绝的原因。" },
+    { slug: "app-store-review-time-2025", title: "App Store 审核时间", description: "重新提交需要多长时间？" },
+    { slug: "connect-guide", title: "App Store Connect 指南", description: "导航解决中心并有效重新提交。" }
+  ],
+  "app-store-review-time-2025": [
+    { slug: "rejection-recovery", title: "如何处理拒绝", description: "等待审核时该做什么。" },
+    { slug: "connect-guide", title: "App Store Connect 指南", description: "上传构建和管理提交。" },
+    { slug: "rejection-guide", title: "常见拒绝原因", description: "避免拒绝以加快审批。" }
+  ],
+  "app-store-privacy-policy-requirements": [
+    { slug: "legal-compliance", title: "法律与隐私合规", description: "包括 GDPR 在内的完整法律要求指南。" },
+    { slug: "rejection-guide", title: "常见拒绝原因", description: "缺少隐私政策导致许多拒绝。" },
+    { slug: "app-store-metadata-best-practices", title: "元数据最佳实践", description: "优化您的整个 App Store 列表。" }
+  ],
+  "react-native-app-store-submission": [
+    { slug: "flutter-app-store-submission", title: "Flutter App Store 提交", description: "与 Flutter 的提交流程比较。" },
+    { slug: "swift-swiftui-app-store-submission", title: "Swift 和 SwiftUI 提交", description: "原生 iOS 提交指南作为比较。" },
+    { slug: "guideline-2-1-app-crashes", title: "准则 2.1：崩溃", description: "要修复的常见 React Native 崩溃问题。" }
+  ],
+  "flutter-app-store-submission": [
+    { slug: "react-native-app-store-submission", title: "React Native 提交", description: "与 React Native 的提交流程比较。" },
+    { slug: "swift-swiftui-app-store-submission", title: "Swift 和 SwiftUI 提交", description: "原生 iOS 提交指南作为比较。" },
+    { slug: "app-store-screenshot-sizes-2025", title: "截图要求", description: "所有设备所需的截图尺寸。" }
+  ],
+  "swift-swiftui-app-store-submission": [
+    { slug: "react-native-app-store-submission", title: "React Native 提交", description: "跨平台替代方案。" },
+    { slug: "flutter-app-store-submission", title: "Flutter 提交", description: "另一个跨平台选项。" },
+    { slug: "connect-guide", title: "App Store Connect 指南", description: "上传和管理您的原生 iOS 构建。" }
+  ],
+  "connect-guide": [
+    { slug: "app-store-review-time-2025", title: "App Store 审核时间", description: "Apple 审核需要多长时间？" },
+    { slug: "app-store-metadata-best-practices", title: "元数据最佳实践", description: "优化您的 App Store 列表。" },
+    { slug: "rejection-recovery", title: "处理拒绝", description: "使用解决中心回复拒绝。" }
+  ],
+  "legal-compliance": [
+    { slug: "app-store-privacy-policy-requirements", title: "隐私政策要求", description: "详细的隐私政策指南。" },
+    { slug: "guideline-3-1-in-app-purchase", title: "应用内购买规则", description: "支付合规和 IAP 要求。" },
+    { slug: "rejection-guide", title: "常见拒绝", description: "导致拒绝的法律问题。" }
+  ],
+  "app-store-metadata-best-practices": [
+    { slug: "app-store-screenshot-sizes-2025", title: "截图要求", description: "截图所需的尺寸和最佳实践。" },
+    { slug: "connect-guide", title: "App Store Connect 指南", description: "在哪里配置所有元数据。" },
+    { slug: "app-store-privacy-policy-requirements", title: "隐私政策", description: "隐私合规所需的元数据。" }
+  ],
+  "app-store-screenshot-sizes-2025": [
+    { slug: "app-store-metadata-best-practices", title: "元数据最佳实践", description: "优化您的整个列表，不仅仅是截图。" },
+    { slug: "connect-guide", title: "App Store Connect 指南", description: "将截图上传到 App Store Connect。" },
+    { slug: "rejection-guide", title: "常见拒绝", description: "避免与截图相关的拒绝。" }
+  ]
+};
+
+// Article schema for SEO (Chinese)
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": article.title,
+  "description": article.description,
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://iossubmissionguide.com/og-image.webp",
+    "width": 1200,
+    "height": 630
+  },
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Organization",
+    "name": "iOS 提交指南",
+    "url": "https://iossubmissionguide.com/zh"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "iOS 提交指南",
+    "url": "https://iossubmissionguide.com/zh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://iossubmissionguide.com/favicon.svg",
+      "width": 512,
+      "height": 512
+    }
+  },
+  "url": `https://iossubmissionguide.com/zh/${article.slug}`,
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `https://iossubmissionguide.com/zh/${article.slug}`
+  },
+  "datePublished": article.publishedAt || "2024-12-01",
+  "dateModified": article.updatedAt || new Date().toISOString().split('T')[0]
+};
+---
+
+<Layout title={article.title} description={article.description} toc={article.toc} lang="zh">
+  <!-- Breadcrumb Schema JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <!-- Article Schema JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <!-- Visible Breadcrumb Navigation -->
+  <nav class="mb-8" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+      <li>
+        <a href="/zh" class="hover:text-apple-blue transition-colors">{ui.nav.home}</a>
+      </li>
+      <li class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+        <span class="text-apple-dark dark:text-white font-medium">{article.title}</span>
+      </li>
+    </ol>
+  </nav>
+
+  <!-- Key Takeaways Box (LLM-friendly summary) -->
+  {keyTakeaways[article.slug] && (
+    <aside class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800/40 rounded-2xl p-6 mb-10">
+      <div class="flex items-center gap-2 mb-4">
+        <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <h2 class="text-lg font-bold text-green-800 dark:text-green-300">{ui.article.keyTakeaways}</h2>
+      </div>
+      <ul class="space-y-2">
+        {keyTakeaways[article.slug].map((takeaway) => (
+          <li class="flex items-start gap-3 text-green-900 dark:text-green-100">
+            <span class="text-green-500 dark:text-green-400 mt-1.5 flex-shrink-0">•</span>
+            <span>{takeaway}</span>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )}
+
+  <article>
+    <div set:html={sanitizedContent} />
+  </article>
+
+  {article.relatedFrom && article.relatedFrom.length > 0 && (
+    <div class="mt-20 pt-10 border-t border-gray-100 dark:border-gray-800">
+      <h3 class="text-xl font-bold text-apple-dark dark:text-white mb-6">{ui.article.deepDiveGuides}</h3>
+      <div class="feature-grid">
+        {article.relatedFrom.map((rel) => (
+          <a href={`/zh/${rel.targetArticle.slug}`} class="feature-card group">
+            <h4 class="text-lg font-bold text-apple-dark dark:text-white group-hover:text-apple-blue transition-colors">{rel.targetArticle.title}</h4>
+            <p class="text-sm text-apple-gray dark:text-gray-400 mt-2">{rel.targetArticle.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Related Articles Section (manual cross-links for SEO) -->
+  {relatedArticles[article.slug] && (
+    <div class="mt-16 pt-10 border-t border-gray-100 dark:border-gray-800">
+      <h3 class="text-xl font-bold text-apple-dark dark:text-white mb-6">{ui.article.relatedGuides}</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {relatedArticles[article.slug].map((related) => (
+          <a href={`/zh/${related.slug}`} class="block p-5 bg-gray-50 dark:bg-gray-800/50 hover:bg-apple-light dark:hover:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-apple-blue/20 dark:hover:border-apple-blue/40 transition-all group">
+            <h4 class="font-bold text-apple-dark dark:text-white group-hover:text-apple-blue transition-colors mb-2">{related.title}</h4>
+            <p class="text-sm text-apple-gray dark:text-gray-400">{related.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- CTA to AI Toolkit -->
+  <div class="mt-16 p-8 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl border border-blue-100 dark:border-blue-800/40">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div>
+        <h3 class="text-xl font-bold text-apple-dark dark:text-white mb-2">{ui.article.aiToolkitCta.title}</h3>
+        <p class="text-apple-gray dark:text-gray-400">{ui.article.aiToolkitCta.description}</p>
+      </div>
+      <a href="/zh/ai-review" class="flex-shrink-0 px-6 py-3 bg-apple-blue text-white font-bold rounded-xl hover:bg-blue-600 transition-colors text-center">
+        {ui.article.aiToolkitCta.button}
+      </a>
+    </div>
+  </div>
+
+  <!-- Previous/Next Article Navigation -->
+  {(prevArticle || nextArticle) && (
+    <nav class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700" aria-label="Article navigation">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {prevArticle ? (
+          <a href={`/zh/${prevArticle.slug}`} class="group flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800/50 hover:bg-apple-light dark:hover:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-apple-blue/20 dark:hover:border-apple-blue/40 transition-all">
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-apple-blue transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            <div>
+              <span class="text-xs text-gray-500 dark:text-gray-400 block mb-1">{ui.article.previous}</span>
+              <span class="font-medium text-apple-dark dark:text-white group-hover:text-apple-blue transition-colors">{prevArticle.title}</span>
+            </div>
+          </a>
+        ) : <div />}
+        {nextArticle && (
+          <a href={`/zh/${nextArticle.slug}`} class="group flex items-center justify-end gap-3 p-4 bg-gray-50 dark:bg-gray-800/50 hover:bg-apple-light dark:hover:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-apple-blue/20 dark:hover:border-apple-blue/40 transition-all text-right md:col-start-2">
+            <div>
+              <span class="text-xs text-gray-500 dark:text-gray-400 block mb-1">{ui.article.next}</span>
+              <span class="font-medium text-apple-dark dark:text-white group-hover:text-apple-blue transition-colors">{nextArticle.title}</span>
+            </div>
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-apple-blue transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        )}
+      </div>
+    </nav>
+  )}
+</Layout>

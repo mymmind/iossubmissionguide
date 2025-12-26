@@ -1,0 +1,317 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// All FAQs aggregated - Chinese translations
+const allFaqs = [
+  {
+    category: "App Store 拒绝",
+    questions: [
+      {
+        question: "最常见的 App Store 拒绝原因是什么？",
+        answer: "最常见的拒绝原因是：1）崩溃和错误（30%），2）链接失效或占位符内容，3）缺少隐私政策，4）准则 4.2 最低功能要求，5）准则 2.1 性能问题，6）缺少演示账户凭据，7）不准确的元数据或截图。",
+        link: "/zh/rejection-guide"
+      },
+      {
+        question: "首次提交有多少应用被拒绝？",
+        answer: "根据 Apple 的数据，大约 40-50% 的首次提交被拒绝。然而，90% 的提交在 24 小时内审核完成，大多数拒绝可以快速解决并重新提交。",
+        link: "/zh/rejection-guide"
+      },
+      {
+        question: "如何避免 App Store 拒绝？",
+        answer: "要避免拒绝：1）在真实设备上彻底测试，2）包含有效的隐私政策 URL，3）如果需要，提供演示登录凭据，4）确保所有功能正常工作，5）遵循 Apple 的人机界面指南，6）提交前审阅 App Store 审核指南。",
+        link: "/zh/rejection-guide"
+      },
+      {
+        question: "应用被拒绝后该怎么办？",
+        answer: "被拒绝后：1）仔细阅读拒绝消息以了解具体问题，2）在 App Store Connect 的解决中心查看详情，3）修复已识别的问题，4）添加详细的审核备注解释您的更改，5）通过 App Store Connect 重新提交。",
+        link: "/zh/rejection-recovery"
+      },
+      {
+        question: "我可以申诉 App Store 拒绝吗？",
+        answer: "是的，如果您认为拒绝是错误的，可以通过 App Review Board 申诉。使用解决中心中的申诉按钮。提供明确的证据和理由。申诉由不同的团队审核，通常需要 1-2 个工作日。",
+        link: "/zh/rejection-recovery"
+      },
+      {
+        question: "如何与 App Review 沟通？",
+        answer: "使用 App Store Connect 中的解决中心回复拒绝。保持专业和具体。您可以提出澄清问题、提供额外的背景信息，或解释为什么您认为拒绝是不正确的。回复时间通常在 24-48 小时内。",
+        link: "/zh/rejection-recovery"
+      }
+    ]
+  },
+  {
+    category: "准则 2.1：崩溃和错误",
+    questions: [
+      {
+        question: "什么是准则 2.1 拒绝？",
+        answer: "当 Apple 的审核团队发现您的应用在测试期间崩溃、有错误或未按预期执行时，就会发生准则 2.1 拒绝。这包括启动时崩溃、冻结、功能损坏或性能问题。",
+        link: "/zh/guideline-2-1-app-crashes"
+      },
+      {
+        question: "如何修复准则 2.1 拒绝？",
+        answer: "要修复 2.1 拒绝：1）使用 Apple 提到的确切设备和 iOS 版本重现崩溃，2）在 Xcode Organizer 中检查崩溃日志，3）在真实设备上彻底测试，4）确保所有功能在离线/在线状态下都能工作，5）修复内存泄漏并优化性能，然后重新提交。",
+        link: "/zh/guideline-2-1-app-crashes"
+      },
+      {
+        question: "修复崩溃后多久能获得批准？",
+        answer: "修复崩溃并重新提交后，Apple 通常会在 24-48 小时内审核您的应用。关键错误修复可以申请加急审核。包含详细的说明解释您修复了什么。",
+        link: "/zh/guideline-2-1-app-crashes"
+      }
+    ]
+  },
+  {
+    category: "准则 3.1：应用内购买",
+    questions: [
+      {
+        question: "什么是准则 3.1 拒绝？",
+        answer: "当您的应用提供必须通过 Apple 应用内购买系统购买的数字商品或服务，但却使用外部支付方式，或者 IAP 实现不正确时，就会发生准则 3.1 拒绝。",
+        link: "/zh/guideline-3-1-in-app-purchase"
+      },
+      {
+        question: "哪些购买需要 Apple 的应用内购买？",
+        answer: "数字内容（电子书、音乐、视频）、数字服务订阅、高级功能、虚拟货币和解锁应用功能都需要应用内购买。实体商品、现实世界服务和点对点服务不受此限制。",
+        link: "/zh/guideline-3-1-in-app-purchase"
+      },
+      {
+        question: "如何修复准则 3.1 拒绝？",
+        answer: "要修复 3.1：1）删除数字商品的外部支付链接，2）为所有数字购买实现 StoreKit，3）使用正确的 IAP 产品类型，4）恢复购买功能必须正常工作，5）不要在应用中提及外部支付选项。",
+        link: "/zh/guideline-3-1-in-app-purchase"
+      }
+    ]
+  },
+  {
+    category: "准则 4.2：最低功能要求",
+    questions: [
+      {
+        question: "什么是准则 4.2 拒绝？",
+        answer: "当 Apple 确定您的应用没有提供足够的功能、特性或内容以被视为独立应用时，就会发生准则 4.2 拒绝。这通常影响简单的包装应用、基本工具或可以作为网站的应用。",
+        link: "/zh/guideline-4-2-minimum-functionality"
+      },
+      {
+        question: "如何修复准则 4.2 最低功能拒绝？",
+        answer: "要修复 4.2：1）添加原生 iOS 功能（小组件、通知、Siri 快捷指令），2）实现离线功能，3）添加超越网站的独特价值，4）包含个性化功能，5）使用设备能力（相机、传感器、触觉反馈）。",
+        link: "/zh/guideline-4-2-minimum-functionality"
+      },
+      {
+        question: "简单的应用能在 App Store 获得批准吗？",
+        answer: "是的，如果简单的应用提供真正的实用性并使用原生 iOS 功能，就可以获得批准。专注于把一件事做到极致，而不是添加不必要的功能。应用应该提供的价值要足以证明安装它比使用网站更有意义。",
+        link: "/zh/guideline-4-2-minimum-functionality"
+      }
+    ]
+  },
+  {
+    category: "App Store 审核时间",
+    questions: [
+      {
+        question: "2025 年 App Store 审核需要多长时间？",
+        answer: "根据 Apple，90% 的应用提交在 24 小时内审核完成。大多数应用在 24-48 小时内审核完成。复杂的应用或需要额外审核的应用可能需要更长时间。首次提交有时比更新稍长。",
+        link: "/zh/app-store-review-time-2025"
+      },
+      {
+        question: "我可以申请加急 App Store 审核吗？",
+        answer: "是的，您可以通过 App Store Connect 为关键错误修复、安全问题或时间敏感事件申请加急审核。Apple 会逐案审核这些请求。包含为什么需要加急的明确解释。",
+        link: "/zh/app-store-review-time-2025"
+      },
+      {
+        question: "为什么我的 App Store 审核这么久？",
+        answer: "延长的审核时间可能是由于：1）需要额外审查的复杂应用功能，2）可能违反指南需要人工审核，3）假期期间提交量较高，4）敏感类别的应用（健康、金融、儿童）。如果审核超过 5 个工作日，请通过解决中心联系 Apple。",
+        link: "/zh/app-store-review-time-2025"
+      }
+    ]
+  },
+  {
+    category: "隐私政策要求",
+    questions: [
+      {
+        question: "我的 iOS 应用需要隐私政策吗？",
+        answer: "是的，App Store 上的所有应用都需要隐私政策。根据准则 5.1.1，无论您的应用是否收集用户数据，这都是强制性的。隐私政策必须可通过公开 URL 访问，并在 App Store Connect 中链接。",
+        link: "/zh/app-store-privacy-policy-requirements"
+      },
+      {
+        question: "App Store 隐私政策必须包含什么？",
+        answer: "您的隐私政策必须包括：1）您收集什么数据，2）数据如何使用，3）接收数据的第三方服务，4）数据保留期限，5）用户关于其数据的权利，6）联系信息。它必须与 App Store Connect 中的 App 隐私营养标签匹配。",
+        link: "/zh/app-store-privacy-policy-requirements"
+      },
+      {
+        question: "在 App Store Connect 中哪里添加隐私政策 URL？",
+        answer: "在 App Store Connect 的 App 信息 > 隐私政策 URL 中添加您的隐私政策 URL。该 URL 必须无需登录即可公开访问。您还可以将其添加到应用的设置屏幕中以便应用内访问。",
+        link: "/zh/app-store-privacy-policy-requirements"
+      }
+    ]
+  },
+  {
+    category: "React Native 提交",
+    questions: [
+      {
+        question: "如何将 React Native 应用提交到 App Store？",
+        answer: "要提交 React Native 应用：1）使用 EAS Build 或本地 Xcode 构建，2）在 app.json/app.config.js 中配置正确的包 ID 和版本，3）使用正确的签名生成 iOS 构建，4）通过 Xcode 或 Transporter 上传，5）完成 App Store Connect 元数据，6）提交审核。",
+        link: "/zh/react-native-app-store-submission"
+      },
+      {
+        question: "React Native 应用是否更容易被拒绝？",
+        answer: "如果构建正确，React Native 应用不会更频繁地被拒绝。React Native 特有的常见问题包括：JavaScript 包未加载、Info.plist 中缺少原生权限以及 Hermes 相关崩溃。提交前在真实设备上彻底测试。",
+        link: "/zh/react-native-app-store-submission"
+      },
+      {
+        question: "我应该使用 Expo 还是裸 React Native 提交到 App Store？",
+        answer: "两者都适用于 App Store 提交。使用 EAS Build 的 Expo 通过托管签名和构建简化了流程。裸 React Native 提供更多控制，但需要手动 Xcode 配置。根据您应用的原生模块需求进行选择。",
+        link: "/zh/react-native-app-store-submission"
+      }
+    ]
+  },
+  {
+    category: "App Store Connect 和 TestFlight",
+    questions: [
+      {
+        question: "如何在 App Store Connect 中创建应用？",
+        answer: "要创建应用：1）登录 App Store Connect，2）点击我的 App > + > 新建 App，3）选择 iOS 平台，4）输入应用名称和主要语言，5）选择包 ID（必须与 Xcode 匹配），6）创建唯一的 SKU，7）选择用户访问级别。",
+        link: "/zh/connect-guide"
+      },
+      {
+        question: "什么是 TestFlight，如何使用它？",
+        answer: "TestFlight 是 Apple 的 Beta 测试平台。将构建上传到 App Store Connect，然后：1）添加内部测试人员（最多 100 人，即时访问），2）创建外部测试组（最多 10,000 名测试人员，需要 Beta App Review），3）通过邀请链接或电子邮件添加测试人员。构建在 90 天后过期。",
+        link: "/zh/connect-guide"
+      },
+      {
+        question: "如何将应用构建上传到 App Store Connect？",
+        answer: "您可以通过以下方式上传构建：1）Xcode：Product > Archive > Distribute App > App Store Connect，2）Transporter 应用：直接上传 .ipa 文件，3）altool 命令行：xcrun altool --upload-app。所有方法都需要有效的 App Store Connect 凭据和签名证书。",
+        link: "/zh/connect-guide"
+      }
+    ]
+  }
+];
+
+// Flatten all FAQs for schema
+const allFaqsFlat = allFaqs.flatMap(cat => cat.questions);
+
+// FAQ Schema for the page
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": allFaqsFlat.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+};
+
+// Breadcrumb schema
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://iossubmissionguide.com/zh"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "常见问题",
+      "item": "https://iossubmissionguide.com/zh/faq"
+    }
+  ]
+};
+---
+
+<Layout
+  title="App Store 常见问题 - iOS 应用提交常见问题"
+  description="关于向 Apple App Store 提交应用的常见问题。获取有关拒绝、审核时间、指南以及如何解决常见问题的答案。"
+  lang="zh"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- Breadcrumb Navigation -->
+  <nav class="mb-8" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+      <li>
+        <a href="/zh" class="hover:text-apple-blue transition-colors">首页</a>
+      </li>
+      <li class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+        <span class="text-apple-dark dark:text-white font-medium">常见问题</span>
+      </li>
+    </ol>
+  </nav>
+
+  <article class="prose prose-lg max-w-none">
+    <h1 class="text-4xl font-bold text-apple-dark dark:text-white mb-4">App Store 提交常见问题</h1>
+    <p class="text-xl text-apple-gray dark:text-gray-400 mb-12">
+      找到有关向 Apple App Store 提交应用、处理拒绝和导航审核流程的最常见问题的答案。
+    </p>
+
+    <!-- Quick Navigation -->
+    <nav id="faq-categories" class="bg-apple-light dark:bg-gray-800 rounded-2xl p-6 mb-12" aria-label="FAQ Categories">
+      <h2 class="text-lg font-bold text-apple-dark dark:text-white mb-4">跳转到类别</h2>
+      <div class="flex flex-wrap gap-2">
+        {allFaqs.map((category, index) => (
+          <a
+            href={`#category-${index}`}
+            class="px-4 py-2 bg-white dark:bg-gray-700 rounded-full text-sm font-medium text-apple-blue hover:bg-apple-blue hover:text-white transition-colors border border-gray-200 dark:border-gray-600"
+          >
+            {category.category}
+          </a>
+        ))}
+      </div>
+    </nav>
+
+    <!-- FAQ Sections -->
+    {allFaqs.map((category, categoryIndex) => (
+      <section id={`category-${categoryIndex}`} class="mb-16">
+        <h2 class="text-2xl font-bold text-apple-dark dark:text-white mb-6 pb-3 border-b border-gray-200 dark:border-gray-700">
+          {category.category}
+        </h2>
+        <div class="space-y-6">
+          {category.questions.map((faq) => (
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:shadow-md transition-shadow">
+              <h3 class="text-lg font-bold text-apple-dark dark:text-white mb-3">{faq.question}</h3>
+              <p class="text-apple-gray dark:text-gray-400 leading-relaxed mb-4">{faq.answer}</p>
+              <div class="flex flex-wrap items-center gap-4">
+                <a
+                  href={faq.link}
+                  class="inline-flex items-center text-sm font-medium text-apple-blue hover:underline"
+                >
+                  阅读完整指南
+                  <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+                <span class="text-gray-300 dark:text-gray-600">|</span>
+                <a
+                  href="#faq-categories"
+                  class="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:text-apple-blue transition-colors"
+                >
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                  </svg>
+                  查看所有问题
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <!-- CTA Section -->
+    <section class="bg-gradient-to-br from-apple-blue to-blue-700 rounded-2xl p-8 text-white text-center mt-16">
+      <h2 class="text-2xl font-bold mb-4">还有问题？</h2>
+      <p class="text-blue-100 mb-6 max-w-2xl mx-auto">
+        使用我们的 AI 审核工具包获得个性化帮助。它包含策略指南、编码最佳实践和 LLM 提示词，可在提交前审核您的代码库。
+      </p>
+      <a
+        href="/zh/ai-review"
+        class="inline-block bg-white text-apple-blue font-bold px-8 py-3 rounded-full hover:bg-blue-50 transition-colors"
+      >
+        获取 AI 工具包
+      </a>
+    </section>
+  </article>
+</Layout>

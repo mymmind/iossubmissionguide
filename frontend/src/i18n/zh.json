@@ -1,0 +1,77 @@
+{
+  "site": {
+    "title": "iOS 提交指南",
+    "edition": "2025 版",
+    "sidebarTitle": "iOS 提交",
+    "description": "通过 Apple App Store 审核流程的完整指南"
+  },
+  "nav": {
+    "home": "首页",
+    "introduction": "简介",
+    "preSubmission": "提交前清单",
+    "keyFocusAreas": "重点关注领域",
+    "safety": "1. 安全性",
+    "performance": "2. 性能",
+    "business": "3. 商业",
+    "design": "4. 设计",
+    "legal": "5. 法律",
+    "submission": "提交流程",
+    "storeListing": "商店列表",
+    "reviewProcess": "审核流程",
+    "commonRejections": "常见拒绝原因",
+    "premiumTools": "高级工具",
+    "aiToolkit": "AI 审核工具包",
+    "deepDive": "深度解析",
+    "deepDives": "深度指南",
+    "references": "参考资料",
+    "backToGuide": "返回主指南",
+    "mainGuide": "主指南",
+    "menu": "菜单",
+    "close": "关闭",
+    "yourToolkit": "您的工具包",
+    "findPurchase": "查找购买记录"
+  },
+  "article": {
+    "keyTakeaways": "要点总结",
+    "deepDiveGuides": "深度指南",
+    "relatedGuides": "相关指南",
+    "previous": "上一篇",
+    "next": "下一篇",
+    "readMore": "阅读更多",
+    "aiToolkitCta": {
+      "title": "希望 AI 在提交前审核您的应用?",
+      "description": "获取我们的 AI 审核工具包，自动检测违规问题。",
+      "button": "获取 AI 工具包"
+    }
+  },
+  "footer": {
+    "disclaimer": "基于官方 App Store 审核指南编写。",
+    "about": "关于我们",
+    "faq": "常见问题",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "contact": "联系我们",
+    "copyright": "2025 iOS 提交指南。与 Apple Inc. 无关。"
+  },
+  "languageSwitcher": {
+    "label": "语言",
+    "en": "English",
+    "zh": "中文"
+  },
+  "banner": {
+    "offer": "年终特惠：AI 审核工具包 $29.99",
+    "originalPrice": "$49.99",
+    "cta": "立即获取"
+  },
+  "error": {
+    "pageNotFound": "404 - 页面未找到",
+    "pageNotFoundDesc": "您访问的页面不存在或已被移动。",
+    "backToHome": "返回首页"
+  },
+  "misc": {
+    "findPurchase": "查找购买记录",
+    "yourToolkit": "您的工具包",
+    "loading": "加载中...",
+    "tryAgain": "重试"
+  }
+}

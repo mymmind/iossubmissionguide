@@ -1,6 +1,7 @@
 ---
 import '../styles/globals.css';
 import Sidebar from '../components/Sidebar.astro';
+import { getUIStrings, getEnglishPath, getChinesePath, getHtmlLang, getOgLocale, type Language } from '../i18n/translations';
 
 interface NavArticle {
   slug: string;
@@ -33,6 +34,7 @@ interface Props {
   noindex?: boolean;
   ogImage?: string;
   ogImageAlt?: string;
+  lang?: Language;
 }
 
 const {
@@ -42,20 +44,34 @@ const {
   toc,
   noindex = false,
   ogImage = 'https://iossubmissionguide.com/og-image.webp',
-  ogImageAlt = 'iOS Submission Guide - Pass App Store Review'
+  ogImageAlt = 'iOS Submission Guide - Pass App Store Review',
+  lang = 'en'
 } = Astro.props;
+
+// Get translations for current language
+const ui = getUIStrings(lang);
+const htmlLang = getHtmlLang(lang);
+const ogLocale = getOgLocale(lang);
 
 // Determine image type from extension
 const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/webp';
 const { pathname } = Astro.url;
 const umamiWebsiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
 
+// Build alternate URLs for hreflang
+const baseUrl = 'https://iossubmissionguide.com';
+const enPath = getEnglishPath(pathname);
+const zhPath = getChinesePath(pathname);
+
+// Language prefix for internal links
+const langPrefix = lang === 'en' ? '' : `/${lang}`;
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
 let navArticles: NavArticle[] = articles;
 
 if (navArticles.length === 0) {
   try {
-    const res = await fetch(`${apiUrl}/api/articles`);
+    const res = await fetch(`${apiUrl}/api/articles?lang=${lang}`);
     if (res.ok) {
       const all: NavArticle[] = await res.json();
       navArticles = all.filter((a) => !a.isHub);
@@ -67,7 +83,7 @@ if (navArticles.length === 0) {
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang={htmlLang} class="scroll-smooth">
   <head>
     <!-- Prevent dark mode flash - runs before anything else renders -->
     <script is:inline>
@@ -105,17 +121,19 @@ if (navArticles.length === 0) {
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="iOS Guide" />
 
-    <!-- Language -->
-    <link rel="alternate" hreflang="en" href={`https://iossubmissionguide.com${pathname}`} />
-    <link rel="alternate" hreflang="x-default" href={`https://iossubmissionguide.com${pathname}`} />
+    <!-- Language alternates for SEO -->
+    <link rel="alternate" hreflang="en" href={`${baseUrl}${enPath}`} />
+    <link rel="alternate" hreflang="zh" href={`${baseUrl}${zhPath}`} />
+    <link rel="alternate" hreflang="x-default" href={`${baseUrl}${enPath}`} />
 
     <!-- Canonical URL -->
-    <link rel="canonical" href={`https://iossubmissionguide.com${pathname === '/' ? '' : pathname}`} />
+    <link rel="canonical" href={`${baseUrl}${pathname === '/' ? '' : pathname}`} />
 
     <!-- Open Graph / Social -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="iOS Submission Guide" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content={ui.site.title} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={lang === 'en' ? 'zh_CN' : 'en_US'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
@@ -169,14 +187,14 @@ if (navArticles.length === 0) {
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Promotional Banner -->
-    <a href="/ai-review" class="block bg-gradient-to-r from-apple-blue to-blue-700 text-white py-2 text-center text-xs font-bold tracking-widest hover:brightness-110 transition-all uppercase relative z-[70]">
-        Special Year-End Offer: AI Review Toolkit $29.99 <span class="opacity-50 line-through ml-2">$49.99</span>
-        <span class="ml-4 underline underline-offset-2">Get it now →</span>
+    <a href={`${langPrefix}/ai-review`} class="block bg-gradient-to-r from-apple-blue to-blue-700 text-white py-2 text-center text-xs font-bold tracking-widest hover:brightness-110 transition-all uppercase relative z-[70]">
+        {ui.banner.offer} <span class="opacity-50 line-through ml-2">{ui.banner.originalPrice}</span>
+        <span class="ml-4 underline underline-offset-2">{ui.banner.cta} →</span>
     </a>
 
     <!-- Mobile Header -->
     <header class="lg:hidden fixed top-0 w-full glass-header border-b z-50 h-16 flex items-center justify-between px-4" style="border-color: var(--border-color);">
-      <h1 class="font-semibold text-sm tracking-tight" style="color: var(--text-primary);">iOS Submission Guide</h1>
+      <h1 class="font-semibold text-sm tracking-tight" style="color: var(--text-primary);">{ui.site.title}</h1>
       <div class="flex items-center gap-2">
         <button
           id="theme-toggle-mobile"
@@ -197,7 +215,7 @@ if (navArticles.length === 0) {
           aria-label="Open navigation menu"
           aria-expanded="false"
           aria-controls="mobile-menu"
-        >Menu</button>
+        >{ui.nav.menu}</button>
       </div>
     </header>
 
@@ -211,40 +229,40 @@ if (navArticles.length === 0) {
       aria-labelledby="mobile-menu-title"
     >
       <div class="h-16 flex items-center justify-between px-4 border-b" style="border-color: var(--border-subtle);">
-         <span id="mobile-menu-title" class="font-bold" style="color: var(--text-primary);">Menu</span>
+         <span id="mobile-menu-title" class="font-bold" style="color: var(--text-primary);">{ui.nav.menu}</span>
          <button
            id="close-menu-button"
            class="text-apple-blue font-medium py-3 px-4 -mr-4 min-h-[44px] min-w-[44px] touch-manipulation"
            aria-label="Close navigation menu"
-         >Close</button>
+         >{ui.nav.close}</button>
       </div>
       <nav class="p-8 overflow-y-auto h-[calc(100vh-64px)]" aria-label="Main navigation">
          {navArticles.map(article => (
-           <a href={`/${article.slug}`} class="block py-4 text-lg font-semibold border-b" style="color: var(--text-primary); border-color: var(--border-subtle);">{article.title}</a>
+           <a href={`${langPrefix}/${article.slug}`} class="block py-4 text-lg font-semibold border-b" style="color: var(--text-primary); border-color: var(--border-subtle);">{article.title}</a>
          ))}
       </nav>
     </div>
 
     <div class="flex max-w-7xl mx-auto min-h-screen">
-      <Sidebar articles={navArticles} pathname={pathname} toc={toc} />
+      <Sidebar articles={navArticles} pathname={pathname} toc={toc} lang={lang} />
       <main id="main-content" class="flex-1 lg:ml-64 px-6 lg:px-16 py-20 lg:py-16">
         <slot />
 
         <footer class="py-12 mt-20 border-t w-[calc(100%+3rem)] lg:w-[calc(100%+8rem)] -mx-6 lg:-mx-16" style="background-color: var(--bg-tertiary); border-color: var(--border-color);">
           <div class="max-w-3xl mx-auto px-6 text-center space-y-4">
-            <p class="text-xs font-medium" style="color: var(--text-tertiary);">Compiled based on official App Store Review Guidelines.</p>
+            <p class="text-xs font-medium" style="color: var(--text-tertiary);">{ui.footer.disclaimer}</p>
             <nav class="flex flex-wrap justify-center gap-4 text-xs" aria-label="Footer navigation">
-              <a href="/about" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">About</a>
+              <a href={`${langPrefix}/about`} class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">{ui.footer.about}</a>
               <span style="color: var(--border-color);">|</span>
-              <a href="/faq" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">FAQ</a>
+              <a href={`${langPrefix}/faq`} class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">{ui.footer.faq}</a>
               <span style="color: var(--border-color);">|</span>
-              <a href="/privacy" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">Privacy Policy</a>
+              <a href={`${langPrefix}/privacy`} class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">{ui.footer.privacy}</a>
               <span style="color: var(--border-color);">|</span>
-              <a href="/terms" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">Terms of Service</a>
+              <a href={`${langPrefix}/terms`} class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">{ui.footer.terms}</a>
               <span style="color: var(--border-color);">|</span>
-              <a href="mailto:support@iossubmissionguide.com" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">Contact</a>
+              <a href="mailto:support@iossubmissionguide.com" class="hover:text-apple-blue transition-colors" style="color: var(--text-tertiary);">{ui.footer.contact}</a>
             </nav>
-            <p class="text-xs" style="color: var(--text-tertiary);">© 2025 iOS Submission Guide. Not affiliated with Apple Inc.</p>
+            <p class="text-xs" style="color: var(--text-tertiary);">{ui.footer.copyright}</p>
           </div>
         </footer>
       </main>

@@ -1,0 +1,77 @@
+{
+  "site": {
+    "title": "iOS Submission Guide",
+    "edition": "Edition 2025",
+    "sidebarTitle": "iOS Submission",
+    "description": "Comprehensive guide for passing the Apple App Store review process"
+  },
+  "nav": {
+    "home": "Home",
+    "introduction": "Introduction",
+    "preSubmission": "Pre-Submission Checklist",
+    "keyFocusAreas": "KEY FOCUS AREAS",
+    "safety": "1. Safety",
+    "performance": "2. Performance",
+    "business": "3. Business",
+    "design": "4. Design",
+    "legal": "5. Legal",
+    "submission": "SUBMISSION",
+    "storeListing": "Store Listing",
+    "reviewProcess": "Review Process",
+    "commonRejections": "Common Rejections",
+    "premiumTools": "PREMIUM TOOLS",
+    "aiToolkit": "AI Review Toolkit",
+    "deepDive": "Deep Dive",
+    "deepDives": "Deep Dive Guides",
+    "references": "References",
+    "backToGuide": "Back to Main Guide",
+    "mainGuide": "Main Guide",
+    "menu": "Menu",
+    "close": "Close",
+    "yourToolkit": "Your Toolkit",
+    "findPurchase": "Find Purchase"
+  },
+  "article": {
+    "keyTakeaways": "Key Takeaways",
+    "deepDiveGuides": "Deep Dive Guides",
+    "relatedGuides": "Related Guides",
+    "previous": "Previous",
+    "next": "Next",
+    "readMore": "Read more",
+    "aiToolkitCta": {
+      "title": "Want AI to audit your app before submission?",
+      "description": "Get our AI Review Toolkit with prompts that catch guideline violations automatically.",
+      "button": "Get the AI Toolkit"
+    }
+  },
+  "footer": {
+    "disclaimer": "Compiled based on official App Store Review Guidelines.",
+    "about": "About",
+    "faq": "FAQ",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact",
+    "copyright": "2025 iOS Submission Guide. Not affiliated with Apple Inc."
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "zh": "Chinese"
+  },
+  "banner": {
+    "offer": "Special Year-End Offer: AI Review Toolkit $29.99",
+    "originalPrice": "$49.99",
+    "cta": "Get it now"
+  },
+  "error": {
+    "pageNotFound": "404 - Page Not Found",
+    "pageNotFoundDesc": "The page you're looking for doesn't exist or has been moved.",
+    "backToHome": "Back to Home"
+  },
+  "misc": {
+    "findPurchase": "Find Purchase",
+    "yourToolkit": "Your Toolkit",
+    "loading": "Loading...",
+    "tryAgain": "Try again"
+  }
+}

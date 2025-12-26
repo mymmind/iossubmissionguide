@@ -1,0 +1,227 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DOMPurify from 'isomorphic-dompurify';
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3005';
+let hubArticle = null;
+
+try {
+  const res = await fetch(`${apiUrl}/api/articles/app-store-guide?lang=zh`);
+  if (res.ok) {
+    hubArticle = await res.json();
+  }
+} catch (e) {
+  console.error('Failed to fetch hub article:', e);
+}
+
+if (!hubArticle) {
+  return Astro.redirect('/zh/404');
+}
+
+// Sanitize HTML content to prevent XSS
+const sanitizedContent = DOMPurify.sanitize(hubArticle.content, {
+  ADD_TAGS: ['section'],
+  ADD_ATTR: ['target', 'rel'],
+});
+
+// WebPage schema for homepage (Chinese)
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": hubArticle.title,
+  "description": hubArticle.description,
+  "url": "https://iossubmissionguide.com/zh",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://iossubmissionguide.com/og-image.webp",
+    "width": 1200,
+    "height": 630
+  },
+  "inLanguage": "zh-CN",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "iOS 提交指南",
+    "url": "https://iossubmissionguide.com/zh"
+  },
+  "about": {
+    "@type": "Thing",
+    "name": "App Store 审核指南",
+    "description": "苹果关于 iOS 应用提交和审批的指南"
+  },
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": ["h1", "h2", ".description"]
+  },
+  ...(hubArticle.publishedAt && { "datePublished": hubArticle.publishedAt }),
+  ...(hubArticle.updatedAt && { "dateModified": hubArticle.updatedAt })
+};
+
+// WebSite schema with search action (Chinese)
+const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "iOS 提交指南",
+  "url": "https://iossubmissionguide.com/zh",
+  "description": "通过 Apple App Store 审核流程的完整指南",
+  "inLanguage": "zh-CN",
+  "publisher": {
+    "@type": "Organization",
+    "name": "iOS 提交指南",
+    "url": "https://iossubmissionguide.com"
+  }
+};
+
+// ItemList schema for article collection (Chinese)
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "iOS App Store 提交指南",
+  "description": "通过 App Store 审核的完整指南集合",
+  "numberOfItems": 14,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "App Store Connect 和 TestFlight 指南",
+      "url": "https://iossubmissionguide.com/zh/connect-guide"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "常见 App Store 拒绝原因",
+      "url": "https://iossubmissionguide.com/zh/rejection-guide"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "App Store 法律与隐私指南",
+      "url": "https://iossubmissionguide.com/zh/legal-compliance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "如何处理 App Store 拒绝",
+      "url": "https://iossubmissionguide.com/zh/rejection-recovery"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "准则 4.2：最低功能要求",
+      "url": "https://iossubmissionguide.com/zh/guideline-4-2-minimum-functionality"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "准则 2.1：应用崩溃和错误",
+      "url": "https://iossubmissionguide.com/zh/guideline-2-1-app-crashes"
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "React Native App Store 提交指南",
+      "url": "https://iossubmissionguide.com/zh/react-native-app-store-submission"
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "name": "Flutter App Store 提交指南",
+      "url": "https://iossubmissionguide.com/zh/flutter-app-store-submission"
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "name": "App Store 截图尺寸 2025",
+      "url": "https://iossubmissionguide.com/zh/app-store-screenshot-sizes-2025"
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "name": "App Store 审核时间 2025",
+      "url": "https://iossubmissionguide.com/zh/app-store-review-time-2025"
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "name": "App Store 隐私政策要求 2025",
+      "url": "https://iossubmissionguide.com/zh/app-store-privacy-policy-requirements"
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "name": "App Store 元数据最佳实践 2025",
+      "url": "https://iossubmissionguide.com/zh/app-store-metadata-best-practices"
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "name": "准则 3.1：应用内购买",
+      "url": "https://iossubmissionguide.com/zh/guideline-3-1-in-app-purchase"
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
+      "name": "Swift 和 SwiftUI App Store 提交指南",
+      "url": "https://iossubmissionguide.com/zh/swift-swiftui-app-store-submission"
+    }
+  ]
+};
+
+// HowTo schema for step-by-step guide (Chinese)
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "如何通过 App Store 审核",
+  "description": "首次提交即获批准的完整指南",
+  "inLanguage": "zh-CN",
+  "totalTime": "PT2H",
+  "estimatedCost": {
+    "@type": "MonetaryAmount",
+    "currency": "USD",
+    "value": "99"
+  },
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "审阅苹果指南",
+      "text": "阅读并理解 App Store 审核指南，重点关注第 1 节（安全）、第 2 节（性能）、第 3 节（商业）、第 4 节（设计）和第 5 节（法律）。"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "审核应用合规性",
+      "text": "检查应用是否存在常见拒绝原因：崩溃、链接失效、占位符内容、缺少隐私政策和功能不完整。"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "配置隐私权限",
+      "text": "在 Info.plist 文件中为所有权限（相机、位置、通讯录）添加清晰的、以用户利益为导向的用途说明。"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "准备 App Store Connect",
+      "text": "上传截图、撰写有吸引力的描述、设置定价并正确配置应用内购买。"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 5,
+      "name": "提交并附带审核备注",
+      "text": "包含详细的审核备注，解释可能需要说明的功能、演示账户或审核员的特殊说明。"
+    }
+  ]
+};
+---
+
+<Layout title={hubArticle.title} description={hubArticle.description} lang="zh">
+  <!-- Schema JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(webSiteSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+
+  <article>
+    <div set:html={sanitizedContent} />
+  </article>
+</Layout>

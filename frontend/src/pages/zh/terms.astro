@@ -1,0 +1,163 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "服务条款 - iOS 提交指南";
+const description = "iOS 提交指南的服务条款。阅读我们关于使用网站和购买产品的条款和条件。";
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://iossubmissionguide.com/zh"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "服务条款",
+      "item": "https://iossubmissionguide.com/zh/terms"
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description} lang="zh">
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <article class="prose-content max-w-3xl">
+    <h1>服务条款</h1>
+    <p class="text-gray-500 text-sm mb-8">最后更新：2025 年 12 月 22 日</p>
+
+    <p class="lead">
+      在使用 iOS 提交指南网站和购买我们的产品之前，请仔细阅读这些服务条款。
+    </p>
+
+    <h2>1. 条款协议</h2>
+    <p>访问或使用我们的网站 iossubmissionguide.com，即表示您同意受这些服务条款和我们的隐私政策约束。如果您不同意这些条款，请不要使用我们的服务。</p>
+
+    <h2>2. 服务说明</h2>
+    <p>iOS 提交指南提供：</p>
+    <ul>
+      <li>关于 Apple App Store 提交和审核流程的免费教育内容</li>
+      <li>AI 审核工具包，一款包含指南、最佳实践和应用提交 AI 提示词的付费数字产品</li>
+    </ul>
+
+    <h2>3. 产品购买和交付</h2>
+
+    <h3>3.1 AI 审核工具包</h3>
+    <p>成功付款后，您将收到：</p>
+    <ul>
+      <li>立即获得下载 AI 审核工具包（PDF 格式）的权限</li>
+      <li>访问产品页面所述的所有包含材料</li>
+    </ul>
+
+    <h3>3.2 定价</h3>
+    <p>所有价格均以美元 (USD) 显示。我们保留随时更改价格的权利，恕不另行通知。促销价格仅在指定期间内有效。</p>
+
+    <h3>3.3 付款</h3>
+    <p>付款通过 Stripe 安全处理。进行购买即表示您声明您有权使用所提供的付款方式。</p>
+
+    <h2>4. 退款政策</h2>
+    <p>我们提供 <strong>14 天满意保证</strong>。如果您对 AI 审核工具包不满意，可以在购买后 14 天内联系 <a href="mailto:support@iossubmissionguide.com">support@iossubmissionguide.com</a> 申请全额退款。</p>
+    <p>请注意：</p>
+    <ul>
+      <li>退款申请必须在原始购买日期后 14 天内提出</li>
+      <li>我们可能会要求您提供简短的反馈以改进我们的产品</li>
+      <li>退款将在 5-10 个工作日内处理到原始付款方式</li>
+    </ul>
+
+    <h2>5. 许可和使用权</h2>
+
+    <h3>5.1 个人使用许可</h3>
+    <p>购买 AI 审核工具包后，您将获得一个个人的、非独占的、不可转让的许可，可以：</p>
+    <ul>
+      <li>将材料用于您自己的应用开发项目</li>
+      <li>将 AI 提示词与 AI 工具一起用于您自己的代码审核</li>
+      <li>参考指南进行个人学习</li>
+    </ul>
+
+    <h3>5.2 限制</h3>
+    <p>您不得：</p>
+    <ul>
+      <li>重新分发、转售或与他人分享工具包材料</li>
+      <li>发布或公开内容</li>
+      <li>使用材料创建竞争产品</li>
+      <li>删除或更改任何版权声明</li>
+    </ul>
+
+    <h2>6. 知识产权</h2>
+    <p>本网站和我们产品中的所有内容，包括文本、图形、徽标和软件，均为 iOS 提交指南的财产，受版权和知识产权法保护。</p>
+    <p>Apple、App Store、iOS、Swift、Xcode 和 TestFlight 商标是 Apple Inc. 的财产。我们不隶属于 Apple Inc.，也未获得其认可或赞助。</p>
+
+    <h2>7. 免责声明</h2>
+    <p>我们的产品和服务按"原样"提供，不提供任何明示或暗示的保证。</p>
+    <p>具体而言，我们不保证：</p>
+    <ul>
+      <li>您的应用将获得 Apple App Store 审核团队的批准</li>
+      <li>遵循我们的指南将导致首次通过</li>
+      <li>我们的 AI 提示词将识别您代码中的所有潜在问题</li>
+    </ul>
+    <p>App Store 批准完全由 Apple 自行决定。我们的指南基于公开可用的指南和最佳实践，但 Apple 的审核流程可能随时更改。</p>
+
+    <h2>8. 责任限制</h2>
+    <p>在法律允许的最大范围内，iOS 提交指南不对任何间接的、附带的、特殊的、后果性的或惩罚性的损害承担责任，包括但不限于：</p>
+    <ul>
+      <li>利润或收入损失</li>
+      <li>商业机会损失</li>
+      <li>应用被拒绝或延迟</li>
+      <li>因使用我们产品而产生的任何损害</li>
+    </ul>
+    <p>我们的总责任不应超过您为相关产品支付的金额。</p>
+
+    <h2>9. 赔偿</h2>
+    <p>您同意赔偿 iOS 提交指南因您使用我们的产品或违反这些条款而产生的任何索赔、损失或损害。</p>
+
+    <h2>10. 用户行为</h2>
+    <p>您同意不：</p>
+    <ul>
+      <li>将我们的网站用于任何非法目的</li>
+      <li>试图未经授权访问我们的系统</li>
+      <li>干扰我们网站的正常运行</li>
+      <li>从事任何可能损害我们声誉的活动</li>
+    </ul>
+
+    <h2>11. 第三方链接</h2>
+    <p>我们的网站可能包含第三方网站的链接。我们不对这些网站的内容、隐私政策或做法负责。</p>
+
+    <h2>12. 条款修改</h2>
+    <p>我们保留随时修改这些条款的权利。更改将在发布后立即生效。您在更改后继续使用我们的服务即表示接受修改后的条款。</p>
+
+    <h2>13. 适用法律</h2>
+    <p>这些条款应受 iOS 提交指南运营所在司法管辖区的法律管辖并据此解释，不考虑法律冲突原则。</p>
+
+    <h2>14. 争议解决</h2>
+    <p>因这些条款产生的任何争议应首先通过善意协商解决。如果无法达成解决方案，争议将通过具有约束力的仲裁解决。</p>
+
+    <h2>15. 可分割性</h2>
+    <p>如果这些条款的任何条款被认定为不可执行，其余条款将继续完全有效。</p>
+
+    <h2>16. 联系信息</h2>
+    <p>有关这些服务条款的问题，请通过以下方式联系我们：</p>
+    <ul>
+      <li>电子邮件：<a href="mailto:support@iossubmissionguide.com">support@iossubmissionguide.com</a></li>
+    </ul>
+
+    <div class="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-0">
+        <strong>确认：</strong>使用我们的网站或购买我们的产品，即表示您确认已阅读、理解并同意受这些服务条款的约束。
+      </p>
+    </div>
+
+    <!-- Cross-links to other legal pages -->
+    <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">相关页面：</p>
+      <div class="flex flex-wrap gap-4">
+        <a href="/zh/privacy" class="text-sm text-apple-blue hover:underline">隐私政策</a>
+        <a href="/zh/about" class="text-sm text-apple-blue hover:underline">关于我们</a>
+      </div>
+    </div>
+  </article>
+</Layout>

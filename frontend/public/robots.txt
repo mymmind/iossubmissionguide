@@ -2,12 +2,16 @@
 
 User-agent: *
 Allow: /
+Allow: /zh/
 
 # Block utility pages (with wildcards for query params)
 Disallow: /success*
 Disallow: /restore*
+Disallow: /zh/success*
+Disallow: /zh/restore*
 Disallow: /api/*
 Disallow: /404*
+Disallow: /zh/404*
 
 # Sitemap (Astro-generated)
 Sitemap: https://iossubmissionguide.com/sitemap-index.xml

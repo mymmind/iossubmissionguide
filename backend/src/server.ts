@@ -127,10 +127,15 @@ async function start() {
 
   const articlesQuerySchema = z.object({
     full: z.enum(['true', 'false']).optional(),
+    lang: z.enum(['en', 'zh']).optional().default('en'),
   })
 
   const slugParamSchema = z.object({
     slug: z.string().min(1).max(200).regex(/^[a-z0-9-]+$/, { message: 'Invalid slug format' }),
+  })
+
+  const slugQuerySchema = z.object({
+    lang: z.enum(['en', 'zh']).optional().default('en'),
   })
 
   // Set purchase session in httpOnly cookie (with payment verification)
@@ -185,7 +190,9 @@ async function start() {
   fastify.get('/api/articles', async (request, reply) => {
     // Validate query parameters
     const parseResult = articlesQuerySchema.safeParse(request.query)
-    const full = parseResult.success ? parseResult.data.full : undefined
+    const { full, lang } = parseResult.success
+      ? parseResult.data
+      : { full: undefined, lang: 'en' as const }
 
     // Add cache headers for public content
     reply.header('Cache-Control', CACHE_CONTROL_PUBLIC)
@@ -193,6 +200,7 @@ async function start() {
     // If full=true, return complete article data (for static site generation)
     if (full === 'true') {
       const articles = await prisma.article.findMany({
+        where: { language: lang },
         include: {
           relatedFrom: {
             include: {
@@ -215,6 +223,7 @@ async function start() {
 
     // Default: return minimal list data
     const articles = await prisma.article.findMany({
+      where: { language: lang },
       select: {
         id: true,
         slug: true,
@@ -229,17 +238,24 @@ async function start() {
 
   fastify.get('/api/articles/:slug', async (request, reply) => {
     // Validate slug parameter
-    const parseResult = slugParamSchema.safeParse(request.params)
-    if (!parseResult.success) {
+    const paramResult = slugParamSchema.safeParse(request.params)
+    if (!paramResult.success) {
       return reply.status(400).send({ error: 'Invalid slug format' })
     }
-    const { slug } = parseResult.data
+    const { slug } = paramResult.data
+
+    // Validate query parameters for language
+    const queryResult = slugQuerySchema.safeParse(request.query)
+    const lang = queryResult.success ? queryResult.data.lang : 'en'
 
     // Add cache headers for public content
     reply.header('Cache-Control', CACHE_CONTROL_PUBLIC)
 
-    const article = await prisma.article.findUnique({
-      where: { slug },
+    const article = await prisma.article.findFirst({
+      where: {
+        slug,
+        language: lang
+      },
       include: {
         relatedFrom: {
           include: {
@@ -271,14 +287,20 @@ async function start() {
     const articles = await prisma.article.findMany({
       select: {
         slug: true,
+        language: true,
         updatedAt: true,
       }
     })
 
-    const sitemap = articles.map(article => ({
-      url: `/${article.slug === 'app-store-guide' ? '' : article.slug}`,
-      lastmod: article.updatedAt.toISOString(),
-    }))
+    const sitemap = articles.map(article => {
+      const langPrefix = article.language === 'en' ? '' : `/${article.language}`
+      const slugPath = article.slug === 'app-store-guide' ? '' : article.slug
+      return {
+        url: `${langPrefix}/${slugPath}`.replace('//', '/') || '/',
+        language: article.language,
+        lastmod: article.updatedAt.toISOString(),
+      }
+    })
 
     return sitemap
   })

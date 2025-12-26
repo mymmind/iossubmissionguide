@@ -1,0 +1,211 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "关于我们 - iOS 提交指南";
+const description = "认识 iOS 提交指南背后的团队。了解我们帮助开发者首次提交就通过 App Store 审核的使命。";
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://iossubmissionguide.com/zh"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "关于我们",
+      "item": "https://iossubmissionguide.com/zh/about"
+    }
+  ]
+};
+
+const authorSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "iOS 提交指南团队",
+  "jobTitle": "iOS 开发者和 App Store 专家",
+  "description": "一个拥有丰富经验的 iOS 开发团队，累计向 App Store 提交了 100 多个应用。",
+  "url": "https://iossubmissionguide.com/zh/about",
+  "sameAs": [
+    "https://twitter.com/iossubmitguide"
+  ],
+  "knowsAbout": [
+    "iOS 应用开发",
+    "App Store 审核指南",
+    "Swift 编程",
+    "React Native 开发",
+    "App Store 优化",
+    "移动应用合规"
+  ]
+};
+---
+
+<Layout title={title} description={description} lang="zh">
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(authorSchema)} />
+
+  <div class="max-w-3xl">
+    <!-- Hero Section -->
+    <section class="mb-16">
+      <h1 class="text-5xl lg:text-6xl font-bold text-apple-dark dark:text-white mb-6 tracking-tight">关于 iOS 提交指南</h1>
+      <p class="text-xl text-gray-500 dark:text-gray-400 leading-relaxed">
+        我们是一群厌倦了 App Store 拒绝循环的 iOS 开发者。所以我们创建了我们开始时希望拥有的资源。
+      </p>
+    </section>
+
+    <!-- Our Story -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark dark:text-white mb-6">我们的故事</h2>
+      <div class="prose-content">
+        <p>
+          和许多开发者一样，我们经历过 App Store 拒绝的挫败感。多年来，我们累计向 App Store 提交了 <strong>100 多个应用</strong>，我们已经了解了 Apple 审核流程的每一个细节。
+        </p>
+        <p>
+          我们因各种原因被拒绝过——从缺少隐私描述到"功能不足"。我们申诉过决定，与 App Review 团队沟通过，慢慢建立了一个关于什么有效、什么无效的知识库。
+        </p>
+        <p>
+          在 2024 年，我们决定将这些知识正式化。我们将多年的经验整理成完整的指南、检查清单和 AI 驱动的审核工具。结果就是 iOS 提交指南——一个旨在帮助开发者首次提交就通过 App Store 审核的资源。
+        </p>
+      </div>
+    </section>
+
+    <!-- Credentials -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark dark:text-white mb-6">我们的经验</h2>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-apple-light dark:bg-gray-800 rounded-2xl p-6 text-center">
+          <div class="text-4xl font-bold text-apple-blue mb-2">100+</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">已提交应用</div>
+        </div>
+        <div class="bg-apple-light dark:bg-gray-800 rounded-2xl p-6 text-center">
+          <div class="text-4xl font-bold text-apple-blue mb-2">10+</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">年 iOS 开发经验</div>
+        </div>
+        <div class="bg-apple-light dark:bg-gray-800 rounded-2xl p-6 text-center">
+          <div class="text-4xl font-bold text-apple-blue mb-2">95%</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">首次通过率</div>
+        </div>
+        <div class="bg-apple-light dark:bg-gray-800 rounded-2xl p-6 text-center">
+          <div class="text-4xl font-bold text-apple-blue mb-2">3</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">涵盖平台</div>
+        </div>
+      </div>
+
+      <div class="prose-content">
+        <h3>我们使用的技术</h3>
+        <ul>
+          <li><strong>原生 iOS：</strong> Swift、SwiftUI、UIKit、Objective-C</li>
+          <li><strong>React Native：</strong> JavaScript/TypeScript、Expo、EAS</li>
+          <li><strong>Flutter：</strong> Dart、跨平台开发</li>
+          <li><strong>工具：</strong> Xcode、App Store Connect、TestFlight、Fastlane</li>
+        </ul>
+
+        <h3>我们了解什么</h3>
+        <ul>
+          <li>App Store 审核指南的每一个章节（我们已经阅读过多次）</li>
+          <li>常见的拒绝模式以及如何避免它们</li>
+          <li>如何与 App Review 团队有效沟通</li>
+          <li>隐私要求和权限描述的最佳实践</li>
+          <li>应用内购买合规和准则 3.1</li>
+          <li>性能优化以避免准则 2.1 拒绝</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Mission -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark dark:text-white mb-6">我们的使命</h2>
+      <div class="bg-gradient-to-br from-apple-blue/5 to-blue-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-3xl p-8 lg:p-12 border border-apple-blue/10 dark:border-blue-800/40">
+        <blockquote class="text-2xl lg:text-3xl font-medium text-apple-dark dark:text-white leading-relaxed mb-0">
+          "帮助每一位开发者首次提交就将应用发布到 App Store，无需承受审核过程的压力和不确定性。"
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- What We Offer -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark dark:text-white mb-6">我们提供什么</h2>
+      <div class="space-y-6">
+        <div class="flex gap-4 p-6 bg-white dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-2xl">
+          <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-apple-green dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-apple-dark dark:text-white mb-2">免费完整指南</h3>
+            <p class="text-gray-600 dark:text-gray-400">14 篇深度文章，涵盖 App Store 指南、常见拒绝原因和特定平台的提交指南。始终免费，持续更新。</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 p-6 bg-white dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-2xl">
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-apple-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-apple-dark dark:text-white mb-2">AI 审核工具包</h3>
+            <p class="text-gray-600 dark:text-gray-400">我们的高级产品，包含策略指南、编码最佳实践和 AI 提示词，可以将语言模型变成 App Store 合规审核员。</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 p-6 bg-white dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-2xl">
+          <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-apple-dark dark:text-white mb-2">社区驱动更新</h3>
+            <p class="text-gray-600 dark:text-gray-400">我们根据最新的 App Store 指南变化和开发者社区的反馈持续更新内容。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disclaimer -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-apple-dark dark:text-white mb-6">重要声明</h2>
+      <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 rounded-2xl p-6">
+        <p class="text-amber-800 dark:text-amber-300 mb-4">
+          <strong>我们与 Apple Inc. 无关联。</strong>
+        </p>
+        <p class="text-amber-700 dark:text-amber-400 text-sm mb-0">
+          iOS 提交指南是由开发者为开发者创建的独立资源。Apple、App Store、iOS、Swift、Xcode、TestFlight 及相关标志是 Apple Inc. 的商标。我们的指南基于公开的 App Store 审核指南和我们自己的经验。App Store 的批准始终由 Apple 自行决定。
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="mb-16">
+      <div class="bg-gradient-to-br from-apple-blue to-blue-700 rounded-3xl p-8 lg:p-12 text-center text-white">
+        <h2 class="text-3xl font-bold mb-4">准备提交您的应用？</h2>
+        <p class="text-blue-100 mb-8 max-w-xl mx-auto">
+          从我们的免费完整指南开始，或获取完整的 AI 审核工具包，首次提交即通过。
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/zh" class="px-8 py-4 bg-white text-apple-blue rounded-2xl font-bold hover:bg-gray-50 transition-all">
+            阅读免费指南
+          </a>
+          <a href="/zh/ai-review" class="px-8 py-4 bg-white/10 text-white border border-white/20 rounded-2xl font-bold hover:bg-white/20 transition-all">
+            获取 AI 工具包
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cross-links to other legal pages -->
+    <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">法律信息：</p>
+      <div class="flex flex-wrap gap-4">
+        <a href="/zh/privacy" class="text-sm text-apple-blue hover:underline">隐私政策</a>
+        <a href="/zh/terms" class="text-sm text-apple-blue hover:underline">服务条款</a>
+      </div>
+    </div>
+  </div>
+</Layout>
